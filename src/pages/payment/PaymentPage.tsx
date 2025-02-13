@@ -1,5 +1,12 @@
+import { KakaoPay } from "./components/KakaoPay";
+
 const PaymentPage = () => {
-  return <div>결제 페이지</div>;
+  return (
+    <div>
+      <KakaoPay />
+      <p>payment결제 페이지</p>
+    </div>
+  );
 };
 
 export default PaymentPage;
