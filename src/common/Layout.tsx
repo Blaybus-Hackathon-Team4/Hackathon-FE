@@ -4,24 +4,45 @@ import Navbar from "./Navbar";
 
 const Layout = () => {
   return (
-    <StWrapper>
-      <ContentWrapper>
-        <Outlet />
-      </ContentWrapper>
-      <Navbar />
-    </StWrapper>
+    <AppContainer>
+      <MobileWrapper>
+        <MainContent>
+          <Outlet />
+        </MainContent>
+        <Navbar />
+      </MobileWrapper>
+    </AppContainer>
   );
 };
 
 export default Layout;
 
-const StWrapper = styled.div`
+const AppContainer = styled.div`
+  width: 100vw;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* 전체 높이 확보 */
+  justify-content: center;
+  align-items: center;
+  background-color: #fafafa;
 `;
 
-const ContentWrapper = styled.main`
-  flex: 1; /* 남은 공간 차지 */
-  padding-bottom: 62.4px; /* Navbar 높이만큼 아래 여백 추가 */
+const MobileWrapper = styled.div`
+  width: 100%;
+  max-width: 480px; /* 최대 모바일 폭 */
+  height: 100%;
+  max-height: 900px; /* 최대 모바일 높이 */
+  background-color: #ffffff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 480px) {
+    max-width: 100%;
+    max-height: 100%;
+  }
+`;
+
+const MainContent = styled.main`
+  flex: 1;
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
 `;
