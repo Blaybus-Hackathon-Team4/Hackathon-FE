@@ -23,7 +23,7 @@ const AppContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fafafa;
+  background-color: #ececec;
 `;
 
 const MobileWrapper = styled.div`
