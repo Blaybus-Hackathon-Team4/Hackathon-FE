@@ -5,7 +5,7 @@ const STORE_ID = import.meta.env.VITE_STORE_ID;
 const CHANNEL_KEY = import.meta.env.VITE_CHANNEL_KEY;
 
 export function KakaoPay() {
-  const dummy = { id: 1, name: "시술명", price: 2000, currency: "KRW" };
+  const dummy = { id: 1, name: "시술명", price: 2000 };
 
   const [item, setItem] = useState(dummy);
   const [paymentStatus, setPaymentStatus] = useState({
@@ -51,11 +51,13 @@ export function KakaoPay() {
         item: item.id,
       },
     });
-    if (payment.code !== undefined) {
+    console.log("--결제 응답:", payment);
+    if (!payment || payment.code !== undefined) {
       setPaymentStatus({
         status: "FAILED",
         message: payment.message,
       });
+      console.log("--결제 응답:", payment);
       return;
     }
     const completeResponse = await fetch("/api/payment/complete", {
