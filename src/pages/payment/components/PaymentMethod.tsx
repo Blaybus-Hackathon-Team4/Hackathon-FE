@@ -3,11 +3,11 @@ import styled from "styled-components";
 
 const Card = styled.div`
   background: white;
-  padding: 16px;
+  padding: 20px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 20px;
 `;
 
 const Title = styled.h3`

@@ -27,10 +27,11 @@ export default PaymentPage;
 const Container = styled.div`
   width: 100%;
   max-width: 480px;
-  margin: 0 auto;
+  margin: 0 auto 70px 0;
   padding: 20px;
-  background-color: #f8f8f8;
+  background-color: ${({ theme }) => theme.colors.gray[100]};
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  position: relative;
 `;

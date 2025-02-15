@@ -40,7 +40,8 @@ const Gray = styled.span`
   color: gray;
 `;
 const Purple = styled.span`
-  color: red;
+  color: ${({ theme }) => theme.colors.primary[500]};
+  font-weight: 500;
 `;
 const InfoConainer = styled.div`
   display: flex;
