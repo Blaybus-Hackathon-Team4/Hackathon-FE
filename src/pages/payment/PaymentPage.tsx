@@ -29,7 +29,7 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto 70px 0;
   padding: 20px;
-  background-color: ${({ theme }) => theme.colors.gray[100]};
+  background-color: ${({ theme }) => theme.colors.gray[50]};
   display: flex;
   flex-direction: column;
   gap: 16px;

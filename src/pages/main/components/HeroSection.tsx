@@ -33,7 +33,7 @@ const Title = styled.p`
 `;
 
 const Highlight = styled.span`
-  color: #6a5acd; /* 보라색 강조 */
+  color: ${({ theme }) => theme.colors.primary[500]}; /* 보라색 강조 */
 `;
 
 const RecommendButton = styled.button`

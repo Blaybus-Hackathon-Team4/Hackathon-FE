@@ -82,8 +82,8 @@ const Tags = styled.div`
   gap: 4px;
   margin-top: 4px;
   .purple {
-    background: #dcc9f2;
-    color: #c44fd6;
+    background: ${({ theme }) => theme.colors.primary[50]};
+    color: ${({ theme }) => theme.colors.primary[500]};
   }
 `;
 

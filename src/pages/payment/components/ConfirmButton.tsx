@@ -15,7 +15,7 @@ const BottomContainer = styled.div`
 const Button = styled.button`
   width: 100%;
   padding: 14px 24px;
-  background: #8a4df3;
+  background: ${({ theme }) => theme.colors.primary[500]};
   color: white;
   font-size: 16px;
   font-weight: bold;

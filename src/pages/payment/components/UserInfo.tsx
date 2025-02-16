@@ -24,7 +24,7 @@ const Title = styled.h3`
 const ChangeButton = styled.button`
   padding: 8px 12px;
   background: ${({ theme }) => theme.colors.white};
-  border: 1px solid ${({ theme }) => theme.colors.gray[300]};
+  border: 1px solid ${({ theme }) => theme.colors.gray[200]};
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
