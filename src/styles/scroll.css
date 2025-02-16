@@ -1,0 +1,9 @@
+/* 이 스타일은 스크롤바는 숨기고 스크롤은 가능하게 합니다 */
+.scrollable {
+  overflow: auto;
+}
+
+/* 웹킷 기반 브라우저에서 스크롤바를 숨기기 */
+.scrollable::-webkit-scrollbar {
+  display: none;
+}

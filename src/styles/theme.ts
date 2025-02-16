@@ -2,12 +2,16 @@ export const theme = {
   colors: {
     // Primary 컬러
     primary: {
-      500: "#B04FD6", // 메인 컬러
+
       50: "#F7EDFB",
+      500: "#B04FD6", // 메인 컬러
     },
+
+    // Secondary 컬러
     secondary: {
-      500: "#2294AB",
       50: "#E4F9FD",
+      500: "#2294AB", // 서브 컬러
+
     },
 
     // 그레이스케일

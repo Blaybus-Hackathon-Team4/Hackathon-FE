@@ -96,6 +96,10 @@ textarea:not([rows]) {
   scroll-margin-block: 5ex;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 /* 폰트 설정 */
 @font-face {
   font-family: "Pretendard Variable";
