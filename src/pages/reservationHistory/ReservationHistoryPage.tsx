@@ -131,14 +131,6 @@ const ReservationHistoryPage = () => {
             ))  
           }
         </CompletedSection>
-
-        {/* 하단 네비게이션 */}
-        <BottomNav>
-          <NavItem>홈</NavItem>
-          <NavItem>탐색</NavItem>
-          <NavItem active>예약 조회</NavItem>
-          <NavItem>마이</NavItem>
-        </BottomNav>
     </PageContainer>
   );
 };
