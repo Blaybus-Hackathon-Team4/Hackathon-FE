@@ -45,4 +45,6 @@ const MobileWrapper = styled.div`
 const MainContent = styled.main`
   flex: 1;
   overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+  padding-bottom: 62.4px; /* Navbar 높이만큼 여백 추가 */
+  position: relative;
 `;
