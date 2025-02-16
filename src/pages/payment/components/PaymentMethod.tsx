@@ -47,12 +47,11 @@ export default PaymentMethod;
 
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.white};
-  padding: 16px;
+  padding: 24px;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
 `;
 
 const Title = styled.h3`
