@@ -2,6 +2,7 @@ export const theme = {
   colors: {
     // Primary 컬러
     primary: {
+
       50: "#F7EDFB",
       500: "#B04FD6", // 메인 컬러
     },
@@ -10,6 +11,7 @@ export const theme = {
     secondary: {
       50: "#E4F9FD",
       500: "#2294AB", // 서브 컬러
+
     },
 
     // 그레이스케일
@@ -27,4 +29,3 @@ export const theme = {
     black: "#000000",
   },
 };
-
