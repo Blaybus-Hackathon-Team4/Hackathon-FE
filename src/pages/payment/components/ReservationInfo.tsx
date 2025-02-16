@@ -6,6 +6,36 @@ import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 import CheckIcon from "../../../assets/icons/check-gray-icon.svg";
 import LocationIcon from "../../../assets/icons/location-gray-icon.svg";
 
+const ReservationInfo: React.FC = () => {
+  return (
+    <Card>
+      <Profile>
+        <ProfileImage src={DesignerImage} alt="디자이너" />
+        <InfoConainer>
+          <Title>이초 디자이너</Title>
+          <Schedule>
+            <Gray>일정</Gray> 2.12 (수) · 오후 12:00
+          </Schedule>
+        </InfoConainer>
+      </Profile>
+      <InfoBox>
+        <InfoConainer>
+          <Info>
+            <Icon src={CheckIcon} alt="check" />
+            실제 샵에 <Purple>방문하여</Purple> 컨설팅 진행
+          </Info>
+          <Info>
+            <Icon src={LocationIcon} alt="location" /> 서울 강남구 압구정로79길
+          </Info>
+        </InfoConainer>
+        <ShopImage src={DesignerImage} alt="샵" />
+      </InfoBox>
+    </Card>
+  );
+};
+
+export default ReservationInfo;
+
 const Card = styled.div`
   background: white;
   padding: 20px;
@@ -52,6 +82,7 @@ const InfoConainer = styled.div`
 const InfoBox = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   padding: 16px;
   border-radius: 12px;
@@ -69,33 +100,3 @@ const ShopImage = styled.img`
   border-radius: 4px;
 `;
 const Icon = styled.img``;
-
-const ReservationInfo: React.FC = () => {
-  return (
-    <Card>
-      <Profile>
-        <ProfileImage src={DesignerImage} alt="디자이너" />
-        <InfoConainer>
-          <Title>이초 디자이너</Title>
-          <Schedule>
-            <Gray>일정</Gray> 2.12 (수) · 오후 12:00
-          </Schedule>
-        </InfoConainer>
-      </Profile>
-      <InfoBox>
-        <ShopImage src={DesignerImage} alt="샵" />
-        <InfoConainer>
-          <Info>
-            <Icon src={CheckIcon} alt="check" />
-            실제 샵에 <Purple>방문하여</Purple> 컨설팅 진행
-          </Info>
-          <Info>
-            <Icon src={LocationIcon} alt="location" /> 서울 강남구 압구정로79길
-          </Info>
-        </InfoConainer>
-      </InfoBox>
-    </Card>
-  );
-};
-
-export default ReservationInfo;
