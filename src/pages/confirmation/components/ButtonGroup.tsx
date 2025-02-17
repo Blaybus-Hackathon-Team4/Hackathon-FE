@@ -32,7 +32,7 @@ const ButtonGroup: React.FC = () => {
   return (
     <Container>
       <Button onClick={() => navigate("/")}>메인으로</Button>
-      <Button primary onClick={() => navigate("/reservation")}>
+      <Button primary onClick={() => navigate("/reservation-history")}>
         예약조회
       </Button>
     </Container>

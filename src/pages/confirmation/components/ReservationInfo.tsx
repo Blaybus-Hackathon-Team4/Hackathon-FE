@@ -58,7 +58,7 @@ const Container = styled.div`
   box-sizing: border-box;
   padding: 0px 24px;
   border-radius: 20px;
-  margin-top: 48px;
+  margin-top: 32px;
 `;
 
 const Card = styled.div`
