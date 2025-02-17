@@ -4,7 +4,7 @@ import styled from "styled-components";
 import CheckIcon from "../../../assets/icons/check-purple-icon.svg";
 import { useNavigate } from "react-router";
 
-const SuccessMessage: React.FC = () => {
+const SuccessMessageBankTransfer: React.FC = () => {
   const navigate = useNavigate();
   return (
     <Container>
@@ -22,7 +22,7 @@ const SuccessMessage: React.FC = () => {
   );
 };
 
-export default SuccessMessage;
+export default SuccessMessageBankTransfer;
 
 const Container = styled.div`
   text-align: center;

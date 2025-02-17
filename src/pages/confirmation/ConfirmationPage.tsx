@@ -1,9 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 import CompleteHeader from "./components/CompleteHeader";
-import SuccessMessage from "./components/SuccessMessage";
 import ReservationInfo from "./components/ReservationInfo";
 import ButtonGroup from "./components/ButtonGroup";
+import { useParams } from "react-router";
+import SuccessMessageKakaoPay from "./components/SuccessMessageKakaoPay";
+import SuccessMessageBankTransfer from "./components/SuccessMessageBankTransfer";
+
+const ConfirmationPage: React.FC = () => {
+  const { method } = useParams();
+  return (
+    <Container>
+      <CompleteHeader />
+      {method === "kakaopay" && <SuccessMessageKakaoPay />}
+      {method === "bank-transfer" && <SuccessMessageBankTransfer />}
+      <ReservationInfo />
+
+      <ButtonGroup />
+    </Container>
+  );
+};
+
+export default ConfirmationPage;
 
 const Container = styled.div`
   width: 100%;
@@ -13,17 +31,3 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.colors.gray[50]};
   position: relative;
 `;
-
-const ConfirmationPage: React.FC = () => {
-  return (
-    <Container>
-      <CompleteHeader />
-      <SuccessMessage />
-      <ReservationInfo />
-
-      <ButtonGroup />
-    </Container>
-  );
-};
-
-export default ConfirmationPage;
