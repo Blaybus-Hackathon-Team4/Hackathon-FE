@@ -8,7 +8,6 @@ import MyPage from "../pages/mypage/MyPage";
 import PaymentPage from "../pages/payment/PaymentPage";
 import ReservationHistoryPage from "../pages/reservationHistory/ReservationHistoryPage";
 import SelectDatePage from "../pages/selectDate/SelectDatePage";
-import { KakaoPayTest } from "../pages/payment/components/KakaoPayTest";
 import KakaoPayv1 from "../pages/payment/components/KakaoPayv1";
 
 const router = createBrowserRouter([
