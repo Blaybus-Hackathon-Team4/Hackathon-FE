@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const Container = styled.div`
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-top: 60px;
 `;
 
 const Button = styled.button<{ primary?: boolean }>`
@@ -14,14 +14,17 @@ const Button = styled.button<{ primary?: boolean }>`
   font-size: 16px;
   font-weight: bold;
   border-radius: 8px;
-  border: 2px solid
-    ${({ theme, primary }) =>
-      primary ? theme.colors.primary[500] : theme.colors.gray[300]};
+  border: 1px solid ${({ theme }) => theme.colors.primary[500]};
   background: ${({ primary, theme }) =>
     primary ? theme.colors.primary[500] : theme.colors.white};
   color: ${({ primary, theme }) =>
-    primary ? theme.colors.white : theme.colors.gray[700]};
+    primary ? theme.colors.white : theme.colors.primary[500]};
   cursor: pointer;
+  transition: 0.2s;
+  &:hover {
+    background: ${({ primary, theme }) =>
+      primary ? theme.colors.primary[500] : theme.colors.gray[50]};
+  }
 `;
 
 const ButtonGroup: React.FC = () => {
