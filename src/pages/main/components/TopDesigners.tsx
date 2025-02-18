@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import TrendingStyle1 from "../../../assets/images/TrendingStyle1.png";
 
 import designer2 from "../../../assets/images/designer1.jpg";
 
 import designer3 from "../../../assets/images/designer3.jpg";
+import { api } from "../../../api/api";
+import { useNavigate } from "react-router";
 
 const designers = [
   {
@@ -29,14 +31,51 @@ const designers = [
     img: designer3,
   },
 ];
+export type DesignerType = {
+  designerId: number; // 디자이너 고유 ID
+  name: string;
+  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
+  field: string; // 전문 분야 (ex: "펌")
+  location: string; // 위치 (ex: "성수/건대")
+  offPrice: number; // 오프라인 가격
+  onPrice: number; // 온라인 가격
+  isOnline: boolean; // 온라인 서비스 여부
+  isOffline: boolean; // 오프라인 서비스 여부
+  rating: number; // 평점 (ex: 60 → 6.0점)
+  text: string; // 디자이너 소개 텍스트
+};
 
 const TopDesigners: React.FC = () => {
+  const navigate = useNavigate();
+  const [designerss, setDesignerss] = useState<DesignerType[]>([]);
+  useEffect(() => {
+    getDesignerList();
+  }, []);
+
+  const getDesignerList = async () => {
+    try {
+      const response = await api.post("/designer/readDesignerList", {
+        location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
+        field: null, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
+        isOnline: true, // 비대면 찾고 싶으면 true
+        isOffline: true, // 대면 찾고 싶으면 true
+        minPrice: null, // 최소 금액 null 가능
+        maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
+      });
+      setDesignerss(response.data.responseDto.slice(0, 3));
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching designer list:", error);
+      throw error;
+    }
+  };
+
   return (
     <Container>
       <Title>2030이 많이 찾는 디자이너 TOP 3</Title>
       {designers.map((designer, index) => (
         <React.Fragment key={designer.rank}>
-          <DesignerCard>
+          <DesignerCard onClick={() => navigate(`/designer-detail/${"1003"}`)}>
             <Rank>{designer.rank}</Rank>
             <ProfileImage src={designer.img} alt={designer.name} />
             <DesignerInfo>
