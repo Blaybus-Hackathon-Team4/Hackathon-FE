@@ -1,7 +1,6 @@
 import { Outlet } from "react-router";
 import styled from "styled-components";
 import Navbar from "./Navbar";
-import LoginModal from "../pages/login/components/LoginModal";
 
 const Layout = () => {
   return (

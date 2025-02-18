@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import faceTofaceImage from "../../../assets/icons/face-to-face-icon.svg";
 
-import noneFaceTofaceImage from "../../../assets/icons/none-face-to-face-icon.svg";
+//import noneFaceTofaceImage from "../../../assets/icons/none-face-to-face-icon.svg";
 
 import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 
