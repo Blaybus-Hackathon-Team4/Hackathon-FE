@@ -11,6 +11,7 @@ import PaymentPage from "../pages/payment/PaymentPage";
 import ReservationHistoryPage from "../pages/reservationHistory/ReservationHistoryPage";
 import SelectDatePage from "../pages/selectDate/SelectDatePage";
 import SelectProcessPage from "../pages/selectProcess/SelectProcessPage";
+import FilterPage from "../pages/filter/FilterPage";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: "/oauth/callback",
         element: <GoogleOAuthPage />,
+      },
+      {
+        path: "/filter",
+        element: <FilterPage />,
       },
     ],
   },

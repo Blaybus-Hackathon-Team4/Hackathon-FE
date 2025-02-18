@@ -120,7 +120,7 @@ export default FilterPage;
 // 스타일 정의
 // 전체 컨테이너: (헤더 제외, 필터 영역과 버튼을 중앙 정렬)
 const Container = styled.div`
-  width: ;
+  width: 100%;
   max-width: 480px;
   height: 100vh;
   display: flex;

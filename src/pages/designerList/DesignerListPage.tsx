@@ -3,6 +3,7 @@ import DummyProfile from "../../assets/icons/image_designer.svg";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
+import {useNavigate} from "react-router-dom";
 
 // 정적인 더미 데이터 (디자인을 미리 확인하기 위함)
 const designers = [
@@ -39,8 +40,13 @@ const designers = [
 ];
 
 const DesignerListPage = () => {
+  const navigate = useNavigate();
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
 
+  const handleDesignerClick = (designerId: number) => {
+    navigate(`/designer-detail?id=${designerId}`);
+  };
+  
   return (
     <Container>
       {/* 필터 버튼 영역 */}
@@ -53,7 +59,7 @@ const DesignerListPage = () => {
       {/* 디자이너 리스트 */}
       <DesignerList>
         {designers.map((designer, index) => (
-          <div key={designer.designerId}>
+          <div key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
             <DesignerCard {...designer} />
             {index !== designers.length - 1 && <Divider />}
           </div>
