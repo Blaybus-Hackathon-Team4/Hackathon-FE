@@ -53,7 +53,7 @@ const ApplyButton = styled.button<{ isFilterApplied: boolean }>`
     props.isFilterApplied ? theme.colors.primary[500] : theme.colors.gray[100]};
   color: ${(props) =>
     props.isFilterApplied ? theme.colors.white : theme.colors.gray[300]};
-  font-size: 14px;
+  font-size: 17px;
   font-weight: bold;
   cursor: ${(props) => (props.isFilterApplied ? "pointer" : "default")};
   transition: background-color 0.2s ease;
