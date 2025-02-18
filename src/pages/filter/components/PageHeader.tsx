@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import exit from "../../assets/icons/exit.svg";
+import exit from "../../../assets/icons/exit.svg";
 
 interface PageHeaderProps {
   title?: string;
