@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import HeroSection from "./components/HeroSection";
 import CategoryTabs from "./components/CategoryTabs";
+import HeroSection from "./components/HeroSection";
 import TopDesigners from "./components/TopDesigners";
 import TrendingStyles from "./components/TrendingStyles";
 
