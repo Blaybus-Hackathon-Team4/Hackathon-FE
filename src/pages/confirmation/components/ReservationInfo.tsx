@@ -77,6 +77,7 @@ const InfoRow = styled.div`
 
 const Text = styled.span`
   font-size: 16px;
+  color: ${({ theme }) => theme.colors.gray[500]};
 `;
 const BoldText = styled.span`
   font-weight: bold;
