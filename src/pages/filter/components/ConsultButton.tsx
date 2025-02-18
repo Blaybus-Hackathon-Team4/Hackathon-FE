@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
+import styled from "styled-components";
+import { theme } from "../../../styles/theme";
+import faceToFaceIcon from "../../../assets/icons/face-to-face-icon.svg"; // 상대 경로 유지
+import nonFaceToFaceIcon from "../../../assets/icons/non-face-to-face-icon.svg"; // 상대 경로 유지
 
 interface ConsultButtonProps {
   type: "대면" | "비대면";
@@ -8,13 +12,7 @@ interface ConsultButtonProps {
 }
 
 const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
-  const imageSrc = isSelected
-    ? type === "대면"
-      ? "/inperson-selected.svg"
-      : "/untact-selected.svg"
-    : type === "대면"
-    ? "/inperson.svg"
-    : "/untact.svg";
+  const imageSrc = type === "대면" ? faceToFaceIcon : nonFaceToFaceIcon; // ✅ 항상 동일한 이미지 유지
 
   return (
     <StyledButton isSelected={isSelected} onClick={onClick}>
@@ -28,6 +26,7 @@ const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
 
 export default ConsultButton;
 
+// ✅ 스타일 유지
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 167px;
   height: 175px;
