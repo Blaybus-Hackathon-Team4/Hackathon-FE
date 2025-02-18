@@ -60,6 +60,10 @@ const router = createBrowserRouter([
         path: "/oauth/callback",
         element: <GoogleOAuthPage />,
       },
+      {
+        path: "/filter",
+        element: <FilterPage />,
+      },
     ],
   },
 ]);
