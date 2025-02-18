@@ -12,12 +12,12 @@ interface ConsultButtonProps {
 }
 
 const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
-  const meeting = type === "대면" ? faceToFaceIcon : nonFaceToFaceIcon; // ✅ 항상 동일한 이미지 유지
+  const imageSrc = type === "대면" ? faceToFaceIcon : nonFaceToFaceIcon; // ✅ 항상 동일한 이미지 유지
 
   return (
     <StyledButton isSelected={isSelected} onClick={onClick}>
       <IconWrapper>
-        <Icon src={meeting} alt={type} />
+        <Icon src={imageSrc} alt={type} />
       </IconWrapper>
       <Text isSelected={isSelected}>{type}</Text>
     </StyledButton>
@@ -26,7 +26,7 @@ const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
 
 export default ConsultButton;
 
-// ✅ 스타일 유지
+// 스타일 유지
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 167px;
   height: 175px;
