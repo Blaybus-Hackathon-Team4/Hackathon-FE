@@ -45,7 +45,7 @@ const router = createBrowserRouter([
         element: <KakaoPayv1 />,
       },
       {
-        path: "/confirmation",
+        path: "/confirmation/:method",
         element: <ConfirmationPage />,
       },
       {

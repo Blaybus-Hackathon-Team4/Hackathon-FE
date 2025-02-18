@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReservationCard from "./components/ReservationCard";
 
 const PageContainer = styled.div`
   padding: 20px;
-  display: flex; 
+  display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
@@ -34,7 +34,7 @@ const CompletedSection = styled.div`
   border-radius: 8px;
 `;
 
-const BottomNav =styled.div`
+const BottomNav = styled.div`
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -45,10 +45,10 @@ const BottomNav =styled.div`
   padding: 10px 0;
 `;
 
-const NavItem = styled.div<{active?: boolean}>`
+const NavItem = styled.div<{ active?: boolean }>`
   font-size: 14px;
-  font-weight: ${({active}) => (active ? "bold" : "normal")};
-  color: ${({active}) => active ? "#000" : "#999"};
+  font-weight: ${({ active }) => (active ? "bold" : "normal")};
+  color: ${({ active }) => (active ? "#000" : "#999")};
 `;
 
 // const ReservationHistoryPage = () => {
@@ -73,22 +73,27 @@ const ReservationHistoryPage = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
 
   useEffect(() => {
-    fetch("/api/v1/reservations") //백엔드에서 예약 목록 가져오기 
+    fetch("/api/v1/reservations") //백엔드에서 예약 목록 가져오기
       .then((res) => res.json())
       .then((data) =>
         setReservations(
           data.map((res: any) => ({
             ...res,
-            // 백엔드에서 데이터 가져와서 가격, 미용실 주소 설정 
-            price: typeof res.price === "string" ? parseInt(res.price, 10) : res.price, //문자열일 경우, number로 변환함
-            location: res.isOnline ? undefined : res.location, 
-            meetLink: res.meetLink //구글 미트 링크 
+            // 백엔드에서 데이터 가져와서 가격, 미용실 주소 설정
+            price:
+              typeof res.price === "string"
+                ? parseInt(res.price, 10)
+                : res.price, //문자열일 경우, number로 변환함
+            location: res.isOnline ? undefined : res.location,
+            meetLink: res.meetLink //구글 미트 링크
               ? `<a href='${res.meetLink}' target='_blank' rel='nooper noreferrer'>Google Meet 링크</a>`
               : undefined,
           }))
         )
       )
-      .catch((error) => console.error("예약 데이터를 불러오는 중 오류 발생:", error));
+      .catch((error) =>
+        console.error("예약 데이터를 불러오는 중 오류 발생:", error)
+      );
   }, []);
 
   return (
@@ -105,32 +110,31 @@ const ReservationHistoryPage = () => {
             date={res.date}
             time={res.time}
             designer={res.designer.name}
-            price= {res.price} //가격 정보
-            location= {res.location}
+            price={res.price} //가격 정보
+            location={res.location}
             meetingLink={res.meetLink}
             status={res.status}
           />
         ))}
 
-        {/*완료된 예약*/}
-        <SectionTitle>완료된 예약</SectionTitle>
-        <CompletedSection>
-          {reservations
-            .filter((res) => new Date(res.date) < new Date())
-            .map((res) => (
-              <ReservationCard
-                key={res.id}
-                date={res.date}
-                time={res.time}
-                designer={res.designer.name}
-                price={res.price}
-                location={res.location}
-                meetingLink={res.meetLink}
-                status={res.status}
-              />
-            ))  
-          }
-        </CompletedSection>
+      {/*완료된 예약*/}
+      <SectionTitle>완료된 예약</SectionTitle>
+      <CompletedSection>
+        {reservations
+          .filter((res) => new Date(res.date) < new Date())
+          .map((res) => (
+            <ReservationCard
+              key={res.id}
+              date={res.date}
+              time={res.time}
+              designer={res.designer.name}
+              price={res.price}
+              location={res.location}
+              meetingLink={res.meetLink}
+              status={res.status}
+            />
+          ))}
+      </CompletedSection>
     </PageContainer>
   );
 };

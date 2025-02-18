@@ -1,12 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
+import heroImage from "../../../assets/images/main-hero-image.png";
+
 const HeroSection: React.FC = () => {
   return (
     <HeroContainer>
       <Title>
-        스타일 고민, <br />
-        나와 잘 맞는 디자이너는 <Highlight>없을까?</Highlight>
+        완벽한 스타일링을 위한 첫걸음!
+        <br />
+        나에게 맞는 디자이너 추천
       </Title>
       <RecommendButton>디자이너 추천받기</RecommendButton>
     </HeroContainer>
@@ -25,15 +28,17 @@ const HeroContainer = styled.div`
   text-align: center;
   border-radius: 20px;
   position: relative;
+
+  background-image: url(${heroImage}); /* 배경 이미지 추가 */
+  background-size: cover; /* 배경 이미지가 컨테이너를 덮도록 설정 */
+  background-position: center; /* 배경 이미지를 중앙 정렬 */
+  background-repeat: no-repeat; /* 배경 이미지 반복 방지 */
 `;
 
 const Title = styled.p`
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
-`;
-
-const Highlight = styled.span`
-  color: ${({ theme }) => theme.colors.primary[500]}; /* 보라색 강조 */
+  font-family: "HSSanTokki20-Regular";
 `;
 
 const RecommendButton = styled.button`
@@ -46,5 +51,9 @@ const RecommendButton = styled.button`
   font-weight: bold;
   cursor: pointer;
   border: none;
+  transition: 0.2s;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.gray[50]};
+  }
 `;
 export default HeroSection;
