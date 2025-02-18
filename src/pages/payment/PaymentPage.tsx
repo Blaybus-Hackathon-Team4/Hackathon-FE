@@ -27,8 +27,7 @@ export default PaymentPage;
 const Container = styled.div`
   width: 100%;
   max-width: 480px;
-  margin: 0 auto 70px 0;
-  padding: 20px;
+  padding: 20px 20px 70px 20px;
   background-color: ${({ theme }) => theme.colors.gray[50]};
   display: flex;
   flex-direction: column;

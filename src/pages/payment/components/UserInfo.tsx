@@ -25,7 +25,7 @@ const ChangeButton = styled.button`
   padding: 8px 12px;
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.gray[200]};
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 14px;
   cursor: pointer;
 `;
@@ -59,7 +59,7 @@ const TextArea = styled.textarea`
   outline: none;
 
   &::placeholder {
-    color: ${({ theme }) => theme.colors.gray[400]};
+    color: ${({ theme }) => theme.colors.gray[300]};
   }
 `;
 

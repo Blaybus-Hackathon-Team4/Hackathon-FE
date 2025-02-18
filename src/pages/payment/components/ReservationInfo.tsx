@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+import faceTofaceImage from "../../../assets/icons/face-to-face-icon.svg";
+
+//import noneFaceTofaceImage from "../../../assets/icons/none-face-to-face-icon.svg";
+
 import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 
 import CheckIcon from "../../../assets/icons/check-gray-icon.svg";
@@ -28,7 +32,7 @@ const ReservationInfo: React.FC = () => {
             <Icon src={LocationIcon} alt="location" /> 서울 강남구 압구정로79길
           </Info>
         </InfoConainer>
-        <ShopImage src={DesignerImage} alt="샵" />
+        <ShopImage src={faceTofaceImage} alt="샵" />
       </InfoBox>
     </Card>
   );
@@ -87,7 +91,7 @@ const InfoBox = styled.div`
   padding: 16px;
   border-radius: 12px;
   font-size: 14px;
-  border: 1px solid #dddddd;
+  border: 1px solid ${({ theme }) => theme.colors.gray[100]};
 `;
 const Info = styled.div`
   display: flex;
@@ -95,8 +99,7 @@ const Info = styled.div`
   gap: 4px;
 `;
 const ShopImage = styled.img`
-  width: 48px;
-  height: 48px;
-  border-radius: 4px;
+  width: 60px;
+  margin-right: 10px;
 `;
 const Icon = styled.img``;

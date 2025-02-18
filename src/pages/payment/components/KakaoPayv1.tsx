@@ -4,7 +4,7 @@ import {
   PaymentMethod,
   PG,
   PaymentRequest,
-  PaymentResponse,
+  RequestPayResponse,
 } from "../../../types/portone";
 
 const { VITE_IMP_CODE } = import.meta.env;
@@ -62,18 +62,18 @@ const KakaoPayv1: React.FC = () => {
     };
     console.log("data:", data);
 
-    IMP?.request_pay(data, async (rsp: PaymentResponse) => {
-      if (rsp.success) {
-        console.log("결제 성공:", rsp);
+    IMP?.request_pay(data, async (response: RequestPayResponse) => {
+      if (response.success) {
+        console.log("결제 성공:", response);
         const success = await verifyPayment(data.merchant_uid, impUid);
         if (success) {
-          console.log(`결제 성공! 결제 금액: ${rsp.paid_amount}원`);
-          console.log(`영수증 URL: ${rsp.receipt_url}`);
+          console.log(`결제 성공! 결제 금액: ${response.paid_amount}원`);
+          console.log(`영수증 URL: ${response.receipt_url}`);
         } else {
           console.log("결제 검증 실패");
         }
       } else {
-        console.error(`결제 실패! 사유: ${rsp.status}`);
+        console.error(`결제 실패! 사유: ${response.status}`);
       }
     });
   };

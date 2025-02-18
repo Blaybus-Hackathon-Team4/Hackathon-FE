@@ -47,4 +47,10 @@ const MainContent = styled.main`
   overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
   padding-bottom: 62.4px; /* Navbar 높이만큼 여백 추가 */
   position: relative;
+  /* 스크롤바 숨기기 */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
 `;
