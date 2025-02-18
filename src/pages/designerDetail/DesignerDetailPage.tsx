@@ -1,59 +1,79 @@
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import "../../styles/scroll.css";
 
+import DesignerIcon from "../../assets/icons/image_designer.svg";
+import MapPinIcon from "../../assets/icons/map_pin.svg";
+import MoneyIcon from "../../assets/icons/money.svg";
+import VideoIcon from "../../assets/icons/video.svg";
+
 const DesignerDetailPage = () => {
+  const navigate = useNavigate();
+
+  const handleGoToSelectProcessPage = () => {
+    navigate("/select-process");
+  };
+
   return (
-    <DivWrapper>
-      <SectionWrapper>
-        <img src="/image_designer.svg" alt="designer-profile" />
-        <Name>이초 디자이너</Name>
-        <Introduction>레드벨벳, ITZY가 방문하는 샵</Introduction>
-        <StDiv>
-          <DivBox $profession>펌</DivBox>
-          <DivBox>대면</DivBox>
-          <DivBox>비대면</DivBox>
-        </StDiv>
-        <StDiv_2>
-          <Consulting>
-            <ConsultingDetail>
-              <TextWithImg>
-                <img src="/money.svg" alt="money" />
-                <Text $light>대면 컨설팅</Text>
-              </TextWithImg>
-              <DottedLine />
-              <Text>
-                <Text $bold>40,000</Text>원
-              </Text>
-            </ConsultingDetail>
-            <ConsultingDetail>
-              <TextWithImg>
-                <img src="/money.svg" alt="money" />
-                <Text $light>비대면 컨설팅</Text>
-              </TextWithImg>
-              <DottedLine />
-              <Text>
-                <Text $bold>20,000</Text>원
-              </Text>
-            </ConsultingDetail>
-          </Consulting>
-          <TextWithImg>
-            <img
-              src="/map_pin.svg"
-              alt="map-pin"
-              width={16.67}
-              height={16.67}
-            />
-            <Text $light>서울 강남구 압구정로79길</Text>
-          </TextWithImg>
-        </StDiv_2>
-      </SectionWrapper>
-      <Line />
-      <SectionWrapper>
-        <StH3>헤어컨설팅 포트폴리오</StH3>
-        <img src="/video.svg" alt="video" style={{ width: "100%" }} />
-      </SectionWrapper>
-      <Button>컨설팅 예약신청</Button>
-    </DivWrapper>
+    <>
+      <DivWrapper>
+        <SectionWrapper>
+          <img src={DesignerIcon} alt="designer-profile" />
+          <Name>이초 디자이너</Name>
+          <Introduction>레드벨벳, ITZY가 방문하는 샵</Introduction>
+          <StDiv>
+            <DivBox $profession>펌</DivBox>
+            <DivBox>대면</DivBox>
+            <DivBox>비대면</DivBox>
+          </StDiv>
+          <StDiv_2>
+            <Consulting>
+              <ConsultingDetail>
+                <TextWithImg>
+                  <img src={MoneyIcon} alt="money" />
+                  <Text $light>대면 컨설팅</Text>
+                </TextWithImg>
+                <Divider></Divider>
+                <Text>
+                  <Text $bold>40,000</Text>원
+                </Text>
+              </ConsultingDetail>
+              <ConsultingDetail>
+                <TextWithImg>
+                  <img
+                    src={MoneyIcon}
+                    alt="money"
+                    style={{ visibility: "hidden" }}
+                  />
+                  <Text $light>비대면 컨설팅</Text>
+                </TextWithImg>
+                <Divider></Divider>
+                <Text>
+                  <Text $bold>20,000</Text>원
+                </Text>
+              </ConsultingDetail>
+            </Consulting>
+            <TextWithImg>
+              <img
+                src={MapPinIcon}
+                alt="map-pin"
+                width={16.67}
+                height={16.67}
+              />
+              <Text $light>서울 강남구 압구정로79길</Text>
+            </TextWithImg>
+          </StDiv_2>
+        </SectionWrapper>
+        <Line />
+        <SectionWrapper>
+          <StH3>헤어컨설팅 포트폴리오</StH3>
+          <img src={VideoIcon} alt="video" style={{ width: "100%" }} />
+        </SectionWrapper>
+        <ButtonBox>
+          <Button onClick={handleGoToSelectProcessPage}>컨설팅 예약신청</Button>
+        </ButtonBox>
+      </DivWrapper>
+    </>
   );
 };
 
@@ -62,7 +82,7 @@ export default DesignerDetailPage;
 const DivWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-top: 20px;
 `;
 
 const SectionWrapper = styled.section<{ $border?: boolean }>`
@@ -93,37 +113,42 @@ const StDiv = styled.div`
 `;
 
 const StDiv_2 = styled.div`
+  padding: 0 20px;
   font-size: 14px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 `;
 
 const Line = styled.hr`
   border: 1px solid ${({ theme }) => theme.colors.gray[100]};
   margin: 32px 0;
   width: 92%;
+  align-self: center;
 `;
 
-const DottedLine = styled.div`
+const Divider = styled.hr`
+  flex-grow: 1;
   border: 1px dashed ${({ theme }) => theme.colors.gray[100]};
-  width: 47%;
-  height: 0;
+  margin: 0 10px; /* 좌우 여백 조절 */
 `;
 
 const Consulting = styled.div`
-  width: 350px;
-  height: 41px;
-  margin-bottom: 16px;
+  width: 100%;
 `;
 
 const ConsultingDetail = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 8px;
 `;
 
 const TextWithImg = styled.div`
   display: flex;
   gap: 8px;
+  align-self: start;
   align-items: center;
 `;
 
@@ -152,12 +177,16 @@ const StH3 = styled.h3`
 `;
 
 const Button = styled.button`
-  width: 350px;
+  width: 100%;
   height: 48px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.primary[500]};
   color: white;
   font-weight: bold;
   border: none;
-  margin: 20px 20px 16px 20px;
+`;
+
+const ButtonBox = styled.div`
+  display: flex;
+  padding: 20px;
 `;

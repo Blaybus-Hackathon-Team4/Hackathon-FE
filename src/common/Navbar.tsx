@@ -4,6 +4,15 @@ import styled from "styled-components";
 import Login from "../pages/login/components/Login";
 import { useUserStore } from "../zustand/user.store";
 
+import Calendar from "../../src/assets/icons/calendar.svg";
+import SelectedCalendar from "../../src/assets/icons/calendar_selected.svg";
+import HomeIcon from "../../src/assets/icons/home.svg";
+import SelectedHomeIcon from "../../src/assets/icons/home_selected.svg";
+import SearchIcon from "../../src/assets/icons/search.svg";
+import SelectedSearchIcon from "../../src/assets/icons/search_selected.svg";
+import User from "../../src/assets/icons/user.svg";
+import SelectedUser from "../../src/assets/icons/user_selected.svg";
+
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
 const Navbar = () => {
@@ -14,7 +23,7 @@ const Navbar = () => {
     <StNav>
       <Button to="/">
         <img
-          src={pathname === "/" ? "/home_selected.svg" : "/home.svg"}
+          src={pathname === "/" ? SelectedHomeIcon : HomeIcon}
           alt="home"
           width={24.96}
           height={24.96}
@@ -23,11 +32,7 @@ const Navbar = () => {
       </Button>
       <Button to="/designer-list">
         <img
-          src={
-            pathname === "/designer-list"
-              ? "/search_selected.svg"
-              : "/search.svg"
-          }
+          src={pathname === "/designer-list" ? SelectedSearchIcon : SearchIcon}
           alt="search"
           width={24.96}
           height={24.96}
@@ -39,9 +44,7 @@ const Navbar = () => {
       <Button to="/reservation-history">
         <img
           src={
-            pathname === "/reservation-history"
-              ? "/calendar_selected.svg"
-              : "/calendar.svg"
+            pathname === "/reservation-history" ? SelectedCalendar : Calendar
           }
           alt="calendar"
           width={24.96}
@@ -55,7 +58,7 @@ const Navbar = () => {
         // 형식적 마이페이지
         <Button to="/my-page">
           <img
-            src={pathname === "/my-page" ? "/user_selected.svg" : "/user.svg"}
+            src={pathname === "/my-page" ? SelectedUser : User}
             alt="mypage"
             width={24.96}
             height={24.96}
@@ -79,10 +82,11 @@ const StNav = styled.nav`
   display: flex;
   padding: 8.32px 24.96px;
   justify-content: space-between;
-  width: 480px;
+  max-width: 480px;
+  width: 100%;
   height: 62.4px;
   z-index: 1000;
-  border: 1px solid black;
+  border-top: 1px solid ${({ theme }) => theme.colors.gray[100]};
   background-color: white;
 `;
 

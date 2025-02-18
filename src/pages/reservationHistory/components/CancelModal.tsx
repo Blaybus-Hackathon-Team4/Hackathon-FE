@@ -2,6 +2,8 @@ import { transparentize } from "polished";
 import styled from "styled-components";
 import { useModalStore } from "../../../zustand/modal.store";
 
+import WarningIcon from "../../../assets/icons/warning.svg";
+
 const CancelModal = () => {
   const { closeCancelModal } = useModalStore();
 
@@ -14,7 +16,7 @@ const CancelModal = () => {
     <ModalBackground>
       <ModalContainer>
         <ContentSection>
-          <img src="/warning.svg" alt="warning" width={32} height={32} />
+          <img src={WarningIcon} alt="warning" width={32} height={32} />
           <ContentBox>
             <p>정말로 예약을 취소하시겠어요?</p>
           </ContentBox>
@@ -60,14 +62,15 @@ const ModalBackground = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
+  padding: 0 20px;
 `;
 
 const ModalContainer = styled.div`
   padding: 32px 20px 20px 20px;
   border-radius: 20px;
   background-color: white;
-  width: 350px;
+  max-width: 350px;
   height: 434px;
   display: flex;
   flex-direction: column;
