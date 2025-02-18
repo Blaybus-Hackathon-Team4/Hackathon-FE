@@ -3,6 +3,8 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { useModalStore } from "../../../zustand/modal.store";
 
+import WarningIcon from "../../../assets/icons/warning.svg";
+
 const ReservationModal = () => {
   const { closeReservationModal } = useModalStore();
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const ReservationModal = () => {
     <ModalBackground>
       <ModalContainer>
         <ContentSection>
-          <img src="/warning.svg" alt="warning" width={32} height={32} />
+          <img src={WarningIcon} alt="warning" width={32} height={32} />
           <ContentBox $bigger color="900">
             <p>예약이 아직 완료되지 않았어요</p>
             <p>그래도 나가시겠어요?</p>
@@ -52,14 +54,15 @@ const ModalBackground = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999;
+  padding: 0 20px;
 `;
 
 const ModalContainer = styled.div`
   padding: 32px 20px 20px 20px;
   border-radius: 20px;
   background-color: white;
-  width: 350px;
+  max-width: 350px;
   height: 352px;
   display: flex;
   flex-direction: column;
