@@ -1,7 +1,5 @@
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
-import styled from "styled-components";
-import { theme } from "../../../styles/theme";
 import faceToFaceIcon from "../../../assets/icons/face-to-face-icon.svg"; // 상대 경로 유지
 import nonFaceToFaceIcon from "../../../assets/icons/non-face-to-face-icon.svg"; // 상대 경로 유지
 
