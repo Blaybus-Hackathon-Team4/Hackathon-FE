@@ -13,7 +13,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
     <HeaderContainer>
       {title && <Title>{title}</Title>} {/*title이 있을 때만 렌더링 */}
       <CloseButton onClick={() => navigate(-1)}>
-        <img src={exitIcon} alt="닫기" />
+        <img src={exit} alt="닫기" />
       </CloseButton>
     </HeaderContainer>
   );
