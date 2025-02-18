@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         element: <DesignerListPage />,
       },
       {
-        path: "/designer-detail",
+        path: "/designer-detail/:designerId",
         element: <DesignerDetailPage />,
       },
       {
