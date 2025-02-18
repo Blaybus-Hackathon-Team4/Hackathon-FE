@@ -49,6 +49,7 @@ const CloseButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  margin-right: 10px;
 
   img {
     width: 100%;
