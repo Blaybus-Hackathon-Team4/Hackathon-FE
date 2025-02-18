@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 
@@ -8,7 +7,11 @@ interface ActionButtonsProps {
   isFilterApplied: boolean;
 }
 
-const ActionButtons = ({ onApply, onReset, isFilterApplied }: ActionButtonsProps) => {
+const ActionButtons = ({
+  onApply,
+  onReset,
+  isFilterApplied,
+}: ActionButtonsProps) => {
   return (
     <ButtonContainer>
       <ResetButton onClick={onReset}>선택 초기화</ResetButton>

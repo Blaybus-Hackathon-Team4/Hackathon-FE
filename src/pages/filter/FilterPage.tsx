@@ -1,13 +1,18 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PageHeader from "./components/PageHeader";
-import FilterButton from "./components/FilterButton";
-import PriceInput from "./components/PriceInput";
-import ConsultButton from "./components/ConsultButton.tsx";
+import styled from "styled-components";
 import ActionButtons from "./components/ActionButtons.tsx";
+import ConsultButton from "./components/ConsultButton.tsx";
+import FilterButton from "./components/FilterButton";
+import PageHeader from "./components/PageHeader";
+import PriceInput from "./components/PriceInput";
 
-const locations = ["서울 전체", "홍대/연남/합정", "성수/건대", "강남/청담/압구정"];
+const locations = [
+  "서울 전체",
+  "홍대/연남/합정",
+  "성수/건대",
+  "강남/청담/압구정",
+];
 const specialties = ["커트", "펌", "매직", "탈염색"];
 
 const FilterPage = () => {
@@ -15,7 +20,9 @@ const FilterPage = () => {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [maxPrice, setMaxPrice] = useState<string>("");
   const [consultType, setConsultType] = useState<string | null>(null);
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(null);
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(
+    null
+  );
 
   const handleApply = () => {
     console.log({
@@ -92,7 +99,14 @@ const FilterPage = () => {
             <ActionButtons
               onApply={handleApply}
               onReset={handleReset}
-              isFilterApplied={!!(selectedLocation || maxPrice || consultType || selectedSpecialty)}
+              isFilterApplied={
+                !!(
+                  selectedLocation ||
+                  maxPrice ||
+                  consultType ||
+                  selectedSpecialty
+                )
+              }
             />
           </ActionButtonsWrapper>
         </FilterContainer>
@@ -129,7 +143,7 @@ const ContentWrapper = styled.div`
 const FilterContainer = styled.div`
   width: 390px; //내부 요소 크기에 맞게 조정
   margin: 0 auto; //중앙 배치
-  margin-left: 20px; 
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
   text-align: left; //내부 요소 왼쪽 정렬 유지
