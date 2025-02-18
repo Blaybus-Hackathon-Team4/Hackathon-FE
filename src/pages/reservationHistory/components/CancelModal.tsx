@@ -1,22 +1,27 @@
 import { transparentize } from "polished";
 import styled from "styled-components";
 import { useModalStore } from "../../../zustand/modal.store";
+import {cancelPayment} from "../../../api/cancelPayment";
 
-import WarningIcon from "../../../assets/icons/warning.svg";
-
-const CancelModal = () => {
+const CancelModal = ({ paymentId }: { paymentId: string }) => {
   const { closeCancelModal } = useModalStore();
 
-  const handleCancelReservation = () => {
-    closeCancelModal();
-    console.log("예약 취소 기능 구현해야 함");
+  const handleCancelPayment = async () => {
+    try {
+      const token = "your-auth-token"; // 실제 사용자 토큰 (예: 로그인 후 가져오기)
+      await cancelPayment(paymentId, token); // 결제 취소 API 호출
+      alert("예약이 취소되었습니다.");
+      closeCancelModal();
+    } catch (error) {
+      alert("예약 취소에 실패했습니다. 다시 시도해주세요.");
+    }
   };
 
   return (
     <ModalBackground>
       <ModalContainer>
         <ContentSection>
-          <img src={WarningIcon} alt="warning" width={32} height={32} />
+          <img src="/warning.svg" alt="warning" width={32} height={32} />
           <ContentBox>
             <p>정말로 예약을 취소하시겠어요?</p>
           </ContentBox>
@@ -39,7 +44,7 @@ const CancelModal = () => {
           </ReservationBox>
         </ContentSection>
         <ButtonSection>
-          <StButton $yes={true} onClick={handleCancelReservation}>
+          <StButton $yes={true} onClick={handleCancelPayment}>
             네, 취소할래요
           </StButton>
           <StButton onClick={closeCancelModal}>아니요, 취소 안할래요</StButton>
@@ -62,15 +67,14 @@ const ModalBackground = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
-  padding: 0 20px;
+  z-index: 1000;
 `;
 
 const ModalContainer = styled.div`
   padding: 32px 20px 20px 20px;
   border-radius: 20px;
   background-color: white;
-  max-width: 350px;
+  width: 350px;
   height: 434px;
   display: flex;
   flex-direction: column;
