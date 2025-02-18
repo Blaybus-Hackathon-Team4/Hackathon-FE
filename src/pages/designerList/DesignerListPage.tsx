@@ -1,13 +1,14 @@
 import styled from "styled-components";
-import FilterButton from "./components/FilterButton";
+import DummyProfile from "../../assets/icons/image_designer.svg";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
+import FilterButton from "./components/FilterButton";
 
 // 정적인 더미 데이터 (디자인을 미리 확인하기 위함)
 const designers = [
   {
     designerId: 1,
-    profilePhoto: "./image_designer.svg",
+    profilePhoto: DummyProfile,
     name: "이초 디자이너",
     field: "펌",
     location: "강남/청담/압구정",
@@ -17,7 +18,7 @@ const designers = [
   },
   {
     designerId: 2,
-    profilePhoto: "./image_designer.svg",
+    profilePhoto: DummyProfile,
     name: "로로 원장",
     field: "펌",
     location: "홍대/연남/합정",
@@ -28,7 +29,7 @@ const designers = [
   {
     designerId: 3,
     name: "슈 대표원장",
-    profilePhoto: "./image_designer.svg",
+    profilePhoto: DummyProfile,
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -71,7 +72,7 @@ const Container = styled.div`
 
 const FilterContainer = styled.div`
   display: flex;
-  justify-content: space-between; //버튼들이 화면 가로 너비에 맞게 보여지도록 
+  justify-content: space-between; //버튼들이 화면 가로 너비에 맞게 보여지도록
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
@@ -80,6 +81,7 @@ const FilterContainer = styled.div`
   /* 스크롤바 숨기기 (필요 시) */
   &::-webkit-scrollbar {
     display: none;
+  }
 `;
 
 const DesignerList = styled.div`

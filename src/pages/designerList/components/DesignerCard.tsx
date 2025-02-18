@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import DefaultProfile from "../../../assets/images/designer1.jpg";
 import { theme } from "../../../styles/theme";
 import Tag from "././Tag";
 
@@ -24,7 +25,10 @@ const DesignerCard = ({
 }: DesignerCardProps) => {
   return (
     <Card>
-      <ProfileImage src={profilePhoto || "/assets/default-profile.jpg"} alt="디자이너 프로필" />
+      <ProfileImage
+        src={profilePhoto || DefaultProfile}
+        alt="디자이너 프로필"
+      />
       <Info>
         <Name>
           {name} <Separator>|</Separator> <Location>{location}</Location>
@@ -75,7 +79,7 @@ const Separator = styled.span`
 const Location = styled.span`
   font-weight: 500;
   color: ${theme.colors.gray[500]};
-`
+`;
 
 const Description = styled.div`
   font-size: 13px;

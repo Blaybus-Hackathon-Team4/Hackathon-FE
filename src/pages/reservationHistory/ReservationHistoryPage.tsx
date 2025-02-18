@@ -1,13 +1,15 @@
-import React, {useState} from "react";
+import { useState } from "react";
 import styled from "styled-components";
-import ReservationCard from "./components/ReservationCard";
 import { theme } from "../../styles/theme";
-import CancelModal from "./components/CancelModal"; // 예약 취소 모달창 추가
 import { useModalStore } from "../../zustand/modal.store";
+import CancelModal from "./components/CancelModal"; // 예약 취소 모달창 추가
+import ReservationCard from "./components/ReservationCard";
 
 const ReservationHistoryPage = () => {
   const { isCancelModalOpen, openCancelModal } = useModalStore();
-  const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(null);
+  const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(
+    null
+  );
 
   const handleOpenCancelModal = (paymentId: string) => {
     setSelectedPaymentId(paymentId); // 선택한 결제 ID 저장
@@ -17,7 +19,6 @@ const ReservationHistoryPage = () => {
   return (
     <Container>
       <Title>내 예약</Title>
-
       <SectionTitle>다가오는 예약</SectionTitle>
       <ReservationCard
         date="25.02.12(수) 오후 12:00"
@@ -39,7 +40,6 @@ const ReservationHistoryPage = () => {
         paymentId="pay_0987654321" // 결제 ID 추가
         onClick={() => handleOpenCancelModal("pay_0987654321")}
       />
-
       <SectionTitle>완료된 예약</SectionTitle>
       <ReservationCard
         date="24.11.23(토) 오후 1:00"
@@ -49,9 +49,11 @@ const ReservationHistoryPage = () => {
         paymentId="" // 완료된 예약이라 결제 ID 필요 없음
         font-color={theme.colors.gray[300]}
         isCompleted={true}
-      /> 
-
-{isCancelModalOpen && selectedPaymentId && <CancelModal paymentId={selectedPaymentId} />} {/* 선택된 결제 ID 전달 */}
+      />
+      {isCancelModalOpen && selectedPaymentId && (
+        <CancelModal paymentId={selectedPaymentId} />
+      )}{" "}
+      {/* 선택된 결제 ID 전달 */}
     </Container>
   );
 };

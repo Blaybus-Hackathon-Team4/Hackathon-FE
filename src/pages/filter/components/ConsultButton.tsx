@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 
@@ -9,22 +8,22 @@ interface ConsultButtonProps {
 }
 
 const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
-    const imageSrc = isSelected
-      ? type === "대면"
-        ? "/inperson-selected.svg"
-        : "/untact-selected.svg"
-      : type === "대면"
-      ? "/inperson.svg"
-      : "/untact.svg";
-  
-    return (
-        <StyledButton isSelected={isSelected} onClick={onClick}>
-          <IconWrapper>
-            <Icon src={imageSrc} alt={type} />
-          </IconWrapper>
-          <Text isSelected={isSelected}>{type}</Text>
-        </StyledButton>
-    );
+  const imageSrc = isSelected
+    ? type === "대면"
+      ? "/inperson-selected.svg"
+      : "/untact-selected.svg"
+    : type === "대면"
+    ? "/inperson.svg"
+    : "/untact.svg";
+
+  return (
+    <StyledButton isSelected={isSelected} onClick={onClick}>
+      <IconWrapper>
+        <Icon src={imageSrc} alt={type} />
+      </IconWrapper>
+      <Text isSelected={isSelected}>{type}</Text>
+    </StyledButton>
+  );
 };
 
 export default ConsultButton;
@@ -32,8 +31,11 @@ export default ConsultButton;
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 167px;
   height: 175px;
-  border: 1px solid ${(props) => (props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300])};
-  background-color: ${(props) => (props.isSelected ? theme.colors.primary[50] : "white")};
+  border: 1px solid
+    ${(props) =>
+      props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300]};
+  background-color: ${(props) =>
+    props.isSelected ? theme.colors.primary[50] : "white"};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,7 +63,8 @@ const Icon = styled.img`
 const Text = styled.span<{ isSelected: boolean }>`
   position: absolute;
   bottom: 10px;
-  color: ${(props) => (props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300])};
+  color: ${(props) =>
+    props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300]};
   font-weight: ${(props) => (props.isSelected ? "bold" : "medium")};
   font-size: 14px;
 `;
