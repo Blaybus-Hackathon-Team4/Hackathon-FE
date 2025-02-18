@@ -3,13 +3,14 @@ import Layout from "../common/Layout";
 import ConfirmationPage from "../pages/confirmation/ConfirmationPage";
 import DesignerDetailPage from "../pages/designerDetail/DesignerDetailPage";
 import DesignerListPage from "../pages/designerList/DesignerListPage";
+import GoogleOAuthPage from "../pages/login/GoogleOAuthPage";
 import MainPage from "../pages/main/MainPage";
 import MyPage from "../pages/mypage/MyPage";
+import KakaoPayv1 from "../pages/payment/components/KakaoPayv1";
 import PaymentPage from "../pages/payment/PaymentPage";
 import ReservationHistoryPage from "../pages/reservationHistory/ReservationHistoryPage";
 import SelectDatePage from "../pages/selectDate/SelectDatePage";
-import { KakaoPayTest } from "../pages/payment/components/KakaoPayTest";
-import KakaoPayv1 from "../pages/payment/components/KakaoPayv1";
+import SelectProcessPage from "../pages/selectProcess/SelectProcessPage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/designer-detail",
         element: <DesignerDetailPage />,
+      },
+      {
+        path: "/select-process",
+        element: <SelectProcessPage />,
       },
       {
         path: "/select-date",
@@ -50,6 +55,10 @@ const router = createBrowserRouter([
       {
         path: "/my-page",
         element: <MyPage />,
+      },
+      {
+        path: "/oauth/callback",
+        element: <GoogleOAuthPage />,
       },
     ],
   },
