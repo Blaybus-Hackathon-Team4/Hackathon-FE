@@ -4,6 +4,10 @@
 *::after {
   box-sizing: border-box;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
 
 /* 폰트 크기의 팽창을 방지합니다. */
 html {
@@ -30,6 +34,10 @@ dd {
 ul[role="list"],
 ol[role="list"] {
   list-style: none;
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
 }
 
 /* 핵심 body의 기본값을 설정합니다. */
@@ -86,4 +94,28 @@ textarea:not([rows]) {
 /* 고정된 모든 항목에는 여분의 스크롤 여백이 있어야 합니다. */
 :target {
   scroll-margin-block: 5ex;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+/* 폰트 설정 */
+@font-face {
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("/font/PretendardVariable.woff2") format("woff2-variations");
+}
+
+@font-face {
+  font-family: "HSSanTokki20-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+  font-family: "Pretendard Variable";
 }
