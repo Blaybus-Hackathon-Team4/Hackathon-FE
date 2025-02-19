@@ -1,5 +1,89 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { IrequestData, ISelectedInfo } from "../PaymentPage";
+import { api } from "../../../api/api";
+import { addPortoneLib, onclickPay } from "./KakaoPayv1";
+import { useNavigate } from "react-router";
+
+interface ConfirmButtonProps {
+  selectedMethod: "KAKAO" | "BANK";
+  reservationInfo: IrequestData;
+  selectedInfo: ISelectedInfo;
+}
+
+const ConfirmButton: React.FC<ConfirmButtonProps> = ({
+  selectedMethod,
+  reservationInfo,
+  selectedInfo,
+}) => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    // 포트원 라이브러리 추가
+    try {
+      addPortoneLib();
+    } catch (error) {
+      console.error("포트원 라이브러리 로드 실패:", error);
+    }
+  }, []);
+
+  const navigateConfirmationPage = () => {
+    navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
+      state: selectedInfo,
+    });
+  };
+  const handlePayment = async () => {
+    if (selectedMethod === "BANK") {
+      console.log("계좌 결제 진행");
+      //결제 요청
+      postReservationAdditional(reservationInfo);
+    } else if (selectedMethod === "KAKAO") {
+      console.log("카카오페이 결제 진행");
+      //카카오페이 결제 진행
+
+      const resultCode = await onclickPay("kakaopay", "kakaopay");
+
+      if (resultCode === 200) {
+        console.log("결제 성공!");
+        alert("결제가 완료되었습니다.");
+
+        // -> 성공시 추가정보 전송
+        postReservationAdditional(reservationInfo);
+      } else if (resultCode === 400) {
+        console.log("결제 실패 또는 검증 실패");
+        alert("결제에 실패했습니다. 다시 시도해주세요.");
+      } else {
+        console.log("카카오페이 결제는 성공 서버 오류");
+        navigateConfirmationPage();
+      }
+    }
+  };
+
+  const postReservationAdditional = async (reservationInfo: IrequestData) => {
+    try {
+      const response = await api.post(
+        "/reservation/reservationadditonal",
+        reservationInfo
+      );
+      console.log("예약 추가정보 전송 성공:", response.data);
+
+      navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`);
+      return response.data;
+    } catch (error) {
+      console.error("예약 추가 요청 실패:", error);
+
+      navigateConfirmationPage();
+      throw error;
+    }
+  };
+
+  return (
+    <BottomContainer>
+      <Button onClick={handlePayment}>동의하고 결제하기</Button>
+    </BottomContainer>
+  );
+};
+
+export default ConfirmButton;
 
 const BottomContainer = styled.div`
   position: fixed;
@@ -23,13 +107,3 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
 `;
-
-const ConfirmButton: React.FC = () => {
-  return (
-    <BottomContainer>
-      <Button>동의하고 결제하기</Button>
-    </BottomContainer>
-  );
-};
-
-export default ConfirmButton;

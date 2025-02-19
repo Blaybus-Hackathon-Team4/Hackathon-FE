@@ -9,8 +9,12 @@ import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 
 import CheckIcon from "../../../assets/icons/check-gray-icon.svg";
 import LocationIcon from "../../../assets/icons/location-gray-icon.svg";
+import { ISelectedInfo } from "../PaymentPage";
 
-const ReservationInfo: React.FC = () => {
+interface ReservationInfoProps {
+  selectedInfo: ISelectedInfo;
+}
+const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
   return (
     <Card>
       <Profile>
@@ -23,15 +27,32 @@ const ReservationInfo: React.FC = () => {
         </InfoConainer>
       </Profile>
       <InfoBox>
-        <InfoConainer>
-          <Info>
-            <Icon src={CheckIcon} alt="check" />
-            실제 샵에 <Purple>방문하여</Purple> 컨설팅 진행
-          </Info>
-          <Info>
-            <Icon src={LocationIcon} alt="location" /> 서울 강남구 압구정로79길
-          </Info>
-        </InfoConainer>
+        {selectedInfo.selectedProcess === "대면" ? (
+          <InfoConainer>
+            <Info>
+              <Icon src={CheckIcon} alt="check" />
+              실제 샵에 <Purple>방문하여</Purple> 컨설팅 진행
+            </Info>
+            <Info>
+              <Icon src={LocationIcon} alt="location" /> 서울 강남구
+              압구정로79길
+            </Info>
+          </InfoConainer>
+        ) : (
+          <InfoConainer>
+            <Info>
+              <Icon src={CheckIcon} alt="check" />
+              <div>
+                {" "}
+                <Text>예약 후 생성되는 구글미트에서</Text>
+                <Text>
+                  <Purple>화상으로</Purple> 컨설팅 진행
+                </Text>
+              </div>
+            </Info>
+          </InfoConainer>
+        )}
+
         <ShopImage src={faceTofaceImage} alt="샵" />
       </InfoBox>
     </Card>
@@ -39,7 +60,7 @@ const ReservationInfo: React.FC = () => {
 };
 
 export default ReservationInfo;
-
+const Text = styled.p``;
 const Card = styled.div`
   background: white;
   padding: 20px;
