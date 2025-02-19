@@ -48,6 +48,7 @@ export type DesignerType = {
 const TopDesigners: React.FC = () => {
   const navigate = useNavigate();
   const [designerss, setDesignerss] = useState<DesignerType[]>([]);
+  console.log(designerss);
   useEffect(() => {
     getDesignerList();
   }, []);
