@@ -1,5 +1,33 @@
 import React from "react";
 import styled from "styled-components";
+import { ISelectedInfo } from "../PaymentPage";
+
+interface ConfirmButtonProps {
+  selectedMethod: "KAKAO" | "BANK";
+  selectedInfo: ISelectedInfo;
+}
+
+const ConfirmButton: React.FC<ConfirmButtonProps> = ({
+  selectedInfo,
+  selectedMethod,
+}) => {
+  const handlePayment = () => {
+    if (selectedMethod === "BANK") {
+      console.log("계좌 결제 진행");
+    } else if (selectedMethod === "KAKAO") {
+      console.log("카카오페이 결제 진행");
+    }
+  };
+
+  return (
+    <BottomContainer>
+      <img src="../../assets/designer/1004.jpg" />
+      <Button onClick={handlePayment}>동의하고 결제하기</Button>
+    </BottomContainer>
+  );
+};
+
+export default ConfirmButton;
 
 const BottomContainer = styled.div`
   position: fixed;
@@ -23,13 +51,3 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
 `;
-
-const ConfirmButton: React.FC = () => {
-  return (
-    <BottomContainer>
-      <Button>동의하고 결제하기</Button>
-    </BottomContainer>
-  );
-};
-
-export default ConfirmButton;
