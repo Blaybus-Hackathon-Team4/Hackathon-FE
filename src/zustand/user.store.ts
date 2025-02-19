@@ -5,8 +5,7 @@ interface UserState {
   isLoggedIn: boolean;
   name: string | null;
   email: string | null;
-  profileImg: string | null;
-  setLogin: (name: string, email: string, profileImg: string) => void;
+  setLogin: (name: string, email: string) => void;
   setLogout: () => void;
 }
 
@@ -16,20 +15,17 @@ export const useUserStore = create<UserState>()(
       isLoggedIn: !!localStorage.getItem("accessToken"),
       name: null,
       email: null,
-      profileImg: null,
-      setLogin: (name, email, profileImg) =>
+      setLogin: (name, email) =>
         set({
           isLoggedIn: true,
           name,
           email,
-          profileImg,
         }),
       setLogout: () =>
         set({
           isLoggedIn: false,
           name: null,
           email: null,
-          profileImg: null,
         }),
     }),
     {
