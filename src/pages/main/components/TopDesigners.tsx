@@ -1,36 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import TrendingStyle1 from "../../../assets/images/TrendingStyle1.png";
+// import TrendingStyle1 from "../../../assets/images/TrendingStyle1.png";
 
-import designer2 from "../../../assets/images/designer1.jpg";
+// import designer2 from "../../../assets/images/designer1.jpg";
 
-import designer3 from "../../../assets/images/designer3.jpg";
+// import designer3 from "../../../assets/images/designer3.jpg";
 import { api } from "../../../api/api";
 import { useNavigate } from "react-router";
 
-const designers = [
-  {
-    rank: 1,
-    name: "이초 디자이너",
-    desc: "레드벨벳, ITZY가 방문하는 샵",
-    tags: ["파마", "대면", "비대면"],
-    img: TrendingStyle1,
-  },
-  {
-    rank: 2,
-    name: "로로 원장",
-    desc: "화이트 베이지 브라운 전문",
-    tags: ["탈염색", "대면"],
-    img: designer2,
-  },
-  {
-    rank: 3,
-    name: "슈 대표 원장",
-    desc: "차별화 된 탈색&염색 노하우 기법, 꼼꼼한 컨설팅",
-    tags: ["탈염색", "비대면"],
-    img: designer3,
-  },
-];
 export type DesignerType = {
   designerId: number; // 디자이너 고유 ID
   name: string;
@@ -47,8 +24,10 @@ export type DesignerType = {
 
 const TopDesigners: React.FC = () => {
   const navigate = useNavigate();
-  const [designerss, setDesignerss] = useState<DesignerType[]>([]);
-  console.log(designerss);
+  const [designers, setDesigners] = useState<DesignerType[]>([]);
+  const [tags, setTages] = useState<string[]>(["파마", "대면", "비대면"]);
+  setTages(["파마", "대면", "비대면"]);
+
   useEffect(() => {
     getDesignerList();
   }, []);
@@ -63,7 +42,7 @@ const TopDesigners: React.FC = () => {
         minPrice: null, // 최소 금액 null 가능
         maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
       });
-      setDesignerss(response.data.responseDto.slice(0, 3));
+      setDesigners(response.data.responseDto.slice(0, 3));
       return response.data;
     } catch (error) {
       console.error("Error fetching designer list:", error);
@@ -75,20 +54,23 @@ const TopDesigners: React.FC = () => {
     <Container>
       <Title>2030이 많이 찾는 디자이너 TOP 3</Title>
       {designers.map((designer, index) => (
-        <React.Fragment key={designer.rank}>
+        <React.Fragment key={designer.name}>
           <DesignerCard onClick={() => navigate(`/designer-detail/${"1003"}`)}>
-            <Rank>{designer.rank}</Rank>
-            <ProfileImage src={designer.img} alt={designer.name} />
+            <Rank>{index + 1}</Rank>
+            <ProfileImage
+              src={`/designer/${designer.profilePhoto}`}
+              alt={designer.name}
+            />
             <DesignerInfo>
               <Tags>
-                {designer.tags.map((tag, index) => (
+                {tags.map((tag, index) => (
                   <Tag key={tag} className={index === 0 ? "purple" : ""}>
                     {tag}
                   </Tag>
                 ))}
               </Tags>
               <Name>{designer.name}</Name>
-              <Description>{designer.desc}</Description>
+              <Description>{designer.text}</Description>
             </DesignerInfo>
           </DesignerCard>
           {index !== designers.length - 1 && <Divider />}{" "}
