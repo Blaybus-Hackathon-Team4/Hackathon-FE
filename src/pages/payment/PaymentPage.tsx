@@ -30,6 +30,7 @@ const PaymentPage: React.FC = () => {
 
   const location = useLocation();
   const selectedInfo = { ...location.state };
+  console.log(selectedInfo);
 
   const [reservationInfo, setReservationInfo] = useState<IrequestData>({
     reservationId: Number(reservationId),
