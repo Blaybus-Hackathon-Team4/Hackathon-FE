@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import TrendingStyle1 from "../../../assets/images/TrendingStyle1.png";
+// import TrendingStyle1 from "../../../assets/images/TrendingStyle1.png";
 
-import designer2 from "../../../assets/images/designer1.jpg";
+// import designer2 from "../../../assets/images/designer1.jpg";
 
-import designer3 from "../../../assets/images/designer3.jpg";
+// import designer3 from "../../../assets/images/designer3.jpg";
 import { api } from "../../../api/api";
 import { useNavigate } from "react-router";
 
