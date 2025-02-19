@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import "../../styles/scroll.css";
 
@@ -6,11 +6,16 @@ import DesignerIcon from "../../assets/icons/image_designer.svg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
+import { useReservationStore } from "../../zustand/reservation.store";
 
 const DesignerDetailPage = () => {
   const navigate = useNavigate();
+  const { designerId } = useParams();
+  const { setDesignerId } = useReservationStore();
 
   const handleGoToSelectProcessPage = () => {
+    // 디자이너 아이디 전역 상태에 저장
+    if (designerId) setDesignerId(designerId);
     navigate("/select-process");
   };
 
@@ -187,6 +192,8 @@ const Button = styled.button`
 `;
 
 const ButtonBox = styled.div`
+  margin-top: 32px;
   display: flex;
   padding: 20px;
+  border-top: 0.5px solid ${({ theme }) => theme.colors.gray[100]};
 `;
