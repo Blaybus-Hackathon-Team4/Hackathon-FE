@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components"; // 계좌이체 아이콘 (react-icons 사용)
 
 import KaKaoPayIcon from "../../../assets/icons/kakaopay-icon.svg";
@@ -6,22 +6,26 @@ import KaKaoPayGrayIcon from "../../../assets/icons/kakaopay-gray-icon.svg";
 import BankGrayIcon from "../../../assets/icons/bank-gray-icon.svg";
 import BankPurpleIcon from "../../../assets/icons/bank-purple-icon.svg";
 
-const PaymentMethod: React.FC = () => {
-  const [selectedMethod, setSelectedMethod] = useState<"kakao" | "bank">(
-    "kakao"
-  );
+interface PaymentMethodProps {
+  selectedMethod: "KAKAO" | "BANK";
+  setSelectedMethod: React.Dispatch<React.SetStateAction<"KAKAO" | "BANK">>;
+}
 
+const PaymentMethod: React.FC<PaymentMethodProps> = ({
+  selectedMethod,
+  setSelectedMethod,
+}) => {
   return (
     <Card>
       <Title>결제 수단</Title>
       <ButtonGroup>
         {/* 카카오페이 버튼 */}
         <PaymentButton
-          selected={selectedMethod === "kakao"}
-          onClick={() => setSelectedMethod("kakao")}
+          selected={selectedMethod === "KAKAO"}
+          onClick={() => setSelectedMethod("KAKAO")}
         >
           <KakaoPayLogo
-            src={selectedMethod === "kakao" ? KaKaoPayIcon : KaKaoPayGrayIcon}
+            src={selectedMethod === "KAKAO" ? KaKaoPayIcon : KaKaoPayGrayIcon}
             alt="Kakao Pay"
           />
           카카오페이
@@ -29,11 +33,11 @@ const PaymentMethod: React.FC = () => {
 
         {/* 계좌이체 버튼 */}
         <PaymentButton
-          selected={selectedMethod === "bank"}
-          onClick={() => setSelectedMethod("bank")}
+          selected={selectedMethod === "BANK"}
+          onClick={() => setSelectedMethod("BANK")}
         >
           <Icon
-            src={selectedMethod === "bank" ? BankPurpleIcon : BankGrayIcon}
+            src={selectedMethod === "BANK" ? BankPurpleIcon : BankGrayIcon}
             alt="계좌이체"
           />
           계좌이체

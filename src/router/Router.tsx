@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         element: <DesignerListPage />,
       },
       {
-        path: "/designer-detail",
+        path: "/designer-detail/:designerId",
         element: <DesignerDetailPage />,
       },
       {
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <SelectDatePage />,
       },
       {
-        path: "/payment",
+        path: "/payment/:reservationId",
         element: <PaymentPage />,
       },
       {

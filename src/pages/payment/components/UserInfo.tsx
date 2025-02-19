@@ -1,6 +1,57 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+import { IrequestData } from "../PaymentPage"; // 타입 import
+
+interface UserInfoProps {
+  setReservationInfo: React.Dispatch<React.SetStateAction<IrequestData>>;
+}
+
+const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
+  const [text, setText] = useState("");
+  const maxLength = 500;
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value.slice(0, maxLength); // 글자 수 제한 적용
+    setText(newValue);
+
+    setReservationInfo((prev) => ({
+      ...prev,
+      comment: newValue, // ✅ 입력값을 reservationInfo.comment에 반영
+    }));
+  };
+
+  return (
+    <Card>
+      <Header>
+        <Title>예약자 정보</Title>
+      </Header>
+
+      <UserInfoContainer>
+        <UserInfoBox>
+          <UserName>김서현</UserName>
+          <UserEmail>ksh123@gmail.com</UserEmail>
+        </UserInfoBox>
+        <ChangeButton disabled>변경</ChangeButton>
+      </UserInfoContainer>
+
+      <TextAreaWrapper>
+        <TextArea
+          placeholder="원하는 스타일이나 고민이 있다면 적어주세요!"
+          value={text}
+          maxLength={maxLength}
+          onChange={handleChange}
+        />
+        <CharCount>
+          {text.length}/{maxLength}
+        </CharCount>
+      </TextAreaWrapper>
+    </Card>
+  );
+};
+
+export default UserInfo;
+
 const Card = styled.div`
   background: ${({ theme }) => theme.colors.white};
   padding: 20px;
@@ -76,37 +127,3 @@ const UserInfoContainer = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-const UserInfo: React.FC = () => {
-  const [text, setText] = useState("");
-  const maxLength = 500;
-
-  return (
-    <Card>
-      <Header>
-        <Title>예약자 정보</Title>
-      </Header>
-
-      <UserInfoContainer>
-        <UserInfoBox>
-          <UserName>김서현</UserName>
-          <UserEmail>ksh123@gmail.com</UserEmail>
-        </UserInfoBox>
-        <ChangeButton>변경</ChangeButton>
-      </UserInfoContainer>
-
-      <TextAreaWrapper>
-        <TextArea
-          placeholder="원하는 스타일이나 고민이 있다면 적어주세요!"
-          value={text}
-          maxLength={maxLength}
-          onChange={(e) => setText(e.target.value)}
-        />
-        <CharCount>
-          {text.length}/{maxLength}
-        </CharCount>
-      </TextAreaWrapper>
-    </Card>
-  );
-};
-
-export default UserInfo;
