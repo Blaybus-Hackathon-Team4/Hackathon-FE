@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-
 import { useNavigate } from "react-router-dom";
+import { useFilterStore } from "../../../zustand/filterStore";  // zustand import 추가
 
 import cutIcon from "../../../assets/icons/main-cut-icon.svg";
 import dyeingIcon from "../../../assets/icons/main-dyeing-icon.svg";
@@ -15,10 +15,15 @@ const categories = [
   { name: "탈염색", imgLink: dyeingIcon, field: "탈염색" },
 ];
 
-
 const CategoryTabs: React.FC = () => {
   const navigate = useNavigate();
+  const setFilters = useFilterStore((state) => state.setFilters); // setFilters를 가져오기
+
   const handleCategoryClick = (field: string) => {
+    // 필터 상태에 field 값을 업데이트
+    setFilters({ field });
+
+    // 필터링된 field 값을 state로 전달하여 페이지 이동
     navigate("/designer-list", { state: { field } });
   };
 
@@ -57,11 +62,13 @@ const Tab = styled.button`
   gap: 8px;
   color: ${({ theme }) => theme.colors.gray[900]};
 `;
+
 const TabImg = styled.img`
   width: 64px;
   height: 64px;
   cursor: pointer;
 `;
+
 const TabText = styled.span`
   font-size: 14px;
 `;

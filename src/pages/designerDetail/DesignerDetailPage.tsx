@@ -11,6 +11,7 @@ import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
 import { useReservationStore } from "../../zustand/reservation.store";
 
+
 export type DesignerType = {
   designerId: number; // 디자이너 고유 ID
   name: string;
