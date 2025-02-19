@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <SelectDatePage />,
       },
       {
-        path: "/payment",
+        path: "/payment/:reservationId",
         element: <PaymentPage />,
       },
       {

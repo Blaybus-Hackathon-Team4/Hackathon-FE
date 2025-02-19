@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import ReservationInfo from "./components/ReservationInfo";
 import UserInfo from "./components/UserInfo";
@@ -7,6 +7,7 @@ import PaymentMethod from "./components/PaymentMethod";
 import PrivacyAgreement from "./components/PrivacyAgreement";
 import ConfirmButton from "./components/ConfirmButton";
 import Header from "./components/Header";
+import { useLocation, useParams } from "react-router";
 
 export type KakaoPaymentInfo = {
   impuid: string; // 결제 ID
@@ -16,22 +17,32 @@ export type KakaoPaymentInfo = {
   name: string; // 사용자 이름
   createDate: string; // 결제 생성 날짜 (ISO 8601 형식)
 };
+export type StatusType = "ONGOING" | "COMPLETE";
+
+export interface IrequestData {
+  reservationId: number;
+  comment: string;
+  status: StatusType;
+}
 
 const PaymentPage: React.FC = () => {
-  // const [paymentInfo, setPaymentInfo] = useState<KakaoPaymentInfo>({
-  //   impuid: "imp_1234567890",
-  //   status: "paid",
-  //   amount: 10000,
-  //   email: "user@example.com",
-  //   name: "홍길동",
-  //   createDate: "2025-02-17T12:00:00",
-  // });
+  const { reservationId } = useParams();
+
+  const location = useLocation();
+  const selectedInfo = { ...location.state };
+
+  const [reservationInfo, setReservationInfo] = useState<IrequestData>({
+    reservationId: Number(reservationId),
+    comment: "",
+    status: "ONGOING",
+  });
+  console.log(reservationInfo);
 
   return (
     <Container>
       <Header />
       <ReservationInfo />
-      <UserInfo />
+      <UserInfo setReservationInfo={setReservationInfo} />
       <PaymentDetails />
       <PaymentMethod />
       <PrivacyAgreement />
