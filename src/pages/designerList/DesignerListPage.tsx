@@ -5,9 +5,8 @@ import { api } from "../../api/api";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import { useFilterStore } from "../../zustand/filterStore";
 
-const filters = ["지역", "가격대", "상담방식", "전문 분야"];
+import { useFilterStore } from "../../zustand/filterStore";
 
 interface Designer {
   designerId: number;
@@ -25,6 +24,9 @@ interface Designer {
 
 
 const DesignerListPage = () => {
+
+  const navigate = useNavigate();
+  const filters = ["지역", "가격대", "상담방식", "전문 분야"];
   const { location, field, isOnline, isOffline, minPrice, maxPrice, resetFilters } = useFilterStore(); // Zustand를 통해 필터 값 가져오기
   const [designers, setDesigners] = useState<Designer[]>([]);
   const [loading, setLoading] = useState(true);
@@ -78,6 +80,10 @@ const DesignerListPage = () => {
     navigate(`/designer-detail/${designerId}`);
   };
 
+  const handleDesignerClick = (designerId: number) => {
+    navigate(`/designer-detail?id=${designerId}`);
+  };
+  
   return (
     <Container>
       <FilterContainer>
@@ -107,6 +113,7 @@ const DesignerListPage = () => {
           )}
         </DesignerList>
       )}
+
     </Container>
   );
 };
