@@ -47,7 +47,7 @@ const TopDesigners: React.FC = () => {
         maxPrice: null,
       });
 
-      setDesigners(response.data.responseDto.slice(3, 6));
+      setDesigners(response.data.responseDto.slice(0, 3));
     } catch (error) {
       console.error("🚨 Error fetching designer list:", error);
     } finally {
