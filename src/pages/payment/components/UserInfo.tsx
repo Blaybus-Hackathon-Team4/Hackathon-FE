@@ -32,7 +32,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
           <UserName>김서현</UserName>
           <UserEmail>ksh123@gmail.com</UserEmail>
         </UserInfoBox>
-        <ChangeButton>변경</ChangeButton>
+        <ChangeButton disabled>변경</ChangeButton>
       </UserInfoContainer>
 
       <TextAreaWrapper>

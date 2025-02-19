@@ -13,7 +13,7 @@ const ConfirmationPage: React.FC = () => {
     <Container>
       <CompleteHeader />
       {method === "kakaopay" && <SuccessMessageKakaoPay />}
-      {method === "bank-transfer" && <SuccessMessageBankTransfer />}
+      {method === "bank" && <SuccessMessageBankTransfer />}
       <ReservationInfo />
 
       <ButtonGroup />

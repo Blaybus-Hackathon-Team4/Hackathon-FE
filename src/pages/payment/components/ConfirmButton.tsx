@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { IrequestData } from "../PaymentPage";
+import { IrequestData, ISelectedInfo } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
@@ -8,11 +8,13 @@ import { useNavigate } from "react-router";
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
   reservationInfo: IrequestData;
+  selectedInfo: ISelectedInfo;
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   selectedMethod,
   reservationInfo,
+  selectedInfo,
 }) => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -24,6 +26,11 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
     }
   }, []);
 
+  const navigateConfirmationPage = () => {
+    navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
+      state: selectedInfo,
+    });
+  };
   const handlePayment = async () => {
     if (selectedMethod === "BANK") {
       console.log("계좌 결제 진행");
@@ -46,7 +53,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
         alert("결제에 실패했습니다. 다시 시도해주세요.");
       } else {
         console.log("카카오페이 결제는 성공 서버 오류");
-        navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`);
+        navigateConfirmationPage();
       }
     }
   };
@@ -64,7 +71,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
     } catch (error) {
       console.error("예약 추가 요청 실패:", error);
 
-      navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`);
+      navigateConfirmationPage();
       throw error;
     }
   };
