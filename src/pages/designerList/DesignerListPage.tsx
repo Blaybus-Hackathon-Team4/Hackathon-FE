@@ -6,6 +6,7 @@ import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
 
+
 interface Designer {
   designerId: number;
   profilePhoto: string | null;
