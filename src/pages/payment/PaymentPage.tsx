@@ -51,15 +51,19 @@ const PaymentPage: React.FC = () => {
   return (
     <Container>
       <Header />
-      <ReservationInfo />
+      <ReservationInfo selectedInfo={selectedInfo} />
       <UserInfo setReservationInfo={setReservationInfo} />
-      <PaymentDetails />
+      <PaymentDetails selectedInfo={selectedInfo} />
       <PaymentMethod
         selectedMethod={selectedMethod}
         setSelectedMethod={setSelectedMethod}
       />
       <PrivacyAgreement />
-      <ConfirmButton selectedMethod={selectedMethod} />
+      <ConfirmButton
+        selectedMethod={selectedMethod}
+        reservationInfo={reservationInfo}
+        selectedInfo={selectedInfo}
+      />
     </Container>
   );
 };
