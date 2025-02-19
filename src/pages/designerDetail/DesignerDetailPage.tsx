@@ -14,13 +14,51 @@ import {
 } from "../../types/designer.type";
 import { useReservationStore } from "../../zustand/reservation.store";
 
-const DesignerDetailPage = () => {
+export type DesignerType = {
+  designerId: number; // 디자이너 고유 ID
+  name: string;
+  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
+  field: string; // 전문 분야 (ex: "펌")
+  location: string; // 위치 (ex: "성수/건대")
+  offPrice: number; // 오프라인 가격
+  onPrice: number; // 온라인 가격
+  isOnline: boolean; // 온라인 서비스 여부
+  isOffline: boolean; // 오프라인 서비스 여부
+  rating: number; // 평점 (ex: 60 → 6.0점)
+  text: string; // 디자이너 소개 텍스트
+};
+
+const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { designerId } = useParams();
   const { setDesignerId } = useReservationStore();
+  const [designerDetail, setDesignerDetail] = useState<DesignerType | null>(
+    null
+  );
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    if (designerId) {
+      fetchDesignerDetail();
+    }
+  }, [designerId]);
+
+  const fetchDesignerDetail = async () => {
+    try {
+      const response = await api.get(
+        `/designer/readDesignerDetail/${designerId}`
+      );
+      setDesignerDetail(response.data.responseDto);
+    } catch (error) {
+      console.error("Error fetching designer detail:", error);
+      setError("디자이너 정보를 가져오는 데 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoToSelectProcessPage = () => {
-    // 디자이너 아이디 전역 상태에 저장
     if (designerId) setDesignerId(designerId);
     navigate("/select-process");
   };
@@ -160,7 +198,7 @@ const Line = styled.hr`
 const Divider = styled.hr`
   flex-grow: 1;
   border: 1px dashed ${({ theme }) => theme.colors.gray[100]};
-  margin: 0 10px; /* 좌우 여백 조절 */
+  margin: 0 10px;
 `;
 
 const Consulting = styled.div`
@@ -219,4 +257,17 @@ const ButtonBox = styled.div`
   display: flex;
   padding: 20px;
   border-top: 0.5px solid ${({ theme }) => theme.colors.gray[100]};
+`;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  color: red;
+  font-size: 18px;
+  margin-top: 50px;
 `;

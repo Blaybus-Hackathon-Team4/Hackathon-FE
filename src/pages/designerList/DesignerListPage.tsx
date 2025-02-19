@@ -1,168 +1,76 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-//import DummyProfile from "../../assets/icons/image_designer.svg";
+import { api } from "../../api/api";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import { useNavigate } from "react-router-dom";
-//import {theme} from "../../styles/theme.ts";
 
-// 정적인 데이터 (디자인을 미리 확인하기 위함)
-const designers = [
-  {
-    designerId: 1004,
-    profilePhoto: "/designer/1004.jpg",
-    name: "이초 디자이너",
-    field: "펌",
-    location: "강남/청담/압구정",
-    text: "레드벨벳, ITZY가 방문하는 샵",
-    isOnline: false,
-    isOffline: true,
-  },
-  {
-    designerId: 1012,
-    profilePhoto: "/designer/1012.jpg",
-    name: "로로 원장",
-    field: "펌",
-    location: "홍대/연남/합정",
-    text: "화이트 베이지 브라운 전문",
-    isOnline: false,
-    isOffline: true,
-  },
-  {
-    designerId: 1013,
-    name: "슈 대표원장",
-    profilePhoto: "/designer/1013.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1005,
-    name: "랑 원장",
-    profilePhoto: "/designer/1005.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1006,
-    name: "히지 디자이너",
-    profilePhoto: "/designer/1006.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1007,
-    name: "현영 디자이너",
-    profilePhoto: "/designer/1007.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1008,
-    name: "현영 디자이너",
-    profilePhoto: "../../assets/designer/1008.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1009,
-    name: "나나 디자이너",
-    profilePhoto: "../../assets/designer/1009.jpeg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1010,
-    name: "나나 디자이너",
-    profilePhoto: "../assets/designer/1010.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1011,
-    name: "주 디자이너",
-    profilePhoto: "../../assets/designer/1011.jpg",
-    field: "염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1012,
-    name: "이아 디자이너",
-    profilePhoto: "../../assets/designer/1012.jpg",
-    field: "펌",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1013,
-    name: "희 수석 디자이너",
-    profilePhoto: "../../assets/designer/1013.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1014,
-    name: "유하 디자이너",
-    profilePhoto: "../../../designer/1014.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1015,
-    name: "미미 컬러리스트",
-    profilePhoto: "../../../assets/designer/1015.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1016,
-    name: "하루 컬러리스트",
-    profilePhoto: "../../../assets/designer/1016.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-];
+import { useFilterStore } from "../../zustand/filterStore";
+
+interface Designer {
+  designerId: number;
+  profilePhoto: string | null;
+  name?: string;
+  field: string;
+  location: string;
+  offPrice: number;
+  onPrice: number;
+  isOnline: boolean;
+  isOffline: boolean;
+  rating: number;
+  text: string;
+}
 
 const DesignerListPage = () => {
-  const navigate = useNavigate();
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
+  const navigate = useNavigate();
+  
+  // ✅ Zustand에서 상태를 구독 (useFilterStore()를 직접 호출해야 상태 변경 감지 가능)
+  const { location, field, isOnline, isOffline, minPrice, maxPrice } = useFilterStore();
+
+  const [designers, setDesigners] = useState<Designer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const getDesignerList = async () => {
+    setLoading(true);
+    setError(null);
+
+    const requestData = {
+      location,
+      field,
+      isOnline,
+      isOffline,
+      minPrice,
+      maxPrice,
+    };
+
+    console.log("🔍 API 요청 데이터:", requestData);
+
+    try {
+      const response = await api.post("/designer/readDesignerList", requestData);
+
+      if (response.status === 200) {
+        setDesigners(response.data.responseDto);
+      } else if (response.status === 403) {
+        setError("권한이 없습니다. 로그인 후 다시 시도해주세요.");
+      } else if (response.status === 500) {
+        setError("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      } else {
+        setError("알 수 없는 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("API 요청 실패:", error);
+      setError("네트워크 오류가 발생했습니다.");
+    } finally {
+      setTimeout(() => setLoading(false), 500);
+    }
+  };
+
+  useEffect(() => {
+    getDesignerList();
+  }, [location, field, isOnline, isOffline, minPrice, maxPrice]); // ✅ Zustand의 상태 변경을 감지하여 API 호출
 
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);
@@ -170,25 +78,33 @@ const DesignerListPage = () => {
 
   return (
     <Container>
-      {/* 필터 버튼 영역 */}
       <FilterContainer>
         {filters.map((filter, index) => (
           <FilterButton key={index} label={filter} />
         ))}
       </FilterContainer>
 
-      {/* 디자이너 리스트 */}
-      <DesignerList>
-        {designers.map((designer, index) => (
-          <div
-            key={designer.designerId}
-            onClick={() => handleDesignerClick(designer.designerId)}
-          >
-            <DesignerCard {...designer} />
-            {index !== designers.length - 1 && <Divider />}
-          </div>
-        ))}
-      </DesignerList>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
+      {loading ? (
+        <p>로딩 중...</p>
+      ) : (
+        <DesignerList>
+          {designers.length > 0 ? (
+            designers.map((designer, index) => (
+              <DesignerCardWrapper
+                key={designer.designerId}
+                onClick={() => handleDesignerClick(designer.designerId)}
+              >
+                <DesignerCard {...designer} name={designer.name ?? "이름 없음"} />
+                {index !== designers.length - 1 && <Divider />}
+              </DesignerCardWrapper>
+            ))
+          ) : (
+            <p>디자이너가 없습니다.</p>
+          )}
+        </DesignerList>
+      )}
     </Container>
   );
 };
@@ -196,25 +112,25 @@ const DesignerListPage = () => {
 export default DesignerListPage;
 
 // 스타일 정의
+const DesignerCardWrapper = styled.div`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 const Container = styled.div`
   padding: 16px;
 `;
 
 const FilterContainer = styled.div`
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // width: 100vw;
-  // max-width: 480px;
   display: flex;
-  justify-content: space-between; //버튼들이 화면 가로 너비에 맞게 보여지도록
+  justify-content: space-between;
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
-  padding-bottom: 20px; //버튼 많
-  background: white;
+  padding-bottom: 20px;
 
-  /* 스크롤바 숨기기 (필요 시) */
   &::-webkit-scrollbar {
     display: none;
   }
@@ -224,4 +140,11 @@ const DesignerList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 16px;
 `;
