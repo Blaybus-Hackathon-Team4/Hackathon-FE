@@ -14,10 +14,11 @@ export const api = axios.create({
 
 // 요청 인터셉터: JWT 토큰 추가
 api.interceptors.request.use((config) => {
-  const token = sessionStorage.getItem("jwtToken"); // ✅ `localStorage` 대신 `sessionStorage`
+  const token = sessionStorage.getItem("accessToken"); // ✅ `localStorage` 대신 `sessionStorage`
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+  console.log("🟢 Axios 요청 헤더:", config.headers);
   return config;
 });
 

@@ -7,20 +7,42 @@ import SelectedFaceToFaceImg from "../../assets/images/face-to-face-selected.svg
 import FaceToFaceImg from "../../assets/images/face-to-face.svg";
 import SelectedNonFaceToFaceImg from "../../assets/images/non-face-to-face-selected.svg";
 import NonFaceToFaceImg from "../../assets/images/non-face-to-face.svg";
+import { useReservationStore } from "../../zustand/reservation.store";
 import BackHeader from "../designerDetail/components/BackHeader";
 
 export type Process = "대면" | "비대면";
 
+interface CardProps {
+  onMouseEnter?: (index: number) => void;
+  onMouseLeave?: (index: number) => void;
+  $selected?: boolean;
+}
+
 const SelectProcessPage = () => {
   const [selectedCard, setSelectedCard] = useState<Process | null>(null);
+  const [isHovered, setIsHovered] = useState<boolean[]>([false, false]);
   const navigate = useNavigate();
+  const { setProcess } = useReservationStore();
 
   const handleClickCard = (cardType: Process) => {
     setSelectedCard(cardType);
   };
 
+  const handleMouseEnter = (index: number) => {
+    const newHovered = [...isHovered];
+    newHovered[index] = true;
+    setIsHovered(newHovered);
+  };
+
+  const handleMouseLeave = (index: number) => {
+    const newHovered = [...isHovered];
+    newHovered[index] = false;
+    setIsHovered(newHovered);
+  };
+
   const handleGoToSelectDatePage = () => {
     navigate("/select-date", { state: selectedCard });
+    setProcess(selectedCard!);
   };
 
   return (
@@ -48,8 +70,10 @@ const SelectProcessPage = () => {
             <Card
               onClick={() => handleClickCard("대면")}
               $selected={selectedCard === "대면"}
+              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseLeave={() => handleMouseLeave(0)}
             >
-              <InfoBox>
+              <InfoBox $hovered={isHovered[0]}>
                 <CustomText $size={12}>30,000￦부터 시작</CustomText>
                 <CustomText $size={20} $bold>
                   대면
@@ -58,7 +82,7 @@ const SelectProcessPage = () => {
                   실제 샵에 방문하여 컨설팅 진행
                 </CustomText>
               </InfoBox>
-              {selectedCard === "대면" ? (
+              {selectedCard === "대면" || isHovered[0] ? (
                 <GraphicImg src={SelectedFaceToFaceImg} alt="face-to-face" />
               ) : (
                 <GraphicImg src={FaceToFaceImg} alt="face-to-face" />
@@ -67,8 +91,10 @@ const SelectProcessPage = () => {
             <Card
               onClick={() => handleClickCard("비대면")}
               $selected={selectedCard === "비대면"}
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={() => handleMouseLeave(1)}
             >
-              <InfoBox>
+              <InfoBox $hovered={isHovered[1]}>
                 <CustomText $size={12}>20,000￦부터 시작</CustomText>
                 <CustomText $size={20} $bold>
                   비대면
@@ -77,7 +103,7 @@ const SelectProcessPage = () => {
                   예약 후 생성되는 링크로 화상 컨설팅 진행
                 </CustomText>
               </InfoBox>
-              {selectedCard === "비대면" ? (
+              {selectedCard === "비대면" || isHovered[1] ? (
                 <GraphicImg
                   src={SelectedNonFaceToFaceImg}
                   alt="non-face-to-face"
@@ -153,7 +179,7 @@ const StH3 = styled.h3`
   color: black;
 `;
 
-const Card = styled.div<{ $selected: boolean }>`
+const Card = styled.div<CardProps>`
   position: relative;
   border-radius: 16px;
   border: 1px solid
@@ -166,10 +192,14 @@ const Card = styled.div<{ $selected: boolean }>`
   background-color: ${({ theme, $selected }) =>
     $selected ? theme.colors.primary[50] : "white"};
   cursor: pointer;
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.primary[500]};
+  }
 `;
 
-const InfoBox = styled.div`
-  color: ${({ theme }) => theme.colors.gray[500]};
+const InfoBox = styled.div<{ $selected?: boolean; $hovered: boolean }>`
+  color: ${({ $selected, $hovered, theme }) =>
+    $selected || $hovered ? theme.colors.gray[900] : theme.colors.gray[500]};
   align-self: end;
   position: relative;
   z-index: 1;
