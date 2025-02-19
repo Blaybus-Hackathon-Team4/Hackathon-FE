@@ -1,62 +1,22 @@
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
-import "../../styles/scroll.css";
-
-import { useQuery } from "@tanstack/react-query";
 import { GetDesignerDetailInfo } from "../../api/designer.api";
 import DesignerIcon from "../../assets/icons/image_designer.svg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
+import "../../styles/scroll.css";
 import {
   DesignerDetail,
   DesignerDetailResponse,
 } from "../../types/designer.type";
 import { useReservationStore } from "../../zustand/reservation.store";
 
-export type DesignerType = {
-  designerId: number; // 디자이너 고유 ID
-  name: string;
-  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
-  field: string; // 전문 분야 (ex: "펌")
-  location: string; // 위치 (ex: "성수/건대")
-  offPrice: number; // 오프라인 가격
-  onPrice: number; // 온라인 가격
-  isOnline: boolean; // 온라인 서비스 여부
-  isOffline: boolean; // 오프라인 서비스 여부
-  rating: number; // 평점 (ex: 60 → 6.0점)
-  text: string; // 디자이너 소개 텍스트
-};
-
 const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { designerId } = useParams();
   const { setDesignerId } = useReservationStore();
-  const [designerDetail, setDesignerDetail] = useState<DesignerType | null>(
-    null
-  );
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    if (designerId) {
-      fetchDesignerDetail();
-    }
-  }, [designerId]);
-
-  const fetchDesignerDetail = async () => {
-    try {
-      const response = await api.get(
-        `/designer/readDesignerDetail/${designerId}`
-      );
-      setDesignerDetail(response.data.responseDto);
-    } catch (error) {
-      console.error("Error fetching designer detail:", error);
-      setError("디자이너 정보를 가져오는 데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoToSelectProcessPage = () => {
     if (designerId) setDesignerId(designerId);
@@ -257,17 +217,4 @@ const ButtonBox = styled.div`
   display: flex;
   padding: 20px;
   border-top: 0.5px solid ${({ theme }) => theme.colors.gray[100]};
-`;
-
-const LoadingText = styled.p`
-  text-align: center;
-  font-size: 18px;
-  margin-top: 50px;
-`;
-
-const ErrorText = styled.p`
-  text-align: center;
-  color: red;
-  font-size: 18px;
-  margin-top: 50px;
 `;
