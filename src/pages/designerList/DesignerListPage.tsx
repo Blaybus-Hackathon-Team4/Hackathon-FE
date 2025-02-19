@@ -5,7 +5,7 @@ import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
 import { useNavigate, useLocation } from "react-router-dom";
 import { api } from "../../api/api";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type DesignerType = {
   designerId: number; // 디자이너 고유 ID
@@ -24,33 +24,32 @@ export type DesignerType = {
 const DesignerListPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const field = location.state?.field || null
-  console.log(field, location)
+  const field = location.state?.field || null;
+  console.log(field, location);
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
   const [designers, setDesignerss] = useState<DesignerType[]>([]);
 
   useEffect(() => {
-      getDesignerList();
-    }, []);
+    getDesignerList();
+  }, []);
 
   const getDesignerList = async () => {
-      try {
-        const response = await api.post("/designer/readDesignerList", {
-          location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
-          field: field, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
-          isOnline: true, // 비대면 찾고 싶으면 true
-          isOffline: true, // 대면 찾고 싶으면 true
-          minPrice: null, // 최소 금액 null 가능
-          maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
-        });
-        setDesignerss(response.data.responseDto);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching designer list:", error);
-        throw error;
-      }
-    };
-
+    try {
+      const response = await api.post("/designer/readDesignerList", {
+        location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
+        field: field, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
+        isOnline: true, // 비대면 찾고 싶으면 true
+        isOffline: true, // 대면 찾고 싶으면 true
+        minPrice: null, // 최소 금액 null 가능
+        maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
+      });
+      setDesignerss(response.data.responseDto);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching designer list:", error);
+      throw error;
+    }
+  };
 
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);
