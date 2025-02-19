@@ -2,31 +2,52 @@ import axios from "axios";
 import { useModalStore } from "../zustand/modal.store";
 
 const { VITE_BASE_URL } = import.meta.env;
-// axios 인스턴스
+
+// Axios 인스턴스 생성
 export const api = axios.create({
   baseURL: VITE_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
+  withCredentials: true, // 쿠키 포함 (httpOnly 사용 시 필요)
 });
 
-// Axios 인터셉터에서 401 응답을 감지하여 Zustand 상태 변경
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response.status === 401) {
-      useModalStore.getState().openLoginModal();
-    }
-    return Promise.reject(error);
-  }
-);
-
-// 요청 인터셉터: 액세스 토큰 추가
+// 요청 인터셉터: JWT 토큰 추가
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
+  const token = sessionStorage.getItem("jwtToken"); // ✅ `localStorage` 대신 `sessionStorage`
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
+// 응답 인터셉터: 401 처리 및 재로그인 유도
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response.status === 401) {
+      console.warn("401 Unauthorized: 액세스 토큰 만료됨.");
+
+      // ✅ 로그인 모달 오픈 (Zustand 사용)
+      useModalStore.getState().openLoginModal();
+
+      // ✅ 서버에 리프레시 토큰 요청 (httpOnly 쿠키 사용)
+      try {
+        const refreshResponse = await axios.post(
+          `${VITE_BASE_URL}/auth/refresh`,
+          {},
+          { withCredentials: true }
+        );
+
+        if (refreshResponse.data.jwtToken) {
+          sessionStorage.setItem("jwtToken", refreshResponse.data.jwtToken);
+          error.config.headers.Authorization = `Bearer ${refreshResponse.data.jwtToken}`;
+          return api(error.config); // 요청 재시도
+        }
+      } catch (refreshError) {
+        console.error("리프레시 토큰 갱신 실패:", refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
