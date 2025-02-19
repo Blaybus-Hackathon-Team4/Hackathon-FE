@@ -6,6 +6,7 @@ import ConsultButton from "./components/ConsultButton.tsx";
 import FilterButton from "./components/FilterButton";
 import PageHeader from "./components/PageHeader";
 import PriceInput from "./components/PriceInput";
+import { useFilterStore } from "../../zustand/filterStore"
 
 const locations = [
   "서울 전체",
@@ -24,16 +25,24 @@ const FilterPage = () => {
     null
   );
 
+  //Zustand 상태 업데이트
   const handleApply = () => {
-    console.log({
-      selectedLocation,
-      maxPrice,
-      consultType,
-      selectedSpecialty,
+    useFilterStore.getState().setFilters({
+      location: selectedLocation,
+      field: selectedSpecialty,
+      isOnline: consultType === "비대면",
+      isOffline: consultType === "대면",
+      minPrice: null,
+      maxPrice: maxPrice ? parseInt(maxPrice.replace(",", "")) : null,
     });
-    navigate(-1); // 적용 후 이전 페이지로 이동
+    
+    // 콘솔로 필터 값 확인할 수 있도록 
+    console.log("Zustand에 저장된 필터 값:", useFilterStore.getState());
+
+    navigate(-1); // DesignerListPage로 이동
   };
 
+  // 필터 초기화
   const handleReset = () => {
     setSelectedLocation(null);
     setMaxPrice("");
