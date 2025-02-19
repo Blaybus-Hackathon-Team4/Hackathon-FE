@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import faceTofaceImage from "../../../assets/icons/face-to-face-icon.svg";
 
-//import noneFaceTofaceImage from "../../../assets/icons/none-face-to-face-icon.svg";
+import noneFaceTofaceImage from "../../../assets/icons/non-face-to-face-icon.svg";
 
 import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 
@@ -52,8 +52,11 @@ const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
             </Info>
           </InfoConainer>
         )}
-
-        <ShopImage src={faceTofaceImage} alt="샵" />
+        {selectedInfo.selectedProcess === "대면" ? (
+          <ShopImage src={faceTofaceImage} alt="대면" />
+        ) : (
+          <ShopImage src={noneFaceTofaceImage} alt="비대면" />
+        )}
       </InfoBox>
     </Card>
   );

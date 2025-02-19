@@ -3,7 +3,7 @@ import styled from "styled-components";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import {theme} from "../../styles/theme.ts";
 
 // 정적인 데이터 (디자인을 미리 확인하기 위함)
@@ -157,8 +157,7 @@ const designers = [
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
     isOnline: true,
     isOffline: true,
-  }
-
+  },
 ];
 
 const DesignerListPage = () => {
@@ -168,7 +167,7 @@ const DesignerListPage = () => {
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);
   };
-  
+
   return (
     <Container>
       {/* 필터 버튼 영역 */}
@@ -181,7 +180,10 @@ const DesignerListPage = () => {
       {/* 디자이너 리스트 */}
       <DesignerList>
         {designers.map((designer, index) => (
-          <div key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
+          <div
+            key={designer.designerId}
+            onClick={() => handleDesignerClick(designer.designerId)}
+          >
             <DesignerCard {...designer} />
             {index !== designers.length - 1 && <Divider />}
           </div>
