@@ -22,33 +22,35 @@ interface Designer {
   text: string;
 }
 
-
 const DesignerListPage = () => {
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
-  const { location, field, isOnline, isOffline, minPrice, maxPrice, resetFilters } = useFilterStore(); // Zustand를 통해 필터 값 가져오기
+  const navigate = useNavigate();
+  
+  // ✅ Zustand에서 상태를 구독 (useFilterStore()를 직접 호출해야 상태 변경 감지 가능)
+  const { location, field, isOnline, isOffline, minPrice, maxPrice } = useFilterStore();
+
   const [designers, setDesigners] = useState<Designer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
-  const navigate = useNavigate(); // useNavigate 훅 추가
+  const [error, setError] = useState<string | null>(null);
 
   const getDesignerList = async () => {
     setLoading(true);
-    setError(null); // 새로운 요청 전에 에러 초기화
-    
+    setError(null);
+
     const requestData = {
       location,
-      field, // 필터 상태로 가져온 field 값
+      field,
       isOnline,
       isOffline,
       minPrice,
       maxPrice,
     };
-    console.log(requestData);
+
+    console.log("🔍 API 요청 데이터:", requestData);
 
     try {
       const response = await api.post("/designer/readDesignerList", requestData);
 
-      // 응답 상태 처리
       if (response.status === 200) {
         setDesigners(response.data.responseDto);
       } else if (response.status === 403) {
@@ -68,16 +70,12 @@ const DesignerListPage = () => {
 
   useEffect(() => {
     getDesignerList();
-    resetFilters(); // useEffect cleanup hook
-  
-    console.log("🔍 Zustand 상태:", useFilterStore.getState());
-
-  }, [location, field, isOnline, isOffline, minPrice, maxPrice]); // 필터 값이 변경될 때마다 API 호출
+  }, [location, field, isOnline, isOffline, minPrice, maxPrice]); // ✅ Zustand의 상태 변경을 감지하여 API 호출
 
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);
   };
-  
+
   return (
     <Container>
       <FilterContainer>
@@ -107,7 +105,6 @@ const DesignerListPage = () => {
           )}
         </DesignerList>
       )}
-
     </Container>
   );
 };
@@ -145,7 +142,6 @@ const DesignerList = styled.div`
   gap: 16px;
 `;
 
-// 에러 메시지 스타일
 const ErrorMessage = styled.p`
   color: red;
   font-weight: bold;
