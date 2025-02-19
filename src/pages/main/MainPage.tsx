@@ -30,7 +30,6 @@ const MainPage: React.FC = () => {
   getDesignerList();
   return (
     <MainContainer>
-      <img src="/1004.jpg" />
       <Header />
       <HeroSection />
       <CategoryTabs />
