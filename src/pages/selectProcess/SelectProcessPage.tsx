@@ -20,7 +20,7 @@ const SelectProcessPage = () => {
   };
 
   const handleGoToSelectDatePage = () => {
-    navigate("/select-date");
+    navigate("/select-date", { state: selectedCard });
   };
 
   return (
