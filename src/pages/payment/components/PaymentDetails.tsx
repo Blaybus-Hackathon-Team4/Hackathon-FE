@@ -1,23 +1,26 @@
 import React from "react";
 import styled from "styled-components";
-import { ISelectedInfo } from "../PaymentPage";
+import { IReservationInfo } from "../PaymentPage";
 
 interface ReservationInfoProps {
-  selectedInfo: ISelectedInfo;
+  reservationInfo: IReservationInfo;
 }
-const PaymentDetails: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
+const PaymentDetails: React.FC<ReservationInfoProps> = ({
+  reservationInfo,
+}) => {
+  console.log("reservationInfo", reservationInfo);
   return (
     <Card>
       <Title>결제 정보</Title>
-      {selectedInfo.selectedProcess === "대면" ? (
+      {reservationInfo.process === "대면" ? (
         <Row>
           <span>대면 컨설팅</span>
-          <span>30,000원</span>
+          <span>{reservationInfo.price + "원"}</span>
         </Row>
       ) : (
         <Row>
           <span>비대면 컨설팅</span>
-          <span>20,000원</span>
+          <span>{reservationInfo.price + "원"}</span>
         </Row>
       )}
 

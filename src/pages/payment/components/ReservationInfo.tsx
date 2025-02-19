@@ -9,12 +9,14 @@ import DesignerImage from "../../../assets/images/TrendingStyle2.png";
 
 import CheckIcon from "../../../assets/icons/check-gray-icon.svg";
 import LocationIcon from "../../../assets/icons/location-gray-icon.svg";
-import { ISelectedInfo } from "../PaymentPage";
+import { IReservationInfo } from "../PaymentPage";
 
 interface ReservationInfoProps {
-  selectedInfo: ISelectedInfo;
+  reservationInfo: IReservationInfo;
 }
-const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
+const ReservationInfo: React.FC<ReservationInfoProps> = ({
+  reservationInfo,
+}) => {
   return (
     <Card>
       <Profile>
@@ -27,7 +29,7 @@ const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
         </InfoConainer>
       </Profile>
       <InfoBox>
-        {selectedInfo.selectedProcess === "대면" ? (
+        {reservationInfo.process === "대면" ? (
           <InfoConainer>
             <Info>
               <Icon src={CheckIcon} alt="check" />
@@ -52,7 +54,7 @@ const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
             </Info>
           </InfoConainer>
         )}
-        {selectedInfo.selectedProcess === "대면" ? (
+        {reservationInfo.process === "대면" ? (
           <ShopImage src={faceTofaceImage} alt="대면" />
         ) : (
           <ShopImage src={noneFaceTofaceImage} alt="비대면" />

@@ -7,7 +7,9 @@ import PaymentMethod from "./components/PaymentMethod";
 import PrivacyAgreement from "./components/PrivacyAgreement";
 import ConfirmButton from "./components/ConfirmButton";
 import Header from "./components/Header";
-import { useLocation, useParams } from "react-router";
+import { useParams } from "react-router";
+import { useReservationStore } from "../../zustand/reservation.store";
+import { Process } from "../selectProcess/SelectProcessPage";
 
 export type KakaoPaymentInfo = {
   impuid: string; // 결제 ID
@@ -25,25 +27,30 @@ export interface IrequestData {
   comment: string;
   status: StatusType;
 }
-export interface ISelectedInfo {
-  reservationId?: number;
-  currentMonth: number; // 현재 월 (1~12)
-  selectedProcess: "대면" | "비대면"; // "대면" 또는 "비대면" 값만 허용
-  startDate: Date; // JavaScript Date 객체 사용
+export interface IReservationInfo {
+  designerId: string | null; // 디자이너 고유 ID
+  process: Process | null; // 컨설팅 방식 (대면 or 비대면)
+  date: string | null; // 예약 날짜 (예: "2025-02-19")
+  time: string | null; // 예약 시간 (예: "11:00:00")
+  name: string | null; // 예약자 이름 추가
+  address: string | null; // 예약 장소 추가 (대면 예약 시 필요)
+  price: number | null; // 예약 가격 추가
 }
-
 const PaymentPage: React.FC = () => {
   const { reservationId } = useParams();
 
-  const location = useLocation();
-  const selectedInfo: ISelectedInfo = {
-    ...location.state,
-    reservationId: Number(reservationId), // ❗ `reservationId`를 숫자로 변환 후 추가
-  };
+  const reservationInfo: IReservationInfo = useReservationStore((state) => ({
+    designerId: state.designerId,
+    process: state.process,
+    date: state.date,
+    time: state.time,
+    name: state.name,
+    address: state.address,
+    price: state.price,
+  }));
+  console.log(reservationInfo);
 
-  console.log(selectedInfo);
-
-  const [reservationInfo, setReservationInfo] = useState<IrequestData>({
+  const [extraInfo, setExtraInfo] = useState<IrequestData>({
     reservationId: Number(reservationId),
     comment: "",
     status: "ONGOING",
@@ -56,9 +63,9 @@ const PaymentPage: React.FC = () => {
   return (
     <Container>
       <Header />
-      <ReservationInfo selectedInfo={selectedInfo} />
-      <UserInfo setReservationInfo={setReservationInfo} />
-      <PaymentDetails selectedInfo={selectedInfo} />
+      <ReservationInfo reservationInfo={reservationInfo} />
+      <UserInfo setExtraInfo={setExtraInfo} />
+      <PaymentDetails reservationInfo={reservationInfo} />
       <PaymentMethod
         selectedMethod={selectedMethod}
         setSelectedMethod={setSelectedMethod}
@@ -66,8 +73,8 @@ const PaymentPage: React.FC = () => {
       <PrivacyAgreement />
       <ConfirmButton
         selectedMethod={selectedMethod}
+        extraInfo={extraInfo}
         reservationInfo={reservationInfo}
-        selectedInfo={selectedInfo}
       />
     </Container>
   );

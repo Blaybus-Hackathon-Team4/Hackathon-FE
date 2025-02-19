@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { IrequestData } from "../PaymentPage"; // 타입 import
 
 interface UserInfoProps {
-  setReservationInfo: React.Dispatch<React.SetStateAction<IrequestData>>;
+  setExtraInfo: React.Dispatch<React.SetStateAction<IrequestData>>;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ setExtraInfo }) => {
   const [text, setText] = useState("");
   const maxLength = 500;
 
@@ -15,7 +15,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
     const newValue = e.target.value.slice(0, maxLength); // 글자 수 제한 적용
     setText(newValue);
 
-    setReservationInfo((prev) => ({
+    setExtraInfo((prev) => ({
       ...prev,
       comment: newValue, // ✅ 입력값을 reservationInfo.comment에 반영
     }));
