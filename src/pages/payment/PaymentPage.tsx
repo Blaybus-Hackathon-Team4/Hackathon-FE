@@ -36,7 +36,6 @@ const PaymentPage: React.FC = () => {
   const [selectedMethod, setSelectedMethod] = useState<"KAKAO" | "BANK">(
     "BANK"
   );
-  console.log(reservationInfo);
 
   return (
     <Container>

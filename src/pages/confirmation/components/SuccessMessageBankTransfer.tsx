@@ -2,8 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 import CheckIcon from "../../../assets/icons/check-purple-icon.svg";
-
-const SuccessMessageBankTransfer: React.FC = () => {
+import { IReservation } from "../ConfirmationPage";
+interface SuccessMessageBankTransferProps {
+  reservation: IReservation;
+}
+const SuccessMessageBankTransfer: React.FC<SuccessMessageBankTransferProps> = ({
+  reservation,
+}) => {
   const bankName = "국민은행";
   const accountNumber = "000000-00-000000";
   const accountHolder = "헤르츠";
@@ -19,10 +24,13 @@ const SuccessMessageBankTransfer: React.FC = () => {
         <Icon src={CheckIcon} alt="확인이미지" />
         <DepositInformation>
           <SuccessText>
-            <PurPle>2025-02-11 23:30</PurPle>까지
+            <PurPle>{`${
+              reservation.reservationDetail.date
+            } ${reservation.reservationDetail.time.slice(0, 5)}`}</PurPle>
+            까지
           </SuccessText>
           <SuccessText>
-            결제금액 <PurPle>20,000</PurPle>원을
+            결제금액 <PurPle>{reservation.reservationDetail.amount}</PurPle>원을
           </SuccessText>
           <SuccessText>아래의 계좌로 입금해주세요</SuccessText>
         </DepositInformation>

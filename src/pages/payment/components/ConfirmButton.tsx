@@ -28,10 +28,14 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   }, []);
 
   const navigateConfirmationPage = () => {
-    console.log(reservationInfo);
-    navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
-      state: reservationInfo,
-    });
+    navigate(
+      `/confirmation/${selectedMethod.toLocaleLowerCase()}/${
+        reservationInfo.reservationId
+      }`,
+      {
+        state: reservationInfo,
+      }
+    );
   };
   const handlePayment = async () => {
     if (selectedMethod === "BANK") {
@@ -62,13 +66,14 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
 
   const postReservationAdditional = async (reservationInfo: IrequestData) => {
     try {
+      console.log("서버로 보내는 정보:", reservationInfo);
       const response = await api.post(
         "/reservation/reservationadditonal",
         reservationInfo
       );
       console.log("예약 추가정보 전송 성공:", response.data);
 
-      navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`);
+      navigateConfirmationPage();
       return response.data;
     } catch (error) {
       console.error("예약 추가 요청 실패:", error);

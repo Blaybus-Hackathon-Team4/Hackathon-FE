@@ -1,41 +1,49 @@
 import React from "react";
 import styled from "styled-components";
-import { ISelectedInfo } from "../../payment/PaymentPage";
+import { IReservation } from "../ConfirmationPage";
 
 interface ReservationInfoProps {
-  selectedInfo: ISelectedInfo;
+  method: string;
+  reservation: IReservation;
 }
 
-const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
+const ReservationInfo: React.FC<ReservationInfoProps> = ({
+  reservation,
+  method,
+}) => {
   return (
     <Container>
       <Card>
         <InfoRow>
           <BoldText18>25.02.12(수) 오후 12:00</BoldText18>
-          <PurplrText>・ 결제완료</PurplrText>
+          {method === "bank" ? (
+            <BlueText>・ 입금 대기중</BlueText>
+          ) : (
+            <PurplrText>・ 결제완료</PurplrText>
+          )}
         </InfoRow>
         <InfoRow>
           <Text>디자이너</Text>
-          <Text>이초 디자이너</Text>
+          <Text>{reservation.reservationDetail.designerName}</Text>
         </InfoRow>
         <InfoRow>
           <Text>가격</Text>
-          <Text>20,000원</Text>
+          <Text>{reservation.reservationDetail.amount}원</Text>
         </InfoRow>
-        {selectedInfo.selectedProcess === "대면" ? (
+        {!reservation.reservationDetail.online ? (
           <InfoRow>
             <Text>대면</Text>
-            <Text>서울 강남구 압구정로79길</Text>
+            <Text>{reservation.reservationDetail.address}</Text>
           </InfoRow>
         ) : (
           <InfoRow>
             <Text>비대면</Text>
             <GoogleMeetsLink
-              href="https://meet.google.com/dad-seuh-ykm"
+              href={reservation.reservationDetail.meetLink || ""}
               target="_blank"
               rel="noopener noreferrer"
             >
-              구글 미트 링크
+              {reservation.reservationDetail.meetLink || ""}
             </GoogleMeetsLink>
           </InfoRow>
         )}
@@ -45,18 +53,18 @@ const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
         <BoldText16>예약자 정보</BoldText16>
         <InfoRow>
           <Text>이름</Text>
-          <Text>김서현</Text>
+          <Text>{reservation.name}</Text>
         </InfoRow>
         <InfoRow>
           <Text>이메일</Text>
-          <Text>ksh123@gmail.com</Text>
+          <Text>{reservation.email}</Text>
         </InfoRow>
       </Card>
       <Divider />
       <Card>
         <InfoRow>
           <BoldText>결제 금액</BoldText>
-          <BoldText>20,000원</BoldText>
+          <BoldText>{reservation.reservationDetail.amount}원</BoldText>
         </InfoRow>
       </Card>
     </Container>
@@ -109,6 +117,11 @@ const PurplrText = styled.span`
   font-weight: bold;
   font-size: 16px;
   color: ${({ theme }) => theme.colors.primary[500]};
+`;
+const BlueText = styled.span`
+  font-weight: bold;
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.secondary[500]};
 `;
 const Divider = styled.div`
   width: 100%;
