@@ -3,14 +3,14 @@ import styled from "styled-components";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //import {theme} from "../../styles/theme.ts";
 
-// 정적인 더미 데이터 (디자인을 미리 확인하기 위함)
+// 정적인 데이터 (디자인을 미리 확인하기 위함)
 const designers = [
   {
     designerId: 1004,
-    profilePhoto: "/src/assets/designer/1004.jpg",
+    profilePhoto: "/designer/1004.jpg",
     name: "이초 디자이너",
     field: "펌",
     location: "강남/청담/압구정",
@@ -20,7 +20,7 @@ const designers = [
   },
   {
     designerId: 1012,
-    profilePhoto: "../../assets/designer/1012.jpg",
+    profilePhoto: "/designer/1012.jpg",
     name: "로로 원장",
     field: "펌",
     location: "홍대/연남/합정",
@@ -31,7 +31,7 @@ const designers = [
   {
     designerId: 1013,
     name: "슈 대표원장",
-    profilePhoto: "../../assets/designer/1013.jpg",
+    profilePhoto: "/designer/1013.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -41,7 +41,7 @@ const designers = [
   {
     designerId: 1005,
     name: "랑 원장",
-    profilePhoto: "../../assets/designer/1005.jpg",
+    profilePhoto: "/designer/1005.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -51,7 +51,7 @@ const designers = [
   {
     designerId: 1006,
     name: "히지 디자이너",
-    profilePhoto: "../../assets/designer/1006.jpg",
+    profilePhoto: "/designer/1006.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -61,7 +61,7 @@ const designers = [
   {
     designerId: 1007,
     name: "현영 디자이너",
-    profilePhoto: "../../assets/designer/1007.jpg",
+    profilePhoto: "/designer/1007.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -91,7 +91,7 @@ const designers = [
   {
     designerId: 1010,
     name: "나나 디자이너",
-    profilePhoto: "../../assets/designer/1010.jpg",
+    profilePhoto: "../assets/designer/1010.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -131,7 +131,7 @@ const designers = [
   {
     designerId: 1014,
     name: "유하 디자이너",
-    profilePhoto: "../../assets/designer/1014.jpg",
+    profilePhoto: "../../../designer/1014.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -141,7 +141,7 @@ const designers = [
   {
     designerId: 1015,
     name: "미미 컬러리스트",
-    profilePhoto: "../../assets/designer/1015.jpg",
+    profilePhoto: "../../../assets/designer/1015.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -151,14 +151,13 @@ const designers = [
   {
     designerId: 1016,
     name: "하루 컬러리스트",
-    profilePhoto: "../../assets/designer/1016.jpg",
+    profilePhoto: "../../../assets/designer/1016.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
     isOnline: true,
     isOffline: true,
-  }
-
+  },
 ];
 
 const DesignerListPage = () => {
@@ -166,9 +165,9 @@ const DesignerListPage = () => {
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
 
   const handleDesignerClick = (designerId: number) => {
-    navigate(`/designer-detail/:${designerId}`);
+    navigate(`/designer-detail/${designerId}`);
   };
-  
+
   return (
     <Container>
       {/* 필터 버튼 영역 */}
@@ -181,7 +180,10 @@ const DesignerListPage = () => {
       {/* 디자이너 리스트 */}
       <DesignerList>
         {designers.map((designer, index) => (
-          <div key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
+          <div
+            key={designer.designerId}
+            onClick={() => handleDesignerClick(designer.designerId)}
+          >
             <DesignerCard {...designer} />
             {index !== designers.length - 1 && <Divider />}
           </div>
