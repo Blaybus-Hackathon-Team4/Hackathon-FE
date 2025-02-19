@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../../api/api";
 import DesignerCard from "./components/DesignerCard";
@@ -23,18 +23,18 @@ interface Designer {
   text: string;
 }
 
+
 const DesignerListPage = () => {
   const { location, field, isOnline, isOffline, minPrice, maxPrice, resetFilters } = useFilterStore(); // Zustand를 통해 필터 값 가져오기
   const [designers, setDesigners] = useState<Designer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
   const navigate = useNavigate(); // useNavigate 훅 추가
-  const currentLocation = useLocation();
 
   const getDesignerList = async () => {
     setLoading(true);
     setError(null); // 새로운 요청 전에 에러 초기화
-
+    
     const requestData = {
       location,
       field, // 필터 상태로 가져온 field 값
@@ -43,6 +43,7 @@ const DesignerListPage = () => {
       minPrice,
       maxPrice,
     };
+    console.log(requestData);
 
     try {
       const response = await api.post("/designer/readDesignerList", requestData);
@@ -66,26 +67,15 @@ const DesignerListPage = () => {
   };
 
   useEffect(() => {
-    if (currentLocation.pathname === "/") {
-      console.log("Main page - Keep field value");
-    } else if (currentLocation.pathname === "/filter") {
-      console.log("Main page - Keep field value");
-    } else if (currentLocation.pathname === "/designer-list") {
-      resetFilters();
-    }
-    console.log("location:", currentLocation.pathname);
-    console.log("location:", location);
-    console.log("field:", field);
-    console.log("isOnline:", isOnline);
-    console.log("isOffline:", isOffline);
-    console.log("minPrice:", minPrice);
-    console.log("maxPrice:", maxPrice);
     getDesignerList();
-    
-  }, [location, field, isOnline, isOffline, minPrice, maxPrice, currentLocation]); // 필터 값이 변경될 때마다 API 호출
+    resetFilters(); // useEffect cleanup hook
+  
+    console.log("🔍 Zustand 상태:", useFilterStore.getState());
+
+  }, [location, field, isOnline, isOffline, minPrice, maxPrice]); // 필터 값이 변경될 때마다 API 호출
 
   const handleDesignerClick = (designerId: number) => {
-    navigate(`/designer-list/${designerId}`);
+    navigate(`/designer-detail/${designerId}`);
   };
 
   return (
