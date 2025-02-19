@@ -25,64 +25,83 @@ export type DesignerType = {
 const TopDesigners: React.FC = () => {
   const navigate = useNavigate();
   const [designers, setDesigners] = useState<DesignerType[]>([]);
-  const [tags, setTages] = useState<string[]>(["파마", "대면", "비대면"]);
-  setTages(["파마", "대면", "비대면"]);
+
+  type ITags = string[];
+  const tags: ITags = ["파마", "대면", "비대면"];
+
+  const [isLoading, setIsLoading] = useState<boolean>(true); // ✅ 로딩 상태 추가
 
   useEffect(() => {
     getDesignerList();
   }, []);
 
   const getDesignerList = async () => {
+    setIsLoading(true); // ✅ 데이터 요청 전 로딩 시작
     try {
       const response = await api.post("/designer/readDesignerList", {
-        location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
-        field: null, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
-        isOnline: true, // 비대면 찾고 싶으면 true
-        isOffline: true, // 대면 찾고 싶으면 true
-        minPrice: null, // 최소 금액 null 가능
-        maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
+        location: null,
+        field: null,
+        isOnline: true,
+        isOffline: true,
+        minPrice: null,
+        maxPrice: null,
       });
+
       setDesigners(response.data.responseDto.slice(0, 3));
-      return response.data;
     } catch (error) {
-      console.error("Error fetching designer list:", error);
-      throw error;
+      console.error("🚨 Error fetching designer list:", error);
+    } finally {
+      setIsLoading(false); // ✅ 데이터 요청이 끝나면 로딩 종료
     }
   };
-
+  console.log(designers);
   return (
     <Container>
       <Title>2030이 많이 찾는 디자이너 TOP 3</Title>
-      {designers.map((designer, index) => (
-        <React.Fragment key={designer.name}>
-          <DesignerCard onClick={() => navigate(`/designer-detail/${"1003"}`)}>
-            <Rank>{index + 1}</Rank>
-            <ProfileImage
-              src={`/designer/${designer.profilePhoto}`}
-              alt={designer.name}
-            />
-            <DesignerInfo>
-              <Tags>
-                {tags.map((tag, index) => (
-                  <Tag key={tag} className={index === 0 ? "purple" : ""}>
-                    {tag}
-                  </Tag>
-                ))}
-              </Tags>
-              <Name>{designer.name}</Name>
-              <Description>{designer.text}</Description>
-            </DesignerInfo>
-          </DesignerCard>
-          {index !== designers.length - 1 && <Divider />}{" "}
-          {/* 마지막 요소가 아니면 구분선 추가 */}
-        </React.Fragment>
-      ))}
+      {isLoading ? ( // ✅ 로딩 중이면 "Loading..." 표시
+        <LoadingMessage>Loading...</LoadingMessage>
+      ) : (
+        <>
+          {designers.map((designer, index) => (
+            <React.Fragment key={designer.name}>
+              <DesignerCard
+                onClick={() =>
+                  navigate(`/designer-detail/${designer.designerId}`)
+                }
+              >
+                <Rank>{index + 1}</Rank>
+                <ProfileImage
+                  src={"/designer/${designer.profilePhoto}"}
+                  alt={designer.name}
+                />
+                <DesignerInfo>
+                  <Tags>
+                    {tags.map((tag, index) => (
+                      <Tag key={tag} className={index === 0 ? "purple" : ""}>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </Tags>
+                  <Name>{designer.name}</Name>
+                  <Description>{designer.text}</Description>
+                </DesignerInfo>
+              </DesignerCard>
+              {index !== designers.length - 1 && <Divider />}{" "}
+              {/* 마지막 요소가 아니면 구분선 추가 */}
+            </React.Fragment>
+          ))}
+        </>
+      )}
     </Container>
   );
 };
 
 export default TopDesigners;
-
+const LoadingMessage = styled.p`
+  font-size: 16px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray[500]};
+`;
 const Title = styled.h3`
   font-size: 18px;
   font-weight: bold;
