@@ -59,10 +59,7 @@ const PaymentPage: React.FC = () => {
         setSelectedMethod={setSelectedMethod}
       />
       <PrivacyAgreement />
-      <ConfirmButton
-        selectedMethod={selectedMethod}
-        selectedInfo={selectedInfo}
-      />
+      <ConfirmButton selectedMethod={selectedMethod} />
     </Container>
   );
 };
