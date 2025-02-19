@@ -18,7 +18,7 @@ api.interceptors.request.use((config) => {
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  console.log("🟢 Axios 요청 헤더:", config.headers);
+  //console.log("🟢 Axios 요청 헤더:", config.headers);
   return config;
 });
 

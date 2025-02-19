@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { IrequestData, ISelectedInfo } from "../PaymentPage";
+import { IrequestData } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
   reservationInfo: IrequestData;
-  selectedInfo: ISelectedInfo;
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   selectedMethod,
   reservationInfo,
-  selectedInfo,
 }) => {
+  //const { process, price } = useReservationStore();
+
   const navigate = useNavigate();
   useEffect(() => {
     // 포트원 라이브러리 추가
@@ -27,8 +28,9 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   }, []);
 
   const navigateConfirmationPage = () => {
+    console.log(reservationInfo);
     navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
-      state: selectedInfo,
+      state: reservationInfo,
     });
   };
   const handlePayment = async () => {

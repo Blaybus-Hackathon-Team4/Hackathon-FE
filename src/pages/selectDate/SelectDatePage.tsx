@@ -4,7 +4,7 @@ import { ko } from "date-fns/locale";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { ReserveConsulting } from "../../api/reservation.api";
 import { GetDesignerSchedule } from "../../api/schedule.api";
@@ -12,16 +12,12 @@ import "../../styles/custom-datepicker.css";
 import { Schedule, ScheduleResponse } from "../../types/schedule.type";
 import { useReservationStore } from "../../zustand/reservation.store";
 import BackHeader from "../designerDetail/components/BackHeader";
-import { Process } from "../selectProcess/SelectProcessPage";
 
 const temp_morning = ["10:00", "10:30", "11:00", "11:30"];
 // prettier-ignore
 const temp_afternoon = ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30"]
 
 const SelectDatePage = () => {
-  const location = useLocation();
-  const selectedProcess = location.state as Process | null; // 이전 페이지에서 받은 대면/비대면 값
-
   const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState<Date | null>(null); // 선택된 날짜
@@ -37,7 +33,7 @@ const SelectDatePage = () => {
 
   const today = new Date(); // 오늘 날짜
 
-  const { designerId, process, setDate, setTime } = useReservationStore();
+  const { designerId, process } = useReservationStore();
 
   type TimeSlot = {
     [key: string]: boolean; // 키는 문자열, 값은 boolean
@@ -119,11 +115,18 @@ const SelectDatePage = () => {
     mutationFn: ReserveConsulting,
     onSuccess: (data) => {
       console.log("예약 성공: ", data);
-      setDate(formattedDate);
-      setTime(selectedTime!);
-      navigate("/payment/1", {
-        state: { selectedProcess, currentMonth, startDate }, // 결제페이지로 정보 넘기기, 시간 정보 추가해야함
+      const { address, name, isOffline, offPrice, onPrice, profilePhoto } =
+        data.reservation.designer;
+
+      useReservationStore.getState().setReservationInfo({
+        date: formattedDate,
+        time: selectedTime || "",
+        address: address,
+        name: name,
+        price: isOffline ? offPrice : onPrice,
+        profilePhoto: profilePhoto,
       });
+      setTimeout(() => navigate(`/payment/${data.reservation.id}`), 0);
     },
     onError: (error) => {
       console.log("예약 실패: ", error);
