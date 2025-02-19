@@ -1,82 +1,104 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-//import DummyProfile from "../../assets/icons/image_designer.svg";
+import { api } from "../../api/api.ts";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import { useNavigate, useLocation } from "react-router-dom";
-import { api } from "../../api/api";
-import React, { useEffect, useState } from "react";
 
-export type DesignerType = {
-  designerId: number; // 디자이너 고유 ID
-  name: string;
-  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
-  field: string; // 전문 분야 (ex: "펌")
-  location: string; // 위치 (ex: "성수/건대")
-  offPrice: number; // 오프라인 가격
-  onPrice: number; // 온라인 가격
-  isOnline: boolean; // 온라인 서비스 여부
-  isOffline: boolean; // 오프라인 서비스 여부
-  rating: number; // 평점 (ex: 60 → 6.0점)
-  text: string; // 디자이너 소개 텍스트
-};
 
-const DesignerListPage:React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const field = location.state?.field || null
-  console.log(field, location)
-  const filters = ["지역", "가격대", "상담방식", "전문 분야"];
-  const [designers, setDesignerss] = useState<DesignerType[]>([]);
+interface Designer {
+  designerId: number;
+  profilePhoto: string | null;
+  name?: string;
+  field: string;
+  location: string;
+  offPrice: number;
+  onPrice: number;
+  isOnline: boolean;
+  isOffline: boolean;
+  rating: number;
+  text: string;
+}
 
-  useEffect( () => {
-      getDesignerList();
-    }, []);
+const filters = ["지역", "가격대", "상담방식", "전문 분야"];
+
+const DesignerListPage = () => {
+  const [designers, setDesigners] = useState<Designer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
+  const navigate = useNavigate(); // useNavigate 훅 추가
+
 
   const getDesignerList = async () => {
-      try {
-        const response = await api.post("/designer/readDesignerList", {
-          location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
-          field: field, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
-          isOnline: true, // 비대면 찾고 싶으면 true
-          isOffline: true, // 대면 찾고 싶으면 true
-          minPrice: null, // 최소 금액 null 가능
-          maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
-        });
-        setDesignerss(response.data.responseDto);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching designer list:", error);
-        throw error;
-      }
-    };
+    setLoading(true);
+    setError(null); // 새로운 요청 전에 에러 초기화
 
+    try {
+      const response = await api.post<{ responseDto: Designer[]; status: number; message: string }>(
+        "/designer/readDesignerList",
+        {
+          location: "성수/건대",
+          field: undefined,
+          isOnline: true,
+          isOffline: true,
+          minPrice: null,
+          maxPrice: null,
+        }
+      );
+
+      // 응답 상태 처리
+      if (response.status === 200) {
+        setDesigners(response.data.responseDto);
+      } else if (response.status === 403) {
+        setError("권한이 없습니다. 로그인 후 다시 시도해주세요.");
+      } else if (response.status === 500) {
+        setError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+      } else {
+        setError("알 수 없는 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("디자이너 목록 조회 실패:", error);
+      setError("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+    } finally {
+      setTimeout(() => setLoading(false), 500); // UX 개선 (최소 500ms 로딩)
+    }
+  };
+
+  useEffect(() => {
+    getDesignerList();
+  }, []);
 
   const handleDesignerClick = (designerId: number) => {
-    navigate(`/designer-detail/${designerId}`);
+    navigate(`/designer-list/${designerId}`);
   };
 
   return (
     <Container>
-      {/* 필터 버튼 영역 */}
       <FilterContainer>
         {filters.map((filter, index) => (
           <FilterButton key={index} label={filter} />
         ))}
       </FilterContainer>
 
-      {/* 디자이너 리스트 */}
-      <DesignerList>
-        {designers.map((designer, index) => (
-          <div
-            key={designer.designerId}
-            onClick={() => handleDesignerClick(designer.designerId)}
-          >
-            <DesignerCard {...designer} />
-            {index !== designers.length - 1 && <Divider />}
-          </div>
-        ))}
-      </DesignerList>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+
+      {loading ? (
+        <p>로딩 중...</p>
+      ) : (
+        <DesignerList>
+          {designers.length > 0 ? (
+            designers.map((designer, index) => (
+              <DesignerCardWrapper key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
+                <DesignerCard {...designer} name={designer.name ?? "이름 없음"} />
+                {index !== designers.length - 1 && <Divider />}
+              </DesignerCardWrapper>
+            ))
+          ) : (
+            <p>디자이너가 없습니다.</p>
+          )}
+        </DesignerList>
+      )}
     </Container>
   );
 };
@@ -84,25 +106,25 @@ const DesignerListPage:React.FC = () => {
 export default DesignerListPage;
 
 // 스타일 정의
+const DesignerCardWrapper = styled.div`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 const Container = styled.div`
   padding: 16px;
 `;
 
 const FilterContainer = styled.div`
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // width: 100vw;
-  // max-width: 480px;
   display: flex;
-  justify-content: space-between; //버튼들이 화면 가로 너비에 맞게 보여지도록
+  justify-content: space-between;
   gap: 8px;
   overflow-x: auto;
   white-space: nowrap;
-  padding-bottom: 20px; //버튼 많
-  background: white;
+  padding-bottom: 20px;
 
-  /* 스크롤바 숨기기 (필요 시) */
   &::-webkit-scrollbar {
     display: none;
   }
@@ -112,4 +134,12 @@ const DesignerList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+`;
+
+// 에러 메시지 스타일
+const ErrorMessage = styled.p`
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 16px;
 `;

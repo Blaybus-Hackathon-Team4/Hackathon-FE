@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, PersistStorage } from "zustand/middleware";
 import { Process } from "../pages/selectProcess/SelectProcessPage";
 
 interface ReservationState {
@@ -13,8 +13,21 @@ interface ReservationState {
   setTime: (time: string) => void;
 }
 
+const sessionStoragePersist: PersistStorage<ReservationState> = {
+  getItem: (key) => {
+    const value = sessionStorage.getItem(key);
+    return value ? JSON.parse(value) : null;
+  },
+  setItem: (key, value) => {
+    sessionStorage.setItem(key, JSON.stringify(value));
+  },
+  removeItem: (key) => {
+    sessionStorage.removeItem(key);
+  },
+};
+
 export const useReservationStore = create<ReservationState>()(
-  persist<ReservationState>(
+  persist(
     (set) => ({
       designerId: null,
       process: null,
@@ -22,11 +35,12 @@ export const useReservationStore = create<ReservationState>()(
       time: null,
       setDesignerId: (id: string) => set({ designerId: id }),
       setProcess: (process: Process) => set({ process }),
-      setDate: (date: string) => ({ date }),
-      setTime: (time: string) => ({ time }),
+      setDate: (date: string) => set({ date }), // `set`을 호출하도록 수정
+      setTime: (time: string) => set({ time }), // `set`을 호출하도록 수정
     }),
     {
       name: "reservationStore",
+      storage: sessionStoragePersist, // 세션 스토리지 적용
     }
   )
 );
