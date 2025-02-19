@@ -8,7 +8,7 @@ import FaceToFaceImg from "../../assets/images/face-to-face.svg";
 import SelectedNonFaceToFaceImg from "../../assets/images/non-face-to-face-selected.svg";
 import NonFaceToFaceImg from "../../assets/images/non-face-to-face.svg";
 import { useReservationStore } from "../../zustand/reservation.store";
-import BackHeader from "../designerDetail/components/BackHeader";
+import DetailHeader from "../designerDetail/components/DetailHeader";
 
 export type Process = "대면" | "비대면";
 
@@ -47,7 +47,7 @@ const SelectProcessPage = () => {
 
   return (
     <>
-      <BackHeader />
+      <DetailHeader />
       <DivWrapper>
         <ConsultProcessContainer>
           <DivBox $gap={8}>

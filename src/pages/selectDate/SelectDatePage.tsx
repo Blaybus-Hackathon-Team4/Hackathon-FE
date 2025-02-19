@@ -11,7 +11,7 @@ import { GetDesignerSchedule } from "../../api/schedule.api";
 import "../../styles/custom-datepicker.css";
 import { Schedule, ScheduleResponse } from "../../types/schedule.type";
 import { useReservationStore } from "../../zustand/reservation.store";
-import BackHeader from "../designerDetail/components/BackHeader";
+import DetailHeader from "../designerDetail/components/DetailHeader";
 import { Process } from "../selectProcess/SelectProcessPage";
 
 const temp_morning = ["10:00", "10:30", "11:00", "11:30"];
@@ -144,7 +144,7 @@ const SelectDatePage = () => {
 
   return (
     <>
-      <BackHeader />
+      <DetailHeader />
       <DateAndTime>
         <DatePicker
           inline // 인풋 필드 제거하고 달력만 표시
