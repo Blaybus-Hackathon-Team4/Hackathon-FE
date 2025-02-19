@@ -1,9 +1,8 @@
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Link, useLocation } from "react-router";
 import styled from "styled-components";
-import Login from "../pages/login/components/Login";
 import { useUserStore } from "../zustand/user.store";
 
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Calendar from "../../src/assets/icons/calendar.svg";
 import SelectedCalendar from "../../src/assets/icons/calendar_selected.svg";
 import HomeIcon from "../../src/assets/icons/home.svg";
@@ -12,6 +11,7 @@ import SearchIcon from "../../src/assets/icons/search.svg";
 import SelectedSearchIcon from "../../src/assets/icons/search_selected.svg";
 import User from "../../src/assets/icons/user.svg";
 import SelectedUser from "../../src/assets/icons/user_selected.svg";
+import LoginButton from "../pages/login/components/LoginButton";
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -67,7 +67,7 @@ const Navbar = () => {
         </Button>
       ) : (
         <GoogleOAuthProvider clientId={clientId}>
-          <Login />
+          <LoginButton />
         </GoogleOAuthProvider>
       )}
     </StNav>

@@ -20,7 +20,7 @@ const designers = [
   },
   {
     designerId: 1012,
-    profilePhoto: "/src/assets/designer/1012.jpg",
+    profilePhoto: "../../assets/designer/1012.jpg",
     name: "로로 원장",
     field: "펌",
     location: "홍대/연남/합정",
@@ -31,7 +31,7 @@ const designers = [
   {
     designerId: 1013,
     name: "슈 대표원장",
-    profilePhoto: "/src/assets/designer/1013.jpg",
+    profilePhoto: "../../assets/designer/1013.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -41,7 +41,7 @@ const designers = [
   {
     designerId: 1005,
     name: "랑 원장",
-    profilePhoto: "/src/assets/designer/1005.jpg",
+    profilePhoto: "../../assets/designer/1005.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -51,7 +51,7 @@ const designers = [
   {
     designerId: 1006,
     name: "히지 디자이너",
-    profilePhoto: "/src/assets/designer/1006.jpg",
+    profilePhoto: "../../assets/designer/1006.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -61,7 +61,7 @@ const designers = [
   {
     designerId: 1007,
     name: "현영 디자이너",
-    profilePhoto: "/src/assets/designer/1007.jpg",
+    profilePhoto: "../../assets/designer/1007.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -71,7 +71,7 @@ const designers = [
   {
     designerId: 1008,
     name: "현영 디자이너",
-    profilePhoto: "/src/assets/designer/1008.jpg",
+    profilePhoto: "../../assets/designer/1008.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -81,7 +81,7 @@ const designers = [
   {
     designerId: 1009,
     name: "나나 디자이너",
-    profilePhoto: "/src/assets/designer/1009.jpeg",
+    profilePhoto: "../../assets/designer/1009.jpeg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -91,7 +91,7 @@ const designers = [
   {
     designerId: 1010,
     name: "나나 디자이너",
-    profilePhoto: "/src/assets/designer/1010.jpg",
+    profilePhoto: "../../assets/designer/1010.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -101,7 +101,7 @@ const designers = [
   {
     designerId: 1011,
     name: "주 디자이너",
-    profilePhoto: "/src/assets/designer/1011.jpg",
+    profilePhoto: "../../assets/designer/1011.jpg",
     field: "염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -111,7 +111,7 @@ const designers = [
   {
     designerId: 1012,
     name: "이아 디자이너",
-    profilePhoto: "/src/assets/designer/1012.jpg",
+    profilePhoto: "../../assets/designer/1012.jpg",
     field: "펌",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -121,7 +121,7 @@ const designers = [
   {
     designerId: 1013,
     name: "희 수석 디자이너",
-    profilePhoto: "/src/assets/designer/1013.jpg",
+    profilePhoto: "../../assets/designer/1013.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -131,7 +131,7 @@ const designers = [
   {
     designerId: 1014,
     name: "유하 디자이너",
-    profilePhoto: "/src/assets/designer/1014.jpg",
+    profilePhoto: "../../assets/designer/1014.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -141,7 +141,7 @@ const designers = [
   {
     designerId: 1015,
     name: "미미 컬러리스트",
-    profilePhoto: "/src/assets/designer/1015.jpg",
+    profilePhoto: "../../assets/designer/1015.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
@@ -151,7 +151,7 @@ const designers = [
   {
     designerId: 1016,
     name: "하루 컬러리스트",
-    profilePhoto: "/src/assets/designer/1016.jpg",
+    profilePhoto: "../../assets/designer/1016.jpg",
     field: "탈염색",
     location: "홍대/연남/합정",
     text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
