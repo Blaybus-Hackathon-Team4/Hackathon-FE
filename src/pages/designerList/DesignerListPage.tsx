@@ -21,7 +21,7 @@ export type DesignerType = {
   text: string; // 디자이너 소개 텍스트
 };
 
-const DesignerListPage = () => {
+const DesignerListPage:React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const field = location.state?.field || null
@@ -29,7 +29,7 @@ const DesignerListPage = () => {
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
   const [designers, setDesignerss] = useState<DesignerType[]>([]);
 
-  useEffect(() => {
+  useEffect( () => {
       getDesignerList();
     }, []);
 
