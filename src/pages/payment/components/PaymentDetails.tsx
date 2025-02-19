@@ -1,33 +1,29 @@
 import React from "react";
 import styled from "styled-components";
-import { IReservationInfo } from "../PaymentPage";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
-interface ReservationInfoProps {
-  reservationInfo: IReservationInfo;
-}
-const PaymentDetails: React.FC<ReservationInfoProps> = ({
-  reservationInfo,
-}) => {
-  console.log("reservationInfo", reservationInfo);
+const PaymentDetails: React.FC = () => {
+  const { process, price } = useReservationStore();
+
   return (
     <Card>
       <Title>결제 정보</Title>
-      {reservationInfo.process === "대면" ? (
+      {process === "대면" ? (
         <Row>
           <span>대면 컨설팅</span>
-          <span>{reservationInfo.price + "원"}</span>
+          <span>{price}원</span>
         </Row>
       ) : (
         <Row>
           <span>비대면 컨설팅</span>
-          <span>{reservationInfo.price + "원"}</span>
+          <span>{price}원</span>
         </Row>
       )}
 
       <Divider></Divider>
       <Row>
         <strong>결제 금액</strong>
-        <strong>40,000원</strong>
+        <strong>{price}원</strong>
       </Row>
     </Card>
   );

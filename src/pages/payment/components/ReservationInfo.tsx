@@ -5,39 +5,71 @@ import faceTofaceImage from "../../../assets/icons/face-to-face-icon.svg";
 
 import noneFaceTofaceImage from "../../../assets/icons/non-face-to-face-icon.svg";
 
-import DesignerImage from "../../../assets/images/TrendingStyle2.png";
-
 import CheckIcon from "../../../assets/icons/check-gray-icon.svg";
 import LocationIcon from "../../../assets/icons/location-gray-icon.svg";
-import { IReservationInfo } from "../PaymentPage";
 
-interface ReservationInfoProps {
-  reservationInfo: IReservationInfo;
-}
-const ReservationInfo: React.FC<ReservationInfoProps> = ({
-  reservationInfo,
-}) => {
+import { useReservationStore } from "../../../zustand/reservation.store";
+
+const ReservationInfo: React.FC = () => {
+  const { process, date, time, name, address, profilePhoto } =
+    useReservationStore();
+
+  const formatDateToKoreanStyle = (dateString: string | null): string => {
+    if (!dateString) return "";
+    // 날짜 객체 생성
+    const date = new Date(dateString);
+
+    // 월과 일 추출
+    const month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+    const day = date.getDate();
+
+    // 요일 배열 (일요일부터 시작)
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+    const dayOfWeek = dayNames[date.getDay()];
+
+    // 최종 문자열 반환
+    return `${month}.${day} (${dayOfWeek})`;
+  };
+
+  const formatTimeToKoreanStyle = (timeString: string | null): string => {
+    if (!timeString) return "";
+    // 시간과 분을 분리
+    const [hourStr, minute] = timeString.split(":");
+    const hour = parseInt(hourStr, 10);
+
+    // 오전/오후 결정
+    const period = hour < 12 ? "오전" : "오후";
+
+    // 12시간제로 변환 (0시는 12시로, 13~23시는 1~11시로)
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+
+    // 최종 문자열 반환
+    return `${period} ${formattedHour}:${minute}`;
+  };
+
   return (
     <Card>
       <Profile>
-        <ProfileImage src={DesignerImage} alt="디자이너" />
+        <ProfileImage src={`/designer/${profilePhoto}`} alt="디자이너" />
         <InfoConainer>
-          <Title>이초 디자이너</Title>
+          <Title>{name}</Title>
           <Schedule>
-            <Gray>일정</Gray> 2.12 (수) · 오후 12:00
+            <Gray>일정</Gray>{" "}
+            {`${formatDateToKoreanStyle(date)} · ${formatTimeToKoreanStyle(
+              time
+            )}`}
           </Schedule>
         </InfoConainer>
       </Profile>
       <InfoBox>
-        {reservationInfo.process === "대면" ? (
+        {process === "대면" ? (
           <InfoConainer>
             <Info>
               <Icon src={CheckIcon} alt="check" />
               실제 샵에 <Purple>방문하여</Purple> 컨설팅 진행
             </Info>
             <Info>
-              <Icon src={LocationIcon} alt="location" /> 서울 강남구
-              압구정로79길
+              <Icon src={LocationIcon} alt="location" /> {address}
             </Info>
           </InfoConainer>
         ) : (
@@ -54,7 +86,7 @@ const ReservationInfo: React.FC<ReservationInfoProps> = ({
             </Info>
           </InfoConainer>
         )}
-        {reservationInfo.process === "대면" ? (
+        {process === "대면" ? (
           <ShopImage src={faceTofaceImage} alt="대면" />
         ) : (
           <ShopImage src={noneFaceTofaceImage} alt="비대면" />

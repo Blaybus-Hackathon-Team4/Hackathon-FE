@@ -10,6 +10,7 @@ interface ReservationState {
   name: string | null; // 예약자 이름 추가
   address: string | null; // 예약 장소 추가 (대면 예약 시 필요)
   price: number | null; // 예약 가격 추가
+  profilePhoto: string | null;
   setDesignerId: (id: string) => void;
   setProcess: (process: Process) => void;
   setDate: (date: string) => void;
@@ -18,7 +19,7 @@ interface ReservationState {
   setAddress: (address: string) => void; // 주소 설정 함수 추가
   setPrice: (price: number) => void; // 가격 설정 함수 추가
 
-  // ✅ 여러 개의 값을 한 번에 설정하는 함수 추가
+  // ✅ 여러 개의 값을 한 번에 설정하는 함수 추가ㄴ
   setReservationInfo: (info: Partial<ReservationState>) => void;
 }
 
@@ -45,6 +46,7 @@ export const useReservationStore = create<ReservationState>()(
       name: null,
       address: null,
       price: null,
+      profilePhoto: null,
       setDesignerId: (id: string) => set({ designerId: id }),
       setProcess: (process: Process) => set({ process }),
       setDate: (date: string) => set({ date }),
@@ -52,6 +54,7 @@ export const useReservationStore = create<ReservationState>()(
       setName: (name: string) => set({ name }),
       setAddress: (address: string) => set({ address }),
       setPrice: (price: number) => set({ price }),
+      setProfilePhoto: (profilePhoto: string) => set({ profilePhoto }),
 
       // ✅ 여러 값을 한 번에 업데이트하는 함수 추가
       setReservationInfo: (info) =>

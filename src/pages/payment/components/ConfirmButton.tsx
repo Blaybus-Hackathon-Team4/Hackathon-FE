@@ -1,21 +1,22 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { IrequestData, IReservationInfo } from "../PaymentPage";
+import { IrequestData } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
-  reservationInfo: IReservationInfo;
-  extraInfo: IrequestData;
+  reservationInfo: IrequestData;
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   selectedMethod,
   reservationInfo,
-  extraInfo,
 }) => {
+  //const { process, price } = useReservationStore();
+
   const navigate = useNavigate();
   useEffect(() => {
     // 포트원 라이브러리 추가
@@ -36,7 +37,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
     if (selectedMethod === "BANK") {
       console.log("계좌 결제 진행");
       //결제 요청
-      postReservationAdditional(extraInfo);
+      postReservationAdditional(reservationInfo);
     } else if (selectedMethod === "KAKAO") {
       console.log("카카오페이 결제 진행");
       //카카오페이 결제 진행
@@ -48,7 +49,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
         alert("결제가 완료되었습니다.");
 
         // -> 성공시 추가정보 전송
-        postReservationAdditional(extraInfo);
+        postReservationAdditional(reservationInfo);
       } else if (resultCode === 400) {
         console.log("결제 실패 또는 검증 실패");
         alert("결제에 실패했습니다. 다시 시도해주세요.");

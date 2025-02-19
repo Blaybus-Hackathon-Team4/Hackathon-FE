@@ -115,7 +115,18 @@ const SelectDatePage = () => {
     mutationFn: ReserveConsulting,
     onSuccess: (data) => {
       console.log("예약 성공: ", data);
-      navigate(`/payment/${designerId}`);
+      const { address, name, isOffline, offPrice, onPrice, profilePhoto } =
+        data.reservation.designer;
+
+      useReservationStore.getState().setReservationInfo({
+        date: formattedDate,
+        time: selectedTime || "",
+        address: address,
+        name: name,
+        price: isOffline ? offPrice : onPrice,
+        profilePhoto: profilePhoto,
+      });
+      setTimeout(() => navigate(`/payment/${data.reservation.id}`), 0);
     },
     onError: (error) => {
       console.log("예약 실패: ", error);
