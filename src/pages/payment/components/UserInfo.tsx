@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { IrequestData } from "../PaymentPage"; // 타입 import
+import { useUserStore } from "../../../zustand/user.store";
 
 interface UserInfoProps {
   setReservationInfo: React.Dispatch<React.SetStateAction<IrequestData>>;
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
+  const { name, email } = useUserStore();
   const [text, setText] = useState("");
   const maxLength = 500;
 
@@ -29,8 +31,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ setReservationInfo }) => {
 
       <UserInfoContainer>
         <UserInfoBox>
-          <UserName>김서현</UserName>
-          <UserEmail>ksh123@gmail.com</UserEmail>
+          <UserName>{name}</UserName>
+          <UserEmail>{email}</UserEmail>
         </UserInfoBox>
         <ChangeButton disabled>변경</ChangeButton>
       </UserInfoContainer>
