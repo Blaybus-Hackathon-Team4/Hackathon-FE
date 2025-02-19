@@ -24,8 +24,6 @@ interface Designer {
 
 
 const DesignerListPage = () => {
-
-  const navigate = useNavigate();
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
   const { location, field, isOnline, isOffline, minPrice, maxPrice, resetFilters } = useFilterStore(); // Zustand를 통해 필터 값 가져오기
   const [designers, setDesigners] = useState<Designer[]>([]);
@@ -78,10 +76,6 @@ const DesignerListPage = () => {
 
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);
-  };
-
-  const handleDesignerClick = (designerId: number) => {
-    navigate(`/designer-detail?id=${designerId}`);
   };
   
   return (
