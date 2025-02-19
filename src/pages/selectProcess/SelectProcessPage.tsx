@@ -7,7 +7,6 @@ import SelectedFaceToFaceImg from "../../assets/images/face-to-face-selected.svg
 import FaceToFaceImg from "../../assets/images/face-to-face.svg";
 import SelectedNonFaceToFaceImg from "../../assets/images/non-face-to-face-selected.svg";
 import NonFaceToFaceImg from "../../assets/images/non-face-to-face.svg";
-import { useReservationStore } from "../../zustand/reservation.store";
 import BackHeader from "../designerDetail/components/BackHeader";
 
 export type Process = "대면" | "비대면";
@@ -15,7 +14,6 @@ export type Process = "대면" | "비대면";
 const SelectProcessPage = () => {
   const [selectedCard, setSelectedCard] = useState<Process | null>(null);
   const navigate = useNavigate();
-  const { setProcess } = useReservationStore();
 
   const handleClickCard = (cardType: Process) => {
     setSelectedCard(cardType);
