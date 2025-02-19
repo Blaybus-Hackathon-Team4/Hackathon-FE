@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { api } from "../../api/api.ts";
+import { api } from "../../api/api";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
 
+import { useFilterStore } from "../../zustand/filterStore";
 
 interface Designer {
   designerId: number;
@@ -21,56 +22,58 @@ interface Designer {
   text: string;
 }
 
-const filters = ["지역", "가격대", "상담방식", "전문 분야"];
-
 const DesignerListPage = () => {
+  const filters = ["지역", "가격대", "상담방식", "전문 분야"];
+  const navigate = useNavigate();
+  
+  // ✅ Zustand에서 상태를 구독 (useFilterStore()를 직접 호출해야 상태 변경 감지 가능)
+  const { location, field, isOnline, isOffline, minPrice, maxPrice } = useFilterStore();
+
   const [designers, setDesigners] = useState<Designer[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
-  const navigate = useNavigate(); // useNavigate 훅 추가
-
+  const [error, setError] = useState<string | null>(null);
 
   const getDesignerList = async () => {
     setLoading(true);
-    setError(null); // 새로운 요청 전에 에러 초기화
+    setError(null);
+
+    const requestData = {
+      location,
+      field,
+      isOnline,
+      isOffline,
+      minPrice,
+      maxPrice,
+    };
+
+    console.log("🔍 API 요청 데이터:", requestData);
 
     try {
-      const response = await api.post<{ responseDto: Designer[]; status: number; message: string }>(
-        "/designer/readDesignerList",
-        {
-          location: "성수/건대",
-          field: undefined,
-          isOnline: true,
-          isOffline: true,
-          minPrice: null,
-          maxPrice: null,
-        }
-      );
+      const response = await api.post("/designer/readDesignerList", requestData);
 
-      // 응답 상태 처리
       if (response.status === 200) {
         setDesigners(response.data.responseDto);
       } else if (response.status === 403) {
         setError("권한이 없습니다. 로그인 후 다시 시도해주세요.");
       } else if (response.status === 500) {
-        setError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        setError("서버 오류가 발생했습니다. 다시 시도해주세요.");
       } else {
         setError("알 수 없는 오류가 발생했습니다.");
       }
     } catch (error) {
-      console.error("디자이너 목록 조회 실패:", error);
-      setError("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
+      console.error("API 요청 실패:", error);
+      setError("네트워크 오류가 발생했습니다.");
     } finally {
-      setTimeout(() => setLoading(false), 500); // UX 개선 (최소 500ms 로딩)
+      setTimeout(() => setLoading(false), 500);
     }
   };
 
   useEffect(() => {
     getDesignerList();
-  }, []);
+  }, [location, field, isOnline, isOffline, minPrice, maxPrice]); // ✅ Zustand의 상태 변경을 감지하여 API 호출
 
   const handleDesignerClick = (designerId: number) => {
-    navigate(`/designer-list/${designerId}`);
+    navigate(`/designer-detail/${designerId}`);
   };
 
   return (
@@ -89,7 +92,10 @@ const DesignerListPage = () => {
         <DesignerList>
           {designers.length > 0 ? (
             designers.map((designer, index) => (
-              <DesignerCardWrapper key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
+              <DesignerCardWrapper
+                key={designer.designerId}
+                onClick={() => handleDesignerClick(designer.designerId)}
+              >
                 <DesignerCard {...designer} name={designer.name ?? "이름 없음"} />
                 {index !== designers.length - 1 && <Divider />}
               </DesignerCardWrapper>
@@ -136,7 +142,6 @@ const DesignerList = styled.div`
   gap: 16px;
 `;
 
-// 에러 메시지 스타일
 const ErrorMessage = styled.p`
   color: red;
   font-weight: bold;
