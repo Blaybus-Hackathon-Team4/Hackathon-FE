@@ -1,30 +1,86 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import "../../styles/scroll.css";
+
+import { useEffect, useState } from "react";
+import { api } from "../../api/api";
 
 import DesignerIcon from "../../assets/icons/image_designer.svg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
+import { useReservationStore } from "../../zustand/reservation.store";
 
-const DesignerDetailPage = () => {
+
+export type DesignerType = {
+  designerId: number; // 디자이너 고유 ID
+  name: string;
+  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
+  field: string; // 전문 분야 (ex: "펌")
+  location: string; // 위치 (ex: "성수/건대")
+  offPrice: number; // 오프라인 가격
+  onPrice: number; // 온라인 가격
+  isOnline: boolean; // 온라인 서비스 여부
+  isOffline: boolean; // 오프라인 서비스 여부
+  rating: number; // 평점 (ex: 60 → 6.0점)
+  text: string; // 디자이너 소개 텍스트
+};
+
+const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
+  const { designerId } = useParams();
+  const { setDesignerId } = useReservationStore();
+  const [designerDetail, setDesignerDetail] = useState<DesignerType | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    if (designerId) {
+      fetchDesignerDetail();
+    }
+  }, [designerId]);
+
+
+  const fetchDesignerDetail = async () => {
+    try {
+      const response = await api.get(`/designer/readDesignerDetail/${designerId}`);
+      setDesignerDetail(response.data.responseDto);
+    } catch (error) {
+      console.error("Error fetching designer detail:", error);
+      setError("디자이너 정보를 가져오는 데 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoToSelectProcessPage = () => {
+    if (designerId) setDesignerId(designerId);
     navigate("/select-process");
   };
+
+  if (loading) {
+    return <LoadingText>로딩 중...</LoadingText>;
+  }
+
+  if (error) {
+    return <ErrorText>{error}</ErrorText>;
+  }
+
+  if (!designerDetail) {
+    return <ErrorText>디자이너 정보가 없습니다.</ErrorText>;
+  }
 
   return (
     <>
       <DivWrapper>
         <SectionWrapper>
           <img src={DesignerIcon} alt="designer-profile" />
-          <Name>이초 디자이너</Name>
-          <Introduction>레드벨벳, ITZY가 방문하는 샵</Introduction>
+          <Name>{designerDetail.name}</Name>
+          <Introduction>{designerDetail.text}</Introduction>
           <StDiv>
-            <DivBox $profession>펌</DivBox>
-            <DivBox>대면</DivBox>
-            <DivBox>비대면</DivBox>
+            <DivBox $profession>{designerDetail.field}</DivBox>
+            <DivBox>{designerDetail.isOffline ? "대면" : ""}</DivBox>
+            <DivBox>{designerDetail.isOnline ? "비대면" : ""}</DivBox>
           </StDiv>
           <StDiv_2>
             <Consulting>
@@ -33,9 +89,9 @@ const DesignerDetailPage = () => {
                   <img src={MoneyIcon} alt="money" />
                   <Text $light>대면 컨설팅</Text>
                 </TextWithImg>
-                <Divider></Divider>
+                <Divider />
                 <Text>
-                  <Text $bold>40,000</Text>원
+                  <Text $bold>{designerDetail.offPrice}</Text> 원
                 </Text>
               </ConsultingDetail>
               <ConsultingDetail>
@@ -47,9 +103,9 @@ const DesignerDetailPage = () => {
                   />
                   <Text $light>비대면 컨설팅</Text>
                 </TextWithImg>
-                <Divider></Divider>
+                <Divider />
                 <Text>
-                  <Text $bold>20,000</Text>원
+                  <Text $bold>{designerDetail.onPrice}</Text> 원
                 </Text>
               </ConsultingDetail>
             </Consulting>
@@ -60,7 +116,7 @@ const DesignerDetailPage = () => {
                 width={16.67}
                 height={16.67}
               />
-              <Text $light>서울 강남구 압구정로79길</Text>
+              <Text $light>{designerDetail.location}</Text>
             </TextWithImg>
           </StDiv_2>
         </SectionWrapper>
@@ -132,7 +188,7 @@ const Line = styled.hr`
 const Divider = styled.hr`
   flex-grow: 1;
   border: 1px dashed ${({ theme }) => theme.colors.gray[100]};
-  margin: 0 10px; /* 좌우 여백 조절 */
+  margin: 0 10px;
 `;
 
 const Consulting = styled.div`
@@ -187,6 +243,22 @@ const Button = styled.button`
 `;
 
 const ButtonBox = styled.div`
+  margin-top: 32px;
   display: flex;
   padding: 20px;
+  border-top: 0.5px solid ${({ theme }) => theme.colors.gray[100]};
 `;
+
+const LoadingText = styled.p`
+  text-align: center;
+  font-size: 18px;
+  margin-top: 50px;
+`;
+
+const ErrorText = styled.p`
+  text-align: center;
+  color: red;
+  font-size: 18px;
+  margin-top: 50px;
+`;
+

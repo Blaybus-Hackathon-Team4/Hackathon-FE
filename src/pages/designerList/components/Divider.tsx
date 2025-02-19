@@ -8,8 +8,7 @@ const Divider = () => {
 export default Divider;
 
 const StyledDivider = styled.div`
-  height: 1px;
-  background-color: ${theme.colors.gray[100]};
-  //margin: 8px 0;
-  margin-top: 20px;
+  width: 100%;
+  border-top: 1px solid ${theme.colors.gray[100]}; // border를 사용하여 균일한 두께 유지
+  margin-top: 18px; // 간격 조정
 `;

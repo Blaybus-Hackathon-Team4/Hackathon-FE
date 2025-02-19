@@ -6,12 +6,18 @@ import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 import "../../styles/custom-datepicker.css";
 import BackHeader from "../designerDetail/components/BackHeader";
+import { useLocation, useNavigate } from "react-router";
+import { Process } from "../selectProcess/SelectProcessPage";
 
 const morning = ["10:00", "10:30", "11:00", "11:30"];
 // prettier-ignore
 const afternoon = ["12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",]
 
 const SelectDatePage = () => {
+  const location = useLocation();
+  const selectedProcess = location.state as Process | null; // 이전 페이지에서 받은 대면/비대면 값
+
+  const navigate = useNavigate();
   const [startDate, setStartDate] = useState<Date | null>(null); // 선택된 날짜
   const [currentMonth, setCurrentMonth] = useState<number>(
     new Date().getMonth()
@@ -99,7 +105,15 @@ const SelectDatePage = () => {
           </TimeBox>
         </TimeSection>
         <ButtonBox>
-          <NextButton>예약하기</NextButton>
+          <NextButton
+            onClick={() =>
+              navigate("/payment/1", {
+                state: { selectedProcess, currentMonth, startDate }, // 결제페이지로 정보 넘기기, 시간 정보 추가해야함
+              })
+            }
+          >
+            예약하기
+          </NextButton>
         </ButtonBox>
       </DateAndTime>
     </>

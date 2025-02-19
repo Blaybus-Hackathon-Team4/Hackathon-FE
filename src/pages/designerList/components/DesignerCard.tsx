@@ -23,10 +23,15 @@ const DesignerCard = ({
   isOnline,
   isOffline,
 }: DesignerCardProps) => {
+  // 이미지 경로 확인 및 기본 이미지 적용
+  const validProfilePhoto = profilePhoto && profilePhoto.startsWith("/src/assets/designer/")
+    ? profilePhoto
+    : DefaultProfile;
+  
   return (
     <Card>
       <ProfileImage
-        src={profilePhoto || DefaultProfile}
+        src={validProfilePhoto || DefaultProfile}
         alt="디자이너 프로필"
       />
       <Info>

@@ -20,7 +20,7 @@ const SelectProcessPage = () => {
   };
 
   const handleGoToSelectDatePage = () => {
-    navigate("/select-date");
+    navigate("/select-date", { state: selectedCard });
   };
 
   return (
@@ -89,7 +89,13 @@ const SelectProcessPage = () => {
           </DivBox>
         </ConsultProcessContainer>
         <ButtonContainer>
-          <NextButton onClick={handleGoToSelectDatePage}>다음</NextButton>
+          <NextButton
+            disabled={selectedCard === null}
+            $disabled={selectedCard === null}
+            onClick={handleGoToSelectDatePage}
+          >
+            다음
+          </NextButton>
         </ButtonContainer>
       </DivWrapper>
     </>
@@ -152,7 +158,7 @@ const Card = styled.div<{ $selected: boolean }>`
   border-radius: 16px;
   border: 1px solid
     ${({ theme, $selected }) =>
-      $selected ? theme.colors.primary[500] : theme.colors.gray[100]};
+      $selected ? theme.colors.primary[500] : theme.colors.gray[200]};
   padding: 20px;
   display: flex;
   justify-content: space-between;
@@ -186,13 +192,18 @@ const ButtonContainer = styled.div`
   padding: 20px 20px 16px 20px;
 `;
 
-const NextButton = styled.button`
+const NextButton = styled.button<{ $disabled: boolean }>`
   width: 100%;
   height: 48px;
   padding: 8px 24px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.primary[500]};
+  background-color: ${({ theme, $disabled }) =>
+    $disabled ? theme.colors.gray[100] : theme.colors.primary[500]};
   font-weight: bold;
-  color: white;
+  color: ${({ theme, $disabled }) =>
+    $disabled ? theme.colors.gray[300] : "white"};
   border: none;
+  &:hover {
+    cursor: ${({ $disabled }) => $disabled && "default"};
+  }
 `;

@@ -1,7 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import { ISelectedInfo } from "../../payment/PaymentPage";
 
-const ReservationInfo: React.FC = () => {
+interface ReservationInfoProps {
+  selectedInfo: ISelectedInfo;
+}
+
+const ReservationInfo: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
   return (
     <Container>
       <Card>
@@ -17,16 +22,23 @@ const ReservationInfo: React.FC = () => {
           <Text>가격</Text>
           <Text>20,000원</Text>
         </InfoRow>
-        <InfoRow>
-          <Text>비대면</Text>
-          <GoogleMeetsLink
-            href="https://meet.google.com/dad-seuh-ykm"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            구글 미트 링크
-          </GoogleMeetsLink>
-        </InfoRow>
+        {selectedInfo.selectedProcess === "대면" ? (
+          <InfoRow>
+            <Text>대면</Text>
+            <Text>서울 강남구 압구정로79길</Text>
+          </InfoRow>
+        ) : (
+          <InfoRow>
+            <Text>비대면</Text>
+            <GoogleMeetsLink
+              href="https://meet.google.com/dad-seuh-ykm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              구글 미트 링크
+            </GoogleMeetsLink>
+          </InfoRow>
+        )}
       </Card>
       <Divider />
       <Card>

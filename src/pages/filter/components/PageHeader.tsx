@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import exit from "../../../assets/icons/exit.svg";
 
 interface PageHeaderProps {
   title?: string;
@@ -12,7 +13,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
     <HeaderContainer>
       {title && <Title>{title}</Title>} {/*title이 있을 때만 렌더링 */}
       <CloseButton onClick={() => navigate(-1)}>
-        <img src="/close.svg" alt="닫기" />
+        <img src={exit} alt="닫기" />
       </CloseButton>
     </HeaderContainer>
   );
@@ -48,6 +49,7 @@ const CloseButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  margin-right: 20px;
 
   img {
     width: 100%;

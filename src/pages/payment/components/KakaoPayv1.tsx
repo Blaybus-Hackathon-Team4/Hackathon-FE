@@ -10,94 +10,96 @@ import {
 const { VITE_IMP_CODE } = import.meta.env;
 // 결제 데이터 타입 정의
 
-const KakaoPayv1: React.FC = () => {
-  // 더미 데이터 (사용자 ID 및 선택한 상품)
-  const userId = "dummy-user-1234";
+export const addPortoneLib = () => {
+  let script = document.querySelector<HTMLScriptElement>(
+    `script[src="https://cdn.iamport.kr/v1/iamport.js"]`
+  );
 
-  const generateMerchantUid = (): string => {
-    return "Heartz-" + Math.random().toString(36).substr(2, 9);
+  if (!script) {
+    script = document.createElement("script");
+    script.src = "https://cdn.iamport.kr/v1/iamport.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }
+
+  return () => {
+    if (script && script.parentNode === document.body) {
+      document.body.removeChild(script);
+    }
+  };
+};
+
+export const generateMerchantUid = (): string => {
+  return "Heartz-" + Math.random().toString(36).substr(2, 9);
+};
+
+export const onclickPay = async (
+  pgValue: PG,
+  payMethod: PaymentMethod
+): Promise<number> => {
+  const { IMP } = window;
+  if (!IMP) {
+    console.error("포트원(IMP) 객체를 찾을 수 없습니다.");
+    return 500; // 서버 에러 코드 반환
+  }
+
+  IMP.init(VITE_IMP_CODE); // 포트원 초기화
+
+  const data: PaymentRequest = {
+    pg: pgValue,
+    pay_method: payMethod,
+    merchant_uid: generateMerchantUid(),
+    name: "헤르츠 컨설팅",
+    amount: 30000,
+    buyer_email: "ksh123@gmail.com",
+    buyer_name: "김서현",
+    m_redirect_url: "",
   };
 
-  useEffect(() => {
-    // 포트원 라이브러리 추가
-    let script = document.querySelector<HTMLScriptElement>(
-      `script[src="https://cdn.iamport.kr/v1/iamport.js"]`
-    );
+  console.log("data:", data);
 
-    if (!script) {
-      script = document.createElement("script");
-      script.src = "https://cdn.iamport.kr/v1/iamport.js";
-      script.async = true;
-      document.body.appendChild(script);
-    }
-
-    return () => {
-      if (script && script.parentNode === document.body) {
-        document.body.removeChild(script);
-      }
-    };
-  }, []);
-
-  const onclickPay = (pgValue: PG, payMethod: PaymentMethod): void => {
-    // TypeScript에서 window.IMP 객체가 존재하는지 확인 후 실행
-    const { IMP } = window;
-    IMP?.init(VITE_IMP_CODE);
-    const impUid = VITE_IMP_CODE;
-
-    if (!window.IMP) {
-      console.error("포트원(IMP) 객체를 찾을 수 없습니다.");
-      return;
-    }
-
-    const data: PaymentRequest = {
-      // param
-      pg: pgValue, //PG사구분코드.{사이트코드}, https://developers.portone.io/docs/ko/tip/pg-2
-      pay_method: payMethod,
-      merchant_uid: generateMerchantUid(),
-      name: "컨설팅",
-      amount: 100,
-      buyer_email: "gildong@gmail.com",
-      buyer_name: "홍길동",
-      m_redirect_url: "",
-    };
-    console.log("data:", data);
-
-    IMP?.request_pay(data, async (response: RequestPayResponse) => {
-      if (response.success) {
-        console.log("결제 성공:", response);
-        const success = await verifyPayment(data.merchant_uid, impUid);
-        if (success) {
-          console.log(`결제 성공! 결제 금액: ${response.paid_amount}원`);
-          console.log(`영수증 URL: ${response.receipt_url}`);
-        } else {
-          console.log("결제 검증 실패");
-        }
-      } else {
+  return new Promise((resolve) => {
+    IMP.request_pay(data, async (response: RequestPayResponse) => {
+      if (!response.success) {
         console.error(`결제 실패! 사유: ${response.status}`);
+        resolve(400); // 실패 코드 반환
+        return;
+      }
+
+      console.log("결제 성공:", response);
+
+      // 결제 검증 요청
+      try {
+        const verifyResponse = await axios.post(`/pay/portone`, {
+          imp_uid: response.imp_uid,
+          merchant_uid: response.merchant_uid,
+        });
+
+        if (verifyResponse.data.success) {
+          console.log(`결제 검증 성공! 결제 금액: ${response.paid_amount}원`);
+          console.log(`영수증 URL: ${response.receipt_url}`);
+          resolve(200); // 성공 코드 반환
+        } else {
+          console.error("결제 검증 실패");
+          resolve(500); // 검증 실패 코드 반환
+        }
+      } catch (error) {
+        console.error("결제 검증 요청 에러:", error);
+        resolve(500); // 서버 에러 코드 반환
       }
     });
-  };
+  });
+};
 
-  const verifyPayment = async (
-    merchantUid: string,
-    impUid: string
-  ): Promise<boolean> => {
-    try {
-      const response = await axios.post(
-        `/verify/${merchantUid}/${userId}/${impUid}`
-      );
-      return response.data.success;
-    } catch (error) {
-      console.error("결제 검증 요청 에러:", error);
-      return false;
-    }
-  };
+const KakaoPayv1: React.FC = () => {
+  useEffect(() => {
+    // 포트원 라이브러리 추가
+    addPortoneLib();
+  }, []);
 
   return (
     <>
-      <button onClick={() => onclickPay("kakaopay", "kakaopay")}>
-        카카오페이 결제
-      </button>
+      <p>결제중</p>
     </>
   );
 };

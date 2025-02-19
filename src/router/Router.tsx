@@ -11,6 +11,7 @@ import PaymentPage from "../pages/payment/PaymentPage";
 import ReservationHistoryPage from "../pages/reservationHistory/ReservationHistoryPage";
 import SelectDatePage from "../pages/selectDate/SelectDatePage";
 import SelectProcessPage from "../pages/selectProcess/SelectProcessPage";
+import FilterPage from "../pages/filter/FilterPage";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
         element: <DesignerListPage />,
       },
       {
-        path: "/designer-detail",
+        path: "/designer-detail/:designerId",
         element: <DesignerDetailPage />,
       },
       {
@@ -37,7 +38,7 @@ const router = createBrowserRouter([
         element: <SelectDatePage />,
       },
       {
-        path: "/payment",
+        path: "/payment/:reservationId",
         element: <PaymentPage />,
       },
       {
