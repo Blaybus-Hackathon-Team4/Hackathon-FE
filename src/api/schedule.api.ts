@@ -1,14 +1,22 @@
 import { AxiosError } from "axios";
 import { api } from "./api";
 
-export const GetDesignerSchedule = async () => {
+type GetDesignerSchedule = {
+  designerId: string;
+  date: string;
+};
+
+export const GetDesignerSchedule = async ({
+  designerId,
+  date,
+}: GetDesignerSchedule) => {
   const path = "/schedule/readDesignerTimeSchedule";
 
   try {
     const response = await api.get(path, {
       params: {
-        designerId: "1",
-        date: "2025-02-17",
+        designerId,
+        date,
       },
     });
     const data = response.data;
@@ -30,7 +38,7 @@ export const GetDesignerSchedule = async () => {
 };
 
 // export const UpdateDesignerSchedule = async (reservationData) => {
-//   const path = "/api/v1/schedule/updateDesignerTimeSchedule";
+//   const path = "/schedule/updateDesignerTimeSchedule";
 
 //   try {
 //     const response = await api.patch(path, reservationData);
