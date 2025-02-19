@@ -4,7 +4,6 @@ import { IrequestData } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
-import { useReservationStore } from "../../../zustand/reservation.store";
 
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
