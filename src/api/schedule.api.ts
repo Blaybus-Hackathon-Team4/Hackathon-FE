@@ -1,15 +1,7 @@
 import { AxiosError } from "axios";
 import { api } from "./api";
 
-type GetDesignerSchedule = {
-  designerId: string;
-  date: string;
-};
-
-export const GetDesignerSchedule = async ({
-  designerId,
-  date,
-}: GetDesignerSchedule) => {
+export const GetDesignerSchedule = async (designerId: string, date: string) => {
   const path = "/schedule/readDesignerTimeSchedule";
 
   try {
@@ -24,12 +16,12 @@ export const GetDesignerSchedule = async ({
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(
-        "[GetDesignerSchedule] 디자이너 스케줄 가져오기 실패: ",
+        "[GetDesignerSchedule] 디자이너 스케줄 조회 실패: ",
         error.response?.data || "응답 없음"
       );
     } else {
       console.error(
-        "[GetDesignerSchedule] 디자이너 스케줄 가져오기 실패 - 알 수 없는 에러: ",
+        "[GetDesignerSchedule] 디자이너 스케줄 조회 실패 - 알 수 없는 에러: ",
         error
       );
     }
