@@ -15,6 +15,7 @@ interface DesignerCardProps {
 }
 
 const DesignerCard = ({
+  designerId,
   profilePhoto,
   name,
   field,
@@ -23,17 +24,16 @@ const DesignerCard = ({
   isOnline,
   isOffline,
 }: DesignerCardProps) => {
-  // 이미지 경로 확인 및 기본 이미지 적용
-  const validProfilePhoto = profilePhoto && profilePhoto.startsWith("/src/assets/designer/")
-    ? profilePhoto
+  console.log(`Rendering DesignerCard for designerId: ${designerId}`);
+
+  // profilePhoto가 존재하면 public/designer/ 경로로 설정
+  const validProfilePhoto = profilePhoto
+    ? `/designer/${profilePhoto}`
     : DefaultProfile;
-  
+
   return (
     <Card>
-      <ProfileImage
-        src={validProfilePhoto || DefaultProfile}
-        alt="디자이너 프로필"
-      />
+      <ProfileImage src={validProfilePhoto} alt="디자이너 프로필" />
       <Info>
         <Name>
           {name} <Separator>|</Separator> <Location>{location}</Location>
