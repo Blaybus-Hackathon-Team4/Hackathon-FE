@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { api } from "../../api/api.ts";
 import DesignerCard from "./components/DesignerCard";
@@ -25,6 +26,8 @@ const DesignerListPage = () => {
   const [designers, setDesigners] = useState<Designer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null); // 에러 메시지 상태 추가
+  const navigate = useNavigate(); // useNavigate 훅 추가
+
 
   const getDesignerList = async () => {
     setLoading(true);
@@ -65,29 +68,30 @@ const DesignerListPage = () => {
     getDesignerList();
   }, []);
 
+  const handleDesignerClick = (designerId: number) => {
+    navigate(`/designer-list/${designerId}`);
+  };
+
   return (
     <Container>
-      {/* 필터 버튼 영역 */}
       <FilterContainer>
         {filters.map((filter, index) => (
           <FilterButton key={index} label={filter} />
         ))}
       </FilterContainer>
 
-      {/* 에러 메시지 표시 */}
       {error && <ErrorMessage>{error}</ErrorMessage>}
 
-      {/* 데이터 로딩 상태 */}
       {loading ? (
         <p>로딩 중...</p>
       ) : (
         <DesignerList>
           {designers.length > 0 ? (
             designers.map((designer, index) => (
-              <div key={designer.designerId}>
+              <DesignerCardWrapper key={designer.designerId} onClick={() => handleDesignerClick(designer.designerId)}>
                 <DesignerCard {...designer} name={designer.name ?? "이름 없음"} />
                 {index !== designers.length - 1 && <Divider />}
-              </div>
+              </DesignerCardWrapper>
             ))
           ) : (
             <p>디자이너가 없습니다.</p>
@@ -101,6 +105,13 @@ const DesignerListPage = () => {
 export default DesignerListPage;
 
 // 스타일 정의
+const DesignerCardWrapper = styled.div`
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
 const Container = styled.div`
   padding: 16px;
 `;
