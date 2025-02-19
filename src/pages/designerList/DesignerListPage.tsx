@@ -3,166 +3,54 @@ import styled from "styled-components";
 import DesignerCard from "./components/DesignerCard";
 import Divider from "./components/Divider";
 import FilterButton from "./components/FilterButton";
-import { useNavigate } from "react-router-dom";
-//import {theme} from "../../styles/theme.ts";
+import { useNavigate, useLocation } from "react-router-dom";
+import { api } from "../../api/api";
+import React, { useEffect, useState } from "react";
 
-// 정적인 데이터 (디자인을 미리 확인하기 위함)
-const designers = [
-  {
-    designerId: 1004,
-    profilePhoto: "/designer/1004.jpg",
-    name: "이초 디자이너",
-    field: "펌",
-    location: "강남/청담/압구정",
-    text: "레드벨벳, ITZY가 방문하는 샵",
-    isOnline: false,
-    isOffline: true,
-  },
-  {
-    designerId: 1012,
-    profilePhoto: "/designer/1012.jpg",
-    name: "로로 원장",
-    field: "펌",
-    location: "홍대/연남/합정",
-    text: "화이트 베이지 브라운 전문",
-    isOnline: false,
-    isOffline: true,
-  },
-  {
-    designerId: 1013,
-    name: "슈 대표원장",
-    profilePhoto: "/designer/1013.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1005,
-    name: "랑 원장",
-    profilePhoto: "/designer/1005.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1006,
-    name: "히지 디자이너",
-    profilePhoto: "/designer/1006.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1007,
-    name: "현영 디자이너",
-    profilePhoto: "/designer/1007.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1008,
-    name: "현영 디자이너",
-    profilePhoto: "../../assets/designer/1008.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1009,
-    name: "나나 디자이너",
-    profilePhoto: "../../assets/designer/1009.jpeg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1010,
-    name: "나나 디자이너",
-    profilePhoto: "../assets/designer/1010.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1011,
-    name: "주 디자이너",
-    profilePhoto: "../../assets/designer/1011.jpg",
-    field: "염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1012,
-    name: "이아 디자이너",
-    profilePhoto: "../../assets/designer/1012.jpg",
-    field: "펌",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1013,
-    name: "희 수석 디자이너",
-    profilePhoto: "../../assets/designer/1013.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1014,
-    name: "유하 디자이너",
-    profilePhoto: "../../../designer/1014.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1015,
-    name: "미미 컬러리스트",
-    profilePhoto: "../../../assets/designer/1015.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-  {
-    designerId: 1016,
-    name: "하루 컬러리스트",
-    profilePhoto: "../../../assets/designer/1016.jpg",
-    field: "탈염색",
-    location: "홍대/연남/합정",
-    text: "차별화 된 탈색 & 염색 노하우 기법, 꼼꼼한 컨설팅",
-    isOnline: true,
-    isOffline: true,
-  },
-];
+export type DesignerType = {
+  designerId: number; // 디자이너 고유 ID
+  name: string;
+  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
+  field: string; // 전문 분야 (ex: "펌")
+  location: string; // 위치 (ex: "성수/건대")
+  offPrice: number; // 오프라인 가격
+  onPrice: number; // 온라인 가격
+  isOnline: boolean; // 온라인 서비스 여부
+  isOffline: boolean; // 오프라인 서비스 여부
+  rating: number; // 평점 (ex: 60 → 6.0점)
+  text: string; // 디자이너 소개 텍스트
+};
 
 const DesignerListPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const field = location.state?.field || null
+  console.log(field, location)
   const filters = ["지역", "가격대", "상담방식", "전문 분야"];
+  const [designers, setDesignerss] = useState<DesignerType[]>([]);
+
+  useEffect(() => {
+      getDesignerList();
+    }, []);
+
+  const getDesignerList = async () => {
+      try {
+        const response = await api.post("/designer/readDesignerList", {
+          location: null, // 지역구(건대/성수 <= 이런식으로 요청 가능)
+          field: field, // 전문 분야 (4가지 중 1개, 추가 필요시 요청)
+          isOnline: true, // 비대면 찾고 싶으면 true
+          isOffline: true, // 대면 찾고 싶으면 true
+          minPrice: null, // 최소 금액 null 가능
+          maxPrice: null, // 최대 금액 => 최소 금액이 최대 금액보다 큰 경우 오류 반환됨 null 가능
+        });
+        setDesignerss(response.data.responseDto);
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching designer list:", error);
+        throw error;
+      }
+    };
+
 
   const handleDesignerClick = (designerId: number) => {
     navigate(`/designer-detail/${designerId}`);

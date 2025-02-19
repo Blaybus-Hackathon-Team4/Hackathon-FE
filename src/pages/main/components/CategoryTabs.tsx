@@ -18,7 +18,6 @@ const categories = [
 
 const CategoryTabs: React.FC = () => {
   const navigate = useNavigate();
-
   const handleCategoryClick = (field: string) => {
     navigate("/designer-list", { state: { field } });
   };
