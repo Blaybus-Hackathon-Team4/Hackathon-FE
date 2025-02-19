@@ -26,6 +26,7 @@ export interface IrequestData {
   status: StatusType;
 }
 export interface ISelectedInfo {
+  reservationId?: number;
   currentMonth: number; // 현재 월 (1~12)
   selectedProcess: "대면" | "비대면"; // "대면" 또는 "비대면" 값만 허용
   startDate: Date; // JavaScript Date 객체 사용
@@ -35,7 +36,11 @@ const PaymentPage: React.FC = () => {
   const { reservationId } = useParams();
 
   const location = useLocation();
-  const selectedInfo: ISelectedInfo = { ...location.state };
+  const selectedInfo: ISelectedInfo = {
+    ...location.state,
+    reservationId: Number(reservationId), // ❗ `reservationId`를 숫자로 변환 후 추가
+  };
+
   console.log(selectedInfo);
 
   const [reservationInfo, setReservationInfo] = useState<IrequestData>({

@@ -27,6 +27,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   }, []);
 
   const navigateConfirmationPage = () => {
+    console.log(selectedInfo);
     navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
       state: selectedInfo,
     });
