@@ -12,6 +12,7 @@ import {
   DesignerDetailResponse,
 } from "../../types/designer.type";
 import { useReservationStore } from "../../zustand/reservation.store";
+import BackHeader from "./components/BackHeader";
 
 const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,6 +38,7 @@ const DesignerDetailPage: React.FC = () => {
 
   return (
     <>
+      <BackHeader />
       {designerData && (
         <DivWrapper>
           <SectionWrapper>
