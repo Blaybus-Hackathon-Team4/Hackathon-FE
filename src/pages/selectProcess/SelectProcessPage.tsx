@@ -22,9 +22,7 @@ const SelectProcessPage = () => {
   };
 
   const handleGoToSelectDatePage = () => {
-    // 컨설팅 방식 전역 상태에 저장
-    if (selectedCard) setProcess(selectedCard);
-    navigate("/select-date");
+    navigate("/select-date", { state: selectedCard });
   };
 
   return (

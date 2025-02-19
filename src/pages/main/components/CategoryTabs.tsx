@@ -45,7 +45,9 @@ const Tab = styled.button`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 8px;
+  color: ${({ theme }) => theme.colors.gray[900]};
 `;
 const TabImg = styled.img`
   width: 64px;
