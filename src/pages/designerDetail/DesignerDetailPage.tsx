@@ -2,10 +2,16 @@ import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import "../../styles/scroll.css";
 
+import { useQuery } from "@tanstack/react-query";
+import { GetDesignerDetailInfo } from "../../api/designer.api";
 import DesignerIcon from "../../assets/icons/image_designer.svg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
+import {
+  DesignerDetail,
+  DesignerDetailResponse,
+} from "../../types/designer.type";
 import { useReservationStore } from "../../zustand/reservation.store";
 
 const DesignerDetailPage = () => {
@@ -19,65 +25,82 @@ const DesignerDetailPage = () => {
     navigate("/select-process");
   };
 
+  const { data: designerData } = useQuery<
+    DesignerDetailResponse,
+    Error,
+    DesignerDetail
+  >({
+    queryKey: ["designer", designerId],
+    queryFn: async () => await GetDesignerDetailInfo(designerId!),
+    enabled: !!designerId,
+    refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
+    select: (data) => data.responseDto,
+  });
+
   return (
     <>
-      <DivWrapper>
-        <SectionWrapper>
-          <img src={DesignerIcon} alt="designer-profile" />
-          <Name>이초 디자이너</Name>
-          <Introduction>레드벨벳, ITZY가 방문하는 샵</Introduction>
-          <StDiv>
-            <DivBox $profession>펌</DivBox>
-            <DivBox>대면</DivBox>
-            <DivBox>비대면</DivBox>
-          </StDiv>
-          <StDiv_2>
-            <Consulting>
-              <ConsultingDetail>
-                <TextWithImg>
-                  <img src={MoneyIcon} alt="money" />
-                  <Text $light>대면 컨설팅</Text>
-                </TextWithImg>
-                <Divider></Divider>
-                <Text>
-                  <Text $bold>40,000</Text>원
-                </Text>
-              </ConsultingDetail>
-              <ConsultingDetail>
-                <TextWithImg>
-                  <img
-                    src={MoneyIcon}
-                    alt="money"
-                    style={{ visibility: "hidden" }}
-                  />
-                  <Text $light>비대면 컨설팅</Text>
-                </TextWithImg>
-                <Divider></Divider>
-                <Text>
-                  <Text $bold>20,000</Text>원
-                </Text>
-              </ConsultingDetail>
-            </Consulting>
-            <TextWithImg>
-              <img
-                src={MapPinIcon}
-                alt="map-pin"
-                width={16.67}
-                height={16.67}
-              />
-              <Text $light>서울 강남구 압구정로79길</Text>
-            </TextWithImg>
-          </StDiv_2>
-        </SectionWrapper>
-        <Line />
-        <SectionWrapper>
-          <StH3>헤어컨설팅 포트폴리오</StH3>
-          <img src={VideoIcon} alt="video" style={{ width: "100%" }} />
-        </SectionWrapper>
-        <ButtonBox>
-          <Button onClick={handleGoToSelectProcessPage}>컨설팅 예약신청</Button>
-        </ButtonBox>
-      </DivWrapper>
+      {designerData && (
+        <DivWrapper>
+          <SectionWrapper>
+            <img src={DesignerIcon} alt={designerData.profilePhoto} />
+            <Name>{designerData.name}</Name>
+            <Introduction>{designerData.text}</Introduction>
+            <StDiv>
+              <DivBox $profession>{designerData.field}</DivBox>
+              {designerData.isOffline && <DivBox>대면</DivBox>}
+              {designerData.isOnline && <DivBox>비대면</DivBox>}
+            </StDiv>
+            <StDiv_2>
+              <Consulting>
+                <ConsultingDetail>
+                  <TextWithImg>
+                    <img src={MoneyIcon} alt="money" />
+                    <Text $light>대면 컨설팅</Text>
+                  </TextWithImg>
+                  <Divider></Divider>
+                  <Text>
+                    <Text $bold>{designerData.offPrice.toLocaleString()}</Text>
+                    원
+                  </Text>
+                </ConsultingDetail>
+                <ConsultingDetail>
+                  <TextWithImg>
+                    <img
+                      src={MoneyIcon}
+                      alt="money"
+                      style={{ visibility: "hidden" }}
+                    />
+                    <Text $light>비대면 컨설팅</Text>
+                  </TextWithImg>
+                  <Divider></Divider>
+                  <Text>
+                    <Text $bold>{designerData.onPrice.toLocaleString()}</Text>원
+                  </Text>
+                </ConsultingDetail>
+              </Consulting>
+              <TextWithImg>
+                <img
+                  src={MapPinIcon}
+                  alt="map-pin"
+                  width={16.67}
+                  height={16.67}
+                />
+                <Text $light>{designerData.location}</Text>
+              </TextWithImg>
+            </StDiv_2>
+          </SectionWrapper>
+          <Line />
+          <SectionWrapper>
+            <StH3>헤어컨설팅 포트폴리오</StH3>
+            <img src={VideoIcon} alt="video" style={{ width: "100%" }} />
+          </SectionWrapper>
+          <ButtonBox>
+            <Button onClick={handleGoToSelectProcessPage}>
+              컨설팅 예약신청
+            </Button>
+          </ButtonBox>
+        </DivWrapper>
+      )}
     </>
   );
 };
