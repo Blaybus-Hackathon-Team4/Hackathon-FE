@@ -60,7 +60,7 @@ export const onclickPay = async (
     amount: price,
     buyer_email: email || "",
     buyer_name: name || "",
-    m_redirect_url: `https://heartz4.vercel.app/confirmation/${selectedMethod.toLocaleLowerCase()}/${reservationId}`,
+    m_redirect_url: `https://heartz4.vercel.app/payment/${reservationId}`,
   };
 
   return new Promise((resolve) => {
