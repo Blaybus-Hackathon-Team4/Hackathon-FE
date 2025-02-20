@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
-import faceToFaceIcon from "../../../assets/icons/face-to-face-icon.svg"; // 상대 경로 유지
-import nonFaceToFaceIcon from "../../../assets/icons/non-face-to-face-icon.svg"; // 상대 경로 유지
+import faceToFaceIcon from "../../../assets/icons/face-to-face-icon.svg"; 
+import nonFaceToFaceIcon from "../../../assets/icons/non-face-to-face-icon.svg"; 
 
 interface ConsultButtonProps {
   type: "대면" | "비대면";
@@ -10,7 +10,7 @@ interface ConsultButtonProps {
 }
 
 const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
-  const imageSrc = type === "대면" ? faceToFaceIcon : nonFaceToFaceIcon; // 항상 동일한 이미지 유지
+  const imageSrc = type === "대면" ? faceToFaceIcon : nonFaceToFaceIcon;
 
   return (
     <StyledButton isSelected={isSelected} onClick={onClick}>
@@ -24,23 +24,34 @@ const ConsultButton = ({ type, isSelected, onClick }: ConsultButtonProps) => {
 
 export default ConsultButton;
 
-// 스타일 유지
+// ✅ 버튼 스타일 수정
 const StyledButton = styled.button<{ isSelected: boolean }>`
   width: 167px;
   height: 175px;
-  border: 1px solid
-    ${(props) =>
-      props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300]};
-  background-color: ${(props) =>
-    props.isSelected ? theme.colors.primary[50] : "white"};
+  border-radius: 10px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  border-radius: 10px;
-  gap: 10px;
   position: relative;
+  gap: 10px;
+
+  //* ✅ 기본 상태 (처음 페이지 진입 시 선택되지 않음) */
+  border: 1px solid ${theme.colors.gray[300]};
+  background-color: ${theme.colors.white};
+  color: ${theme.colors.gray[300]};
+  font-weight: medium;
+
+  /* ✅ 버튼이 선택된 경우 */
+  ${({ isSelected }) =>
+    isSelected &&
+    `
+    border: 1px solid ${theme.colors.primary[500]};
+    background-color: ${theme.colors.primary[50]};
+    color: ${theme.colors.primary[500]};
+    font-weight: bold;
+  `}
 `;
 
 const IconWrapper = styled.div`
@@ -60,8 +71,8 @@ const Icon = styled.img`
 const Text = styled.span<{ isSelected: boolean }>`
   position: absolute;
   bottom: 10px;
-  color: ${(props) =>
-    props.isSelected ? theme.colors.primary[500] : theme.colors.gray[300]};
-  font-weight: ${(props) => (props.isSelected ? "bold" : "medium")};
+  color: ${({ isSelected }) =>
+    isSelected ? theme.colors.primary[500] : theme.colors.gray[300]};
+  font-weight: ${({ isSelected }) => (isSelected ? "bold" : "medium")};
   font-size: 14px;
 `;
