@@ -41,7 +41,6 @@ export const onclickPay = async (
   email: string | null,
   price: number | number,
   designerName: string | null,
-  selectedMethod: "KAKAO" | "BANK",
   reservationId: number
 ): Promise<number> => {
   const { IMP } = window;

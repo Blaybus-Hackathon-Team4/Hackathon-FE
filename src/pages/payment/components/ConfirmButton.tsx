@@ -57,7 +57,6 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
         email,
         price,
         designerName,
-        selectedMethod,
         reservationInfo.reservationId
       );
 
