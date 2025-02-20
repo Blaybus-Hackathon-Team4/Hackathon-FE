@@ -14,8 +14,8 @@ interface FilterState {
 export const useFilterStore = create<FilterState>((set) => ({
   location: null,
   field: null,
-  isOnline: true,
-  isOffline: true,
+  isOnline: false, //선택 초기화 시 false
+  isOffline: false, //선택 초기화 시 false
   minPrice: null,
   maxPrice: null,
   setFilters: (filters) => set((state) => ({ ...state, ...filters })),
