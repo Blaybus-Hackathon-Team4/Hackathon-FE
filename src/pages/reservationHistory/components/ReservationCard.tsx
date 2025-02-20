@@ -24,6 +24,8 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
   price,
   location,
   link,
+  paymentId,
+  // onClick,
 }) => {
   const isCancellable = status === "결제 완료" || status === "입금 대기 중"; // 취소 가능 상태 체크
 
@@ -41,7 +43,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({
           비대면: <a href={link}>{link}</a>
         </Info>
       )}
-      {isCancellable && <CancelButton />} {/* 상태가 "결제 완료" 또는 "입금 대기 중"일 때만 버튼 표시 */}
+      {isCancellable && <CancelButton paymentId={paymentId} />}
     </Card>
   );
 };
