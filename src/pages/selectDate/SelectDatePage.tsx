@@ -140,7 +140,9 @@ const SelectDatePage = () => {
       designerId: Number(designerId!),
       date: formattedDate,
       time: selectedTime,
-      createdAt: new Date().toISOString(),
+      createdAt: new Date(
+        new Date().getTime() + 9 * 60 * 60 * 1000
+      ).toISOString(),
       isOnline: process === "비대면",
     });
   };

@@ -2,17 +2,10 @@ import { create } from "zustand";
 import { persist, PersistStorage } from "zustand/middleware";
 
 interface ModalState {
-  isLoginModalOpen: boolean;
-  openLoginModal: () => void;
-  closeLoginModal: () => void;
-
-  isReservationModalOpen: boolean;
-  openReservationModal: () => void;
-  closeReservationModal: () => void;
-
-  isCancelModalOpen: boolean;
-  openCancelModal: () => void;
-  closeCancelModal: () => void;
+  isModalOpen: boolean;
+  modalElement: React.ReactElement | null;
+  openModal: (element: React.ReactElement) => void;
+  closeModal: () => void;
 }
 
 const sessionStoragePersist: PersistStorage<ModalState> = {
@@ -31,17 +24,11 @@ const sessionStoragePersist: PersistStorage<ModalState> = {
 export const useModalStore = create<ModalState>()(
   persist(
     (set) => ({
-      isLoginModalOpen: false,
-      openLoginModal: () => set({ isLoginModalOpen: true }),
-      closeLoginModal: () => set({ isLoginModalOpen: false }),
-
-      isReservationModalOpen: false,
-      openReservationModal: () => set({ isReservationModalOpen: true }),
-      closeReservationModal: () => set({ isReservationModalOpen: false }),
-
-      isCancelModalOpen: false,
-      openCancelModal: () => set({ isCancelModalOpen: true }),
-      closeCancelModal: () => set({ isCancelModalOpen: false }),
+      isModalOpen: false,
+      modalElement: null,
+      openModal: (element: React.ReactElement) =>
+        set({ isModalOpen: true, modalElement: element }),
+      closeModal: () => set({ isModalOpen: false, modalElement: null }),
     }),
     {
       name: "modalStore",
