@@ -8,9 +8,13 @@ interface CancelButtonProps {
 }
 
 const CancelButton: React.FC<CancelButtonProps> = ({ onClick }) => {
-  const { openCancelModal } = useModalStore();
+  const { openModal } = useModalStore();
 
-  return <Button onClick={onClick || openCancelModal}>예약 취소</Button>;
+  return (
+    <Button onClick={onClick || (() => openModal(<div>예약 취소 모달</div>))}>
+      예약 취소
+    </Button>
+  );
 };
 
 export default CancelButton;
