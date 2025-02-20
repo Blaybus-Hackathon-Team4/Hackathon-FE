@@ -1,4 +1,5 @@
 import React from "react";
+import { useParams } from "react-router";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 import { useModalStore } from "../../../zustand/modal.store";
@@ -10,6 +11,7 @@ interface CancelButtonProps {
 
 const CancelButton: React.FC<CancelButtonProps> = ({ onClick }) => {
   const { openModal } = useModalStore();
+  const paymentId = useParams();
 
   // 여기서 Modal 컴포넌트를 정의하여 openModal에 전달
   const handleOpenModal = () => {
