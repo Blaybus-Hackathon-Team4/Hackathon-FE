@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
 import { GetDesignerDetailInfo } from "../../api/designer.api";
-import DesignerIcon from "../../assets/icons/image_designer.svg";
+import DefaultProfile from "../../assets/images/designer1.jpg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
@@ -45,13 +45,17 @@ const DesignerDetailPage: React.FC = () => {
     select: (data) => data.responseDto,
   });
 
+  const validProfilePhoto = designerData?.profilePhoto?.trim()
+  ? `/designer/${designerData.profilePhoto}`
+  : DefaultProfile;
+
   return (
     <>
       <BackHeader />
       {designerData && (
         <DivWrapper>
           <SectionWrapper>
-            <img src={DesignerIcon} alt={designerData.profilePhoto} />
+            <img src={validProfilePhoto} alt={designerData.profilePhoto} />
             <Name>{designerData.name}</Name>
             <Introduction>{designerData.text}</Introduction>
             <StDiv>
