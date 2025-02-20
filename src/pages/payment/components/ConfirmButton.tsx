@@ -56,7 +56,9 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
         name,
         email,
         price,
-        designerName
+        designerName,
+        selectedMethod,
+        reservationInfo.reservationId
       );
 
       if (resultCode === 200) {
@@ -104,14 +106,7 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
 export default ConfirmButton;
 
 const BottomContainer = styled.div`
-  position: fixed;
   width: 100%;
-  max-width: 480px;
-
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%); /* 중앙 정렬 */
-  background-color: white;
   padding: 20px;
 `;
 const Button = styled.button`
