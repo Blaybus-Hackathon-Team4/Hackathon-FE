@@ -1,5 +1,7 @@
+import LoginModal from "../login/components/LoginModal";
+
 const MyPage = () => {
-  return <div>마이페이지</div>;
+  return <LoginModal />;
 };
 
 export default MyPage;

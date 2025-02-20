@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useModalStore } from "../zustand/modal.store";
 
 const { VITE_BASE_URL } = import.meta.env;
 
@@ -29,8 +28,8 @@ api.interceptors.response.use(
     if (error.response.status === 401) {
       console.warn("401 Unauthorized: 액세스 토큰 만료됨.");
 
-      // ✅ 로그인 모달 오픈 (Zustand 사용)
-      useModalStore.getState().openLoginModal();
+      // // ✅ 로그인 모달 오픈 (Zustand 사용)
+      // useModalStore.getState().openModal(<LoginModal />);
 
       // ✅ 서버에 리프레시 토큰 요청 (httpOnly 쿠키 사용)
       try {

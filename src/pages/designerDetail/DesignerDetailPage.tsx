@@ -11,15 +11,24 @@ import {
   DesignerDetail,
   DesignerDetailResponse,
 } from "../../types/designer.type";
+import { useModalStore } from "../../zustand/modal.store";
 import { useReservationStore } from "../../zustand/reservation.store";
+import { useUserStore } from "../../zustand/user.store";
+import LoginModal from "../login/components/LoginModal";
 import BackHeader from "./components/BackHeader";
 
 const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { designerId } = useParams();
+  const { isLoggedIn } = useUserStore();
   const { setDesignerId } = useReservationStore();
+  const { openModal } = useModalStore();
 
   const handleGoToSelectProcessPage = () => {
+    if (!isLoggedIn) {
+      openModal(<LoginModal />);
+      return;
+    }
     if (designerId) setDesignerId(designerId);
     navigate("/select-process");
   };
