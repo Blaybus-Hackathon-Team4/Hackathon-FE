@@ -61,8 +61,6 @@ export const onclickPay = async (
     m_redirect_url: "",
   };
 
-  console.log("data:", data);
-
   return new Promise((resolve) => {
     IMP.request_pay(data, async (response: RequestPayResponse) => {
       if (!response.success) {
@@ -71,18 +69,15 @@ export const onclickPay = async (
         return;
       }
 
-      console.log("결제 성공:", response);
+      //console.log("결제 성공:", response.imp_uid);
 
       // 결제 검증 요청
       try {
-        const verifyResponse = await api.post(
-          `/pay/portone?imp_uid=${response.imp_uid}`,
-          {
-            imp_uid: response.imp_uid,
-          }
-        );
-
-        if (verifyResponse.data.success) {
+        console.log("imp_uid 값 확인:", response.imp_uid);
+        const verifyResponse = await api.post(`/pay/portone`, {
+          impuid: response.imp_uid,
+        });
+        if (verifyResponse.status === 200) {
           console.log(`결제 검증 성공! 결제 금액: ${response.paid_amount}원`);
           console.log(`영수증 URL: ${response.receipt_url}`);
           resolve(200); // 성공 코드 반환
