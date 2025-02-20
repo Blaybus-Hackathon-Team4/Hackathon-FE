@@ -41,7 +41,7 @@ const StyledButton = styled.button<{ isSelected: boolean }>`
   border: 1px solid ${theme.colors.gray[300]};
   background-color: ${theme.colors.white};
   color: ${theme.colors.gray[300]};
-  font-weight: medium;
+  font-weight: 500;
 
   /* ✅ 버튼이 선택된 경우 */
   ${({ isSelected }) =>
