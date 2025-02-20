@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { IrequestData, ISelectedInfo } from "../PaymentPage";
+import { IrequestData } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
+import { useUserStore } from "../../../zustand/user.store";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
   reservationInfo: IrequestData;
-  selectedInfo: ISelectedInfo;
 }
 
 const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   selectedMethod,
   reservationInfo,
-  selectedInfo,
 }) => {
+  //const { process, price } = useReservationStore();
+  const { name, email } = useUserStore();
+  const { price, name: designerName, setPrice } = useReservationStore();
   const navigate = useNavigate();
   useEffect(() => {
     // 포트원 라이브러리 추가
@@ -27,9 +30,14 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   }, []);
 
   const navigateConfirmationPage = () => {
-    navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`, {
-      state: selectedInfo,
-    });
+    navigate(
+      `/confirmation/${selectedMethod.toLocaleLowerCase()}/${
+        reservationInfo.reservationId
+      }`,
+      {
+        state: reservationInfo,
+      }
+    );
   };
   const handlePayment = async () => {
     if (selectedMethod === "BANK") {
@@ -39,8 +47,17 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
     } else if (selectedMethod === "KAKAO") {
       console.log("카카오페이 결제 진행");
       //카카오페이 결제 진행
-
-      const resultCode = await onclickPay("kakaopay", "kakaopay");
+      if (price === null) {
+        setPrice(100);
+      }
+      const resultCode = await onclickPay(
+        "kakaopay",
+        "kakaopay",
+        name,
+        email,
+        price,
+        designerName
+      );
 
       if (resultCode === 200) {
         console.log("결제 성공!");
@@ -60,13 +77,14 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
 
   const postReservationAdditional = async (reservationInfo: IrequestData) => {
     try {
+      console.log("서버로 보내는 정보:", reservationInfo);
       const response = await api.post(
         "/reservation/reservationadditonal",
         reservationInfo
       );
       console.log("예약 추가정보 전송 성공:", response.data);
 
-      navigate(`/confirmation/${selectedMethod.toLocaleLowerCase()}`);
+      navigateConfirmationPage();
       return response.data;
     } catch (error) {
       console.error("예약 추가 요청 실패:", error);

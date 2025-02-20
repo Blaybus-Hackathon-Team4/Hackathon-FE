@@ -1,134 +1,106 @@
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router";
 import styled from "styled-components";
-import "../../styles/scroll.css";
-
-import { useEffect, useState } from "react";
-import { api } from "../../api/api";
-
+import { GetDesignerDetailInfo } from "../../api/designer.api";
 import DesignerIcon from "../../assets/icons/image_designer.svg";
 import MapPinIcon from "../../assets/icons/map_pin.svg";
 import MoneyIcon from "../../assets/icons/money.svg";
 import VideoIcon from "../../assets/icons/video.svg";
+import "../../styles/scroll.css";
+import {
+  DesignerDetail,
+  DesignerDetailResponse,
+} from "../../types/designer.type";
 import { useReservationStore } from "../../zustand/reservation.store";
-
-
-export type DesignerType = {
-  designerId: number; // 디자이너 고유 ID
-  name: string;
-  profilePhoto: string | null; // 프로필 사진 (없을 경우 null)
-  field: string; // 전문 분야 (ex: "펌")
-  location: string; // 위치 (ex: "성수/건대")
-  offPrice: number; // 오프라인 가격
-  onPrice: number; // 온라인 가격
-  isOnline: boolean; // 온라인 서비스 여부
-  isOffline: boolean; // 오프라인 서비스 여부
-  rating: number; // 평점 (ex: 60 → 6.0점)
-  text: string; // 디자이너 소개 텍스트
-};
+import BackHeader from "./components/BackHeader";
 
 const DesignerDetailPage: React.FC = () => {
   const navigate = useNavigate();
   const { designerId } = useParams();
   const { setDesignerId } = useReservationStore();
-  const [designerDetail, setDesignerDetail] = useState<DesignerType | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
-
-  useEffect(() => {
-    if (designerId) {
-      fetchDesignerDetail();
-    }
-  }, [designerId]);
-
-
-  const fetchDesignerDetail = async () => {
-    try {
-      const response = await api.get(`/designer/readDesignerDetail/${designerId}`);
-      setDesignerDetail(response.data.responseDto);
-    } catch (error) {
-      console.error("Error fetching designer detail:", error);
-      setError("디자이너 정보를 가져오는 데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoToSelectProcessPage = () => {
     if (designerId) setDesignerId(designerId);
     navigate("/select-process");
   };
 
-  if (loading) {
-    return <LoadingText>로딩 중...</LoadingText>;
-  }
-
-  if (error) {
-    return <ErrorText>{error}</ErrorText>;
-  }
-
-  if (!designerDetail) {
-    return <ErrorText>디자이너 정보가 없습니다.</ErrorText>;
-  }
+  const { data: designerData } = useQuery<
+    DesignerDetailResponse,
+    Error,
+    DesignerDetail
+  >({
+    queryKey: ["designer", designerId],
+    queryFn: async () => await GetDesignerDetailInfo(designerId!),
+    enabled: !!designerId,
+    refetchOnWindowFocus: false, // 다른 창을 봤다가 다시 현재 브라우저에 포커스 했을 때 리페칭을 막음
+    select: (data) => data.responseDto,
+  });
 
   return (
     <>
-      <DivWrapper>
-        <SectionWrapper>
-          <img src={DesignerIcon} alt="designer-profile" />
-          <Name>{designerDetail.name}</Name>
-          <Introduction>{designerDetail.text}</Introduction>
-          <StDiv>
-            <DivBox $profession>{designerDetail.field}</DivBox>
-            <DivBox>{designerDetail.isOffline ? "대면" : ""}</DivBox>
-            <DivBox>{designerDetail.isOnline ? "비대면" : ""}</DivBox>
-          </StDiv>
-          <StDiv_2>
-            <Consulting>
-              <ConsultingDetail>
-                <TextWithImg>
-                  <img src={MoneyIcon} alt="money" />
-                  <Text $light>대면 컨설팅</Text>
-                </TextWithImg>
-                <Divider />
-                <Text>
-                  <Text $bold>{designerDetail.offPrice}</Text> 원
-                </Text>
-              </ConsultingDetail>
-              <ConsultingDetail>
-                <TextWithImg>
-                  <img
-                    src={MoneyIcon}
-                    alt="money"
-                    style={{ visibility: "hidden" }}
-                  />
-                  <Text $light>비대면 컨설팅</Text>
-                </TextWithImg>
-                <Divider />
-                <Text>
-                  <Text $bold>{designerDetail.onPrice}</Text> 원
-                </Text>
-              </ConsultingDetail>
-            </Consulting>
-            <TextWithImg>
-              <img
-                src={MapPinIcon}
-                alt="map-pin"
-                width={16.67}
-                height={16.67}
-              />
-              <Text $light>{designerDetail.location}</Text>
-            </TextWithImg>
-          </StDiv_2>
-        </SectionWrapper>
-        <Line />
-        <SectionWrapper>
-          <StH3>헤어컨설팅 포트폴리오</StH3>
-          <img src={VideoIcon} alt="video" style={{ width: "100%" }} />
-        </SectionWrapper>
-        <ButtonBox>
-          <Button onClick={handleGoToSelectProcessPage}>컨설팅 예약신청</Button>
-        </ButtonBox>
-      </DivWrapper>
+      <BackHeader />
+      {designerData && (
+        <DivWrapper>
+          <SectionWrapper>
+            <img src={DesignerIcon} alt={designerData.profilePhoto} />
+            <Name>{designerData.name}</Name>
+            <Introduction>{designerData.text}</Introduction>
+            <StDiv>
+              <DivBox $profession>{designerData.field}</DivBox>
+              {designerData.isOffline && <DivBox>대면</DivBox>}
+              {designerData.isOnline && <DivBox>비대면</DivBox>}
+            </StDiv>
+            <StDiv_2>
+              <Consulting>
+                <ConsultingDetail>
+                  <TextWithImg>
+                    <img src={MoneyIcon} alt="money" />
+                    <Text $light>대면 컨설팅</Text>
+                  </TextWithImg>
+                  <Divider></Divider>
+                  <Text>
+                    <Text $bold>{designerData.offPrice.toLocaleString()}</Text>
+                    원
+                  </Text>
+                </ConsultingDetail>
+                <ConsultingDetail>
+                  <TextWithImg>
+                    <img
+                      src={MoneyIcon}
+                      alt="money"
+                      style={{ visibility: "hidden" }}
+                    />
+                    <Text $light>비대면 컨설팅</Text>
+                  </TextWithImg>
+                  <Divider></Divider>
+                  <Text>
+                    <Text $bold>{designerData.onPrice.toLocaleString()}</Text>원
+                  </Text>
+                </ConsultingDetail>
+              </Consulting>
+              <TextWithImg>
+                <img
+                  src={MapPinIcon}
+                  alt="map-pin"
+                  width={16.67}
+                  height={16.67}
+                />
+                <Text $light>{designerData.location}</Text>
+              </TextWithImg>
+            </StDiv_2>
+          </SectionWrapper>
+          <Line />
+          <SectionWrapper>
+            <StH3>헤어컨설팅 포트폴리오</StH3>
+            <img src={VideoIcon} alt="video" style={{ width: "100%" }} />
+          </SectionWrapper>
+          <ButtonBox>
+            <Button onClick={handleGoToSelectProcessPage}>
+              컨설팅 예약신청
+            </Button>
+          </ButtonBox>
+        </DivWrapper>
+      )}
     </>
   );
 };
@@ -248,17 +220,3 @@ const ButtonBox = styled.div`
   padding: 20px;
   border-top: 0.5px solid ${({ theme }) => theme.colors.gray[100]};
 `;
-
-const LoadingText = styled.p`
-  text-align: center;
-  font-size: 18px;
-  margin-top: 50px;
-`;
-
-const ErrorText = styled.p`
-  text-align: center;
-  color: red;
-  font-size: 18px;
-  margin-top: 50px;
-`;
-

@@ -1,30 +1,29 @@
 import React from "react";
 import styled from "styled-components";
-import { ISelectedInfo } from "../PaymentPage";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
-interface ReservationInfoProps {
-  selectedInfo: ISelectedInfo;
-}
-const PaymentDetails: React.FC<ReservationInfoProps> = ({ selectedInfo }) => {
+const PaymentDetails: React.FC = () => {
+  const { process, price } = useReservationStore();
+
   return (
     <Card>
       <Title>결제 정보</Title>
-      {selectedInfo.selectedProcess === "대면" ? (
+      {process === "대면" ? (
         <Row>
           <span>대면 컨설팅</span>
-          <span>30,000원</span>
+          <span>{price}원</span>
         </Row>
       ) : (
         <Row>
           <span>비대면 컨설팅</span>
-          <span>20,000원</span>
+          <span>{price}원</span>
         </Row>
       )}
 
       <Divider></Divider>
       <Row>
         <strong>결제 금액</strong>
-        <strong>40,000원</strong>
+        <strong>{price}원</strong>
       </Row>
     </Card>
   );

@@ -54,7 +54,6 @@ const TopDesigners: React.FC = () => {
       setIsLoading(false); // ✅ 데이터 요청이 끝나면 로딩 종료
     }
   };
-  console.log(designers);
   return (
     <Container>
       <Title>2030이 많이 찾는 디자이너 TOP 3</Title>
@@ -71,7 +70,7 @@ const TopDesigners: React.FC = () => {
               >
                 <Rank>{index + 1}</Rank>
                 <ProfileImage
-                  src={"/designer/${designer.profilePhoto}"}
+                  src={`/designer/${designer.profilePhoto}`}
                   alt={designer.name}
                 />
                 <DesignerInfo>
