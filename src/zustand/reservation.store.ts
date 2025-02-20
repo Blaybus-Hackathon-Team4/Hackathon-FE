@@ -9,7 +9,7 @@ interface ReservationState {
   time: string | null; // 예약 시간 (예: "11:00:00")
   name: string | null; // 예약자 이름 추가
   address: string | null; // 예약 장소 추가 (대면 예약 시 필요)
-  price: number | null; // 예약 가격 추가
+  price: number; // 예약 가격 추가
   profilePhoto: string | null;
   setDesignerId: (id: string) => void;
   setProcess: (process: Process) => void;
@@ -45,7 +45,7 @@ export const useReservationStore = create<ReservationState>()(
       time: null,
       name: null,
       address: null,
-      price: null,
+      price: 0,
       profilePhoto: null,
       setDesignerId: (id: string) => set({ designerId: id }),
       setProcess: (process: Process) => set({ process }),

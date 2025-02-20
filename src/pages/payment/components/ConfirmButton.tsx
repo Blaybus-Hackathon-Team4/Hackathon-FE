@@ -4,6 +4,8 @@ import { IrequestData } from "../PaymentPage";
 import { api } from "../../../api/api";
 import { addPortoneLib, onclickPay } from "./KakaoPayv1";
 import { useNavigate } from "react-router";
+import { useUserStore } from "../../../zustand/user.store";
+import { useReservationStore } from "../../../zustand/reservation.store";
 
 interface ConfirmButtonProps {
   selectedMethod: "KAKAO" | "BANK";
@@ -15,7 +17,8 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
   reservationInfo,
 }) => {
   //const { process, price } = useReservationStore();
-
+  const { name, email } = useUserStore();
+  const { price, name: designerName, setPrice } = useReservationStore();
   const navigate = useNavigate();
   useEffect(() => {
     // 포트원 라이브러리 추가
@@ -44,8 +47,17 @@ const ConfirmButton: React.FC<ConfirmButtonProps> = ({
     } else if (selectedMethod === "KAKAO") {
       console.log("카카오페이 결제 진행");
       //카카오페이 결제 진행
-
-      const resultCode = await onclickPay("kakaopay", "kakaopay");
+      if (price === null) {
+        setPrice(100);
+      }
+      const resultCode = await onclickPay(
+        "kakaopay",
+        "kakaopay",
+        name,
+        email,
+        price,
+        designerName
+      );
 
       if (resultCode === 200) {
         console.log("결제 성공!");
