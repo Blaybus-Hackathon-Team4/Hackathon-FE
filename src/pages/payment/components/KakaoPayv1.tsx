@@ -40,7 +40,9 @@ export const onclickPay = async (
   name: string | null,
   email: string | null,
   price: number | number,
-  designerName: string | null
+  designerName: string | null,
+  selectedMethod: "KAKAO" | "BANK",
+  reservationId: number
 ): Promise<number> => {
   const { IMP } = window;
   if (!IMP) {
@@ -58,7 +60,7 @@ export const onclickPay = async (
     amount: price,
     buyer_email: email || "",
     buyer_name: name || "",
-    m_redirect_url: "",
+    m_redirect_url: `/confirmation/${selectedMethod.toLocaleLowerCase()}/${reservationId}`,
   };
 
   return new Promise((resolve) => {
