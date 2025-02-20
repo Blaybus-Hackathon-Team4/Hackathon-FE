@@ -8,6 +8,10 @@ const Layout = () => {
       <MobileWrapper>
         <MainContent>
           <Outlet />
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-50 hidden"
+            id="overlay"
+          ></div>
         </MainContent>
         <Navbar />
       </MobileWrapper>
