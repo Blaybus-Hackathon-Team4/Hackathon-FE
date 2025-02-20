@@ -2,15 +2,21 @@ import React from "react";
 import styled from "styled-components";
 import { theme } from "../../../styles/theme";
 import { useModalStore } from "../../../zustand/modal.store";
+import CancelModal from "../components/CancelModal";
 
 interface CancelButtonProps {
-  onClick?: () => void;
+  paymentId: string;
+  // onClick?: () => void;
 }
 
-const CancelButton: React.FC<CancelButtonProps> = ({ onClick }) => {
-  const { openCancelModal } = useModalStore();
+const CancelButton: React.FC<CancelButtonProps> = ({ paymentId }) => {
+  const { openModal } = useModalStore();
 
-  return <Button onClick={onClick || openCancelModal}>예약 취소</Button>;
+  return (
+    <Button onClick={() => openModal(<CancelModal paymentId={paymentId} />)}> {/* ✅ 모달 열기 */}
+      예약 취소
+    </Button>
+  );
 };
 
 export default CancelButton;
