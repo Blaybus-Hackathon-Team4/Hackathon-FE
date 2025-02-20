@@ -7,27 +7,27 @@ interface PriceInputProps {
   onChange: (value: string) => void;
 }
 
-const formatPrice = (value: string) => {
-    // 숫자만 추출하고 천 단위로 콤마 추가
-    const numericValue = value.replace(/\D/g, "");
-    return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
-};
+// const formatPrice = (value: string) => {
+//     // 숫자만 추출하고 천 단위로 콤마 추가
+//     const numericValue = value.replace(/\D/g, "");
+//     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "원";
+// };
 
 const PriceInput = ({ value, onChange }: PriceInputProps) => {
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.replace(/\D/g, "");
-        onChange(formatPrice(inputValue));
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value.replace(/\D/g, ""); // 숫자만 추출
+    onChange(inputValue ? String(Number(inputValue)) : "0"); // 숫자로 변환 후 문자열 처리
+};
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Backspace") {
-          if (value.endsWith("원")) {
-            // 🔹 "원" 글자가 붙어 있을 때는 먼저 "원"을 삭제
-            onChange(value.slice(0, -1));
+const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+        if (value.endsWith("원")) {
+            const newValue = value.slice(0, -1).replace(/\D/g, ""); // 숫자만 남기기
+            onChange(newValue ? String(Number(newValue)) : "0");
             e.preventDefault(); // 기본 Backspace 동작 방지
-          }
         }
-      };
+    }
+    };
   
     return (
       <InputContainer>

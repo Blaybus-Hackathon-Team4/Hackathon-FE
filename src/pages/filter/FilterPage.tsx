@@ -18,6 +18,7 @@ const specialties = ["커트", "펌", "매직", "탈염색"];
 
 const FilterPage = () => {
   const navigate = useNavigate();
+  
   const {
     location,
     field,
@@ -68,10 +69,11 @@ const FilterPage = () => {
             <Title>가격대</Title>
             <PriceInput
               value={maxPrice?.toString() || ""}
-              onChange={(value) => setFilters({ maxPrice: Number(value) })}
+              onChange={(value) => setFilters({ minPrice: Number(20000), maxPrice: Number(value) })}
             />
+            
           </Section>
-
+ㄴ
           <Section>
             <Title>상담 방식</Title>
             <ConsultContainer>

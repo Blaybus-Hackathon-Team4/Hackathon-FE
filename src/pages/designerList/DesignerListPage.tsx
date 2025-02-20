@@ -36,6 +36,7 @@ const DesignerListPage = () => {
   const getDesignerList = async () => {
     setLoading(true);
     setError(null);
+    
 
     const requestData = {
       location,

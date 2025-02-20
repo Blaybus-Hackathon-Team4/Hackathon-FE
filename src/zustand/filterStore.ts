@@ -16,7 +16,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   field: null,
   isOnline: false, //선택 초기화 시 false
   isOffline: false, //선택 초기화 시 false
-  minPrice: null,
+  minPrice: 20000,
   maxPrice: null,
   setFilters: (filters) => set((state) => ({ ...state, ...filters })),
   resetFilters: () => set({ location: null, field: null, isOnline: true, isOffline: true, minPrice: null, maxPrice: null }),  // 필터 초기화
