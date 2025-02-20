@@ -49,7 +49,7 @@ const DesignerListPage = () => {
     console.log("🔍 API 요청 데이터:", requestData);
 
     try {
-      const response = await api.post("/api/v1/designer/readDesignerList", requestData);
+      const response = await api.post("/designer/readDesignerList", requestData);
 
       if (response.status === 200) {
         setDesigners(response.data.responseDto);
