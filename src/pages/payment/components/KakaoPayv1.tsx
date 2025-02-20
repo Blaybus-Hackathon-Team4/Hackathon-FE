@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import axios from "axios";
+
 import {
   PaymentMethod,
   PG,
   PaymentRequest,
   RequestPayResponse,
 } from "../../../types/portone";
+import { api } from "../../../api/api";
 
 const { VITE_IMP_CODE } = import.meta.env;
 // 결제 데이터 타입 정의
@@ -35,7 +36,13 @@ export const generateMerchantUid = (): string => {
 
 export const onclickPay = async (
   pgValue: PG,
-  payMethod: PaymentMethod
+  payMethod: PaymentMethod,
+  name: string | null,
+  email: string | null,
+  price: number | number,
+  designerName: string | null,
+  selectedMethod: "KAKAO" | "BANK",
+  reservationId: number
 ): Promise<number> => {
   const { IMP } = window;
   if (!IMP) {
@@ -49,14 +56,12 @@ export const onclickPay = async (
     pg: pgValue,
     pay_method: payMethod,
     merchant_uid: generateMerchantUid(),
-    name: "헤르츠 컨설팅",
-    amount: 30000,
-    buyer_email: "ksh123@gmail.com",
-    buyer_name: "김서현",
-    m_redirect_url: "",
+    name: `${designerName} 컨설팅`,
+    amount: price,
+    buyer_email: email || "",
+    buyer_name: name || "",
+    m_redirect_url: `https://heartz4.vercel.app/payment/${reservationId}`,
   };
-
-  console.log("data:", data);
 
   return new Promise((resolve) => {
     IMP.request_pay(data, async (response: RequestPayResponse) => {
@@ -66,16 +71,15 @@ export const onclickPay = async (
         return;
       }
 
-      console.log("결제 성공:", response);
+      //console.log("결제 성공:", response.imp_uid);
 
       // 결제 검증 요청
       try {
-        const verifyResponse = await axios.post(`/pay/portone`, {
-          imp_uid: response.imp_uid,
-          merchant_uid: response.merchant_uid,
+        console.log("imp_uid 값 확인:", response.imp_uid);
+        const verifyResponse = await api.post(`/pay/portone`, {
+          impuid: response.imp_uid,
         });
-
-        if (verifyResponse.data.success) {
+        if (verifyResponse.status === 200) {
           console.log(`결제 검증 성공! 결제 금액: ${response.paid_amount}원`);
           console.log(`영수증 URL: ${response.receipt_url}`);
           resolve(200); // 성공 코드 반환
