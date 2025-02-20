@@ -11,11 +11,11 @@ interface CancelButtonProps {
 
 const CancelButton: React.FC<CancelButtonProps> = ({ onClick }) => {
   const { openModal } = useModalStore();
-  const paymentId = useParams();
+  const { paymentId } = useParams<{ paymentId: string }>();
 
   // 여기서 Modal 컴포넌트를 정의하여 openModal에 전달
   const handleOpenModal = () => {
-    const modalElement = <CancelModal paymentId={paymentId} />;
+    const modalElement = <CancelModal paymentId={paymentId!} />;
     openModal(modalElement);
   };
 
