@@ -1,17 +1,17 @@
 import { transparentize } from "polished";
 import styled from "styled-components";
+import { cancelPayment } from "../../../api/cancelPayment";
 import { useModalStore } from "../../../zustand/modal.store";
-import {cancelPayment} from "../../../api/cancelPayment";
 
 const CancelModal = ({ paymentId }: { paymentId: string }) => {
-  const { closeCancelModal } = useModalStore();
+  const { closeModal } = useModalStore();
 
   const handleCancelPayment = async () => {
     try {
       const token = "your-auth-token"; // 실제 사용자 토큰 (예: 로그인 후 가져오기)
       await cancelPayment(paymentId, token); // 결제 취소 API 호출
       alert("예약이 취소되었습니다.");
-      closeCancelModal();
+      closeModal();
     } catch (error) {
       alert("예약 취소에 실패했습니다. 다시 시도해주세요.");
     }
@@ -47,7 +47,7 @@ const CancelModal = ({ paymentId }: { paymentId: string }) => {
           <StButton $yes={true} onClick={handleCancelPayment}>
             네, 취소할래요
           </StButton>
-          <StButton onClick={closeCancelModal}>아니요, 취소 안할래요</StButton>
+          <StButton onClick={closeModal}>아니요, 취소 안할래요</StButton>
         </ButtonSection>
       </ModalContainer>
     </ModalBackground>

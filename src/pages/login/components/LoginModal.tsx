@@ -7,16 +7,17 @@ import ExitIcon from "../../../assets/icons/exit.svg";
 import WarningCircleIcon from "../../../assets/icons/warning_circle.svg";
 
 const LoginModal = () => {
-  const { closeLoginModal } = useModalStore();
+  const { closeModal } = useModalStore();
   const navigate = useNavigate();
 
   const handleGoToMainPage = () => {
-    closeLoginModal();
+    closeModal();
     navigate("/");
   };
 
   const handleGoToLoginPage = () => {
-    closeLoginModal();
+    closeModal();
+    navigate("/");
     console.log("로그인 페이지로 리디렉션");
   };
 

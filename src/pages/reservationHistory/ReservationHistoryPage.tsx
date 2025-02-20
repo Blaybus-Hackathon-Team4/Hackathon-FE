@@ -6,14 +6,14 @@ import CancelModal from "./components/CancelModal"; // 예약 취소 모달창 �
 import ReservationCard from "./components/ReservationCard";
 
 const ReservationHistoryPage = () => {
-  const { isCancelModalOpen, openCancelModal } = useModalStore();
+  const { isModalOpen, openModal } = useModalStore();
   const [selectedPaymentId, setSelectedPaymentId] = useState<string | null>(
     null
   );
 
   const handleOpenCancelModal = (paymentId: string) => {
     setSelectedPaymentId(paymentId); // 선택한 결제 ID 저장
-    openCancelModal(); // 모달 열기
+    openModal(<CancelModal paymentId={paymentId} />); // 모달 열기
   };
 
   return (
@@ -50,7 +50,7 @@ const ReservationHistoryPage = () => {
         font-color={theme.colors.gray[300]}
         isCompleted={true}
       />
-      {isCancelModalOpen && selectedPaymentId && (
+      {isModalOpen && selectedPaymentId && (
         <CancelModal paymentId={selectedPaymentId} />
       )}{" "}
       {/* 선택된 결제 ID 전달 */}

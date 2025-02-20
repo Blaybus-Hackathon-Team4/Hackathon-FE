@@ -6,11 +6,11 @@ import { useModalStore } from "../../../zustand/modal.store";
 import WarningIcon from "../../../assets/icons/warning.svg";
 
 const ReservationModal = () => {
-  const { closeReservationModal } = useModalStore();
+  const { closeModal } = useModalStore();
   const navigate = useNavigate();
 
   const handleOutReservationPage = () => {
-    closeReservationModal();
+    closeModal();
     navigate("/designer-detail");
   };
 
@@ -32,9 +32,7 @@ const ReservationModal = () => {
           <StButton $yes={true} onClick={handleOutReservationPage}>
             네, 나갈래요
           </StButton>
-          <StButton onClick={closeReservationModal}>
-            아니요, 계속할게요
-          </StButton>
+          <StButton onClick={closeModal}>아니요, 계속할게요</StButton>
         </ButtonSection>
       </ModalContainer>
     </ModalBackground>
